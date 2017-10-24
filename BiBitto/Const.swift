@@ -9,7 +9,8 @@
 import Foundation
 
 struct Paths {
-    static let xxxPath = "xxx"
+    static let UserPath = "user"
+    static let CardPath = "card"
 }
 
 struct DefaultString {
