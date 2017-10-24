@@ -7,19 +7,42 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+        // 初期表示
         if let tabvc = self.window!.rootViewController as? UITabBarController  {
             tabvc.selectedIndex = 1 // 0 が一番左のタブ
         }
+        // Register APNs
+        if #available(iOS 10.0, *) {
+            
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(options: authOptions,completionHandler: { (granted, error) in
+                if error != nil {
+                    return
+                }
+                if granted {
+                    print("通知許可")
+                    UNUserNotificationCenter.current().delegate = self
+                } else {
+                    print("通知拒否")
+                }
+            })
+        } else {
+            // iOS 9以下
+            let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        application.registerForRemoteNotifications()
+        
         return true
     }
 
@@ -44,7 +67,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    // バックグラウンドで来た通知をタップしてアプリ起動したら呼ばれる
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("DEBUG_PRINT: AppDelegate.userNotificationCenter.didReceive start")
+        print("DEBUG_PRINT: AppDelegate.userNotificationCenter.didReceive end")
+    }
+    // アプリがフォアグラウンドの時に通知が来たら呼ばれる
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("DEBUG_PRINT: AppDelegate.userNotificationCenter.willPresent start")
+        
+        completionHandler([.alert, .badge, .sound])
+        
+        print("DEBUG_PRINT: AppDelegate.userNotificationCenter.willPresent end")
+    }
 
 }
 
