@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SecondViewController: UIViewController {
+class HomeViewController: UIViewController {
 
     @IBOutlet weak var starButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!

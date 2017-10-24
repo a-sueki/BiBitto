@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		5EA8BECB95022CDA6088B4BD /* Pods_BiBitto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80B0C69EB339563A95ACCD2 /* Pods_BiBitto.framework */; };
 		845851BA1F9C686E002F9AA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851B91F9C686E002F9AA0 /* AppDelegate.swift */; };
-		845851BC1F9C686E002F9AA0 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BB1F9C686E002F9AA0 /* FirstViewController.swift */; };
-		845851BE1F9C686E002F9AA0 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BD1F9C686E002F9AA0 /* SecondViewController.swift */; };
+		845851BC1F9C686E002F9AA0 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BB1F9C686E002F9AA0 /* ListViewController.swift */; };
+		845851BE1F9C686E002F9AA0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BD1F9C686E002F9AA0 /* HomeViewController.swift */; };
 		845851C11F9C686E002F9AA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845851BF1F9C686E002F9AA0 /* Main.storyboard */; };
 		845851C31F9C686E002F9AA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 845851C21F9C686E002F9AA0 /* Assets.xcassets */; };
 		845851C61F9C686E002F9AA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845851C41F9C686E002F9AA0 /* LaunchScreen.storyboard */; };
@@ -23,8 +23,8 @@
 		50B619A4C894BC1B5D5B0D6F /* Pods-BiBitto.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiBitto.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BiBitto/Pods-BiBitto.debug.xcconfig"; sourceTree = "<group>"; };
 		845851B61F9C686E002F9AA0 /* BiBitto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BiBitto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		845851B91F9C686E002F9AA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		845851BB1F9C686E002F9AA0 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		845851BD1F9C686E002F9AA0 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		845851BB1F9C686E002F9AA0 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		845851BD1F9C686E002F9AA0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		845851C01F9C686E002F9AA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		845851C21F9C686E002F9AA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		845851C51F9C686E002F9AA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -78,8 +78,8 @@
 			isa = PBXGroup;
 			children = (
 				845851B91F9C686E002F9AA0 /* AppDelegate.swift */,
-				845851BB1F9C686E002F9AA0 /* FirstViewController.swift */,
-				845851BD1F9C686E002F9AA0 /* SecondViewController.swift */,
+				845851BB1F9C686E002F9AA0 /* ListViewController.swift */,
+				845851BD1F9C686E002F9AA0 /* HomeViewController.swift */,
 				845851BF1F9C686E002F9AA0 /* Main.storyboard */,
 				845851CF1F9C8116002F9AA0 /* SettingViewController.swift */,
 				845851D11F9C8259002F9AA0 /* Const.swift */,
@@ -224,10 +224,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				845851D01F9C8116002F9AA0 /* SettingViewController.swift in Sources */,
-				845851BE1F9C686E002F9AA0 /* SecondViewController.swift in Sources */,
+				845851BE1F9C686E002F9AA0 /* HomeViewController.swift in Sources */,
 				845851CE1F9C6A86002F9AA0 /* TabBarController.swift in Sources */,
 				845851BA1F9C686E002F9AA0 /* AppDelegate.swift in Sources */,
-				845851BC1F9C686E002F9AA0 /* FirstViewController.swift in Sources */,
+				845851BC1F9C686E002F9AA0 /* ListViewController.swift in Sources */,
 				845851D21F9C8259002F9AA0 /* Const.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
