@@ -7,15 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EA8BECB95022CDA6088B4BD /* Pods_BiBitto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80B0C69EB339563A95ACCD2 /* Pods_BiBitto.framework */; };
 		845851BA1F9C686E002F9AA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851B91F9C686E002F9AA0 /* AppDelegate.swift */; };
 		845851BC1F9C686E002F9AA0 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BB1F9C686E002F9AA0 /* FirstViewController.swift */; };
 		845851BE1F9C686E002F9AA0 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BD1F9C686E002F9AA0 /* SecondViewController.swift */; };
 		845851C11F9C686E002F9AA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845851BF1F9C686E002F9AA0 /* Main.storyboard */; };
 		845851C31F9C686E002F9AA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 845851C21F9C686E002F9AA0 /* Assets.xcassets */; };
 		845851C61F9C686E002F9AA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845851C41F9C686E002F9AA0 /* LaunchScreen.storyboard */; };
+		845851CE1F9C6A86002F9AA0 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851CD1F9C6A86002F9AA0 /* TabBarController.swift */; };
+		845851D01F9C8116002F9AA0 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851CF1F9C8116002F9AA0 /* SettingViewController.swift */; };
+		845851D21F9C8259002F9AA0 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851D11F9C8259002F9AA0 /* Const.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		50B619A4C894BC1B5D5B0D6F /* Pods-BiBitto.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiBitto.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BiBitto/Pods-BiBitto.debug.xcconfig"; sourceTree = "<group>"; };
 		845851B61F9C686E002F9AA0 /* BiBitto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BiBitto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		845851B91F9C686E002F9AA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		845851BB1F9C686E002F9AA0 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +29,11 @@
 		845851C21F9C686E002F9AA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		845851C51F9C686E002F9AA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		845851C71F9C686E002F9AA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		845851CD1F9C6A86002F9AA0 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		845851CF1F9C8116002F9AA0 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		845851D11F9C8259002F9AA0 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
+		A3C178CB041547734C17373E /* Pods-BiBitto.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiBitto.release.xcconfig"; path = "Pods/Target Support Files/Pods-BiBitto/Pods-BiBitto.release.xcconfig"; sourceTree = "<group>"; };
+		E80B0C69EB339563A95ACCD2 /* Pods_BiBitto.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BiBitto.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +41,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EA8BECB95022CDA6088B4BD /* Pods_BiBitto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B2B25355C269F1DEA60A4AC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E80B0C69EB339563A95ACCD2 /* Pods_BiBitto.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		845851AD1F9C686E002F9AA0 = {
 			isa = PBXGroup;
 			children = (
 				845851B81F9C686E002F9AA0 /* BiBitto */,
 				845851B71F9C686E002F9AA0 /* Products */,
+				FFDC764C851F0F81C84D97CD /* Pods */,
+				2B2B25355C269F1DEA60A4AC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,11 +81,23 @@
 				845851BB1F9C686E002F9AA0 /* FirstViewController.swift */,
 				845851BD1F9C686E002F9AA0 /* SecondViewController.swift */,
 				845851BF1F9C686E002F9AA0 /* Main.storyboard */,
+				845851CF1F9C8116002F9AA0 /* SettingViewController.swift */,
+				845851D11F9C8259002F9AA0 /* Const.swift */,
+				845851CD1F9C6A86002F9AA0 /* TabBarController.swift */,
 				845851C21F9C686E002F9AA0 /* Assets.xcassets */,
 				845851C41F9C686E002F9AA0 /* LaunchScreen.storyboard */,
 				845851C71F9C686E002F9AA0 /* Info.plist */,
 			);
 			path = BiBitto;
+			sourceTree = "<group>";
+		};
+		FFDC764C851F0F81C84D97CD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				50B619A4C894BC1B5D5B0D6F /* Pods-BiBitto.debug.xcconfig */,
+				A3C178CB041547734C17373E /* Pods-BiBitto.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +107,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 845851CA1F9C686E002F9AA0 /* Build configuration list for PBXNativeTarget "BiBitto" */;
 			buildPhases = (
+				170F39A891477885137BE095 /* [CP] Check Pods Manifest.lock */,
 				845851B21F9C686E002F9AA0 /* Sources */,
 				845851B31F9C686E002F9AA0 /* Frameworks */,
 				845851B41F9C686E002F9AA0 /* Resources */,
+				B6874D712FB2760D3C030755 /* [CP] Embed Pods Frameworks */,
+				0A8DE3054093BB0B353C63D8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -134,14 +170,65 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0A8DE3054093BB0B353C63D8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BiBitto/Pods-BiBitto-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		170F39A891477885137BE095 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B6874D712FB2760D3C030755 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BiBitto/Pods-BiBitto-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		845851B21F9C686E002F9AA0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				845851D01F9C8116002F9AA0 /* SettingViewController.swift in Sources */,
 				845851BE1F9C686E002F9AA0 /* SecondViewController.swift in Sources */,
+				845851CE1F9C6A86002F9AA0 /* TabBarController.swift in Sources */,
 				845851BA1F9C686E002F9AA0 /* AppDelegate.swift in Sources */,
 				845851BC1F9C686E002F9AA0 /* FirstViewController.swift in Sources */,
+				845851D21F9C8259002F9AA0 /* Const.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,6 +308,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -270,12 +358,14 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		845851CB1F9C686E002F9AA0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 50B619A4C894BC1B5D5B0D6F /* Pods-BiBitto.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -291,6 +381,7 @@
 		};
 		845851CC1F9C686E002F9AA0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A3C178CB041547734C17373E /* Pods-BiBitto.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
