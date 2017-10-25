@@ -143,8 +143,8 @@ class SettingViewController: FormViewController {
         }
 
         // 通知内容の設定
-        content.title = "今日のビビッとワード"
-        content.body = "ないよう"
+        content.title = "ビビッとくる！俺の名言コレクション"
+        content.body = "今日のビビッとフレーズは？"
         content.sound = UNNotificationSound.default()
         content.badge = 0
         
