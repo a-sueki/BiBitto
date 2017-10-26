@@ -17,8 +17,10 @@ struct DefaultString {
     static let NoticeFlag = "noticeFlag"
 
     //static let Uid = "uid"
-    //static let Mail = "mail"
-    //static let Password = "password"
+    static let Mail = "mail"
+    static let Password = "password"
     //static let DisplayName = "displayName"
 }
-
+struct ErrorMsgString {
+    static let RulePassword = "パスワードは6~12文字で設定して下さい"
+}

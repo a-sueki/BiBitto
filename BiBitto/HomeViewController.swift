@@ -10,10 +10,10 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import TTTAttributedLabel
-//import SCLAlertView
+import Presentr
 
 class HomeViewController: UIViewController {
-
+    
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var starButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!
@@ -21,19 +21,27 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var authorNameLabel: UILabel!
     @IBOutlet weak var noLabel: UILabel!
     
+    let presenter: Presentr = {
+        let presenter = Presentr(presentationType: .alert)
+        presenter.transitionType = TransitionType.coverHorizontalFromRight
+        presenter.dismissOnSwipe = true
+        return presenter
+    }()
+    
+    lazy var signUpViewController: SignUpViewController = {
+        let signUpViewController = self.storyboard?.instantiateViewController(withIdentifier: "SignUpViewController")
+        return signUpViewController as! SignUpViewController
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // ログインしてなかったらポップアップ表示
-        if Auth.auth().currentUser == nil {
-            login()
-        }
+        print("DEBUG_PRINT: HomeViewController viewDidLoad start")
 
         // ヘッダ
         categoryLabel.text = "MIND"
         authorNameLabel.text = "SHOIN YOSHIDA"
         noLabel.text = "034"
-
+        
         // 縦書き対応(本文)
         view.backgroundColor = UIColor.gray
         let titleLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(
@@ -59,7 +67,7 @@ class HomeViewController: UIViewController {
             mutableAttributedString?.addAttribute(NSAttributedStringKey(rawValue: kCTVerticalFormsAttributeName as String as String), value: true, range: NSMakeRange(0,(mutableAttributedString?.length)!))
             return mutableAttributedString
         }
-
+        
         // 縦書き対応(本文)
         let textLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(
             x: view.frame.width/100 * 7,
@@ -68,7 +76,7 @@ class HomeViewController: UIViewController {
             height: view.frame.width/2))
         textLabel.backgroundColor = UIColor.white
         view.addSubview(textLabel)
-
+        
         textLabel.textColor = UIColor.black
         textLabel.numberOfLines = 0
         textLabel.font = UIFont.systemFont(ofSize: 16)
@@ -84,20 +92,38 @@ class HomeViewController: UIViewController {
             mutableAttributedString?.addAttribute(NSAttributedStringKey(rawValue: kCTVerticalFormsAttributeName as String as String), value: true, range: NSMakeRange(0,(mutableAttributedString?.length)!))
             return mutableAttributedString
         }
- 
-     }
+        
+        print("DEBUG_PRINT: HomeViewController viewDidLoad end")
+    }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("DEBUG_PRINT: HomeViewController viewDidAppear start")
+
+        // 初回起動時のみ
+        if UserDefaults.standard.bool(forKey: "firstLaunch") {
+            UserDefaults.standard.set(false, forKey: "firstLaunch")
+            signUp()
+        }
+
+        print("DEBUG_PRINT: HomeViewController viewDidAppear end")
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    func signUp() {
+        print("DEBUG_PRINT: HomeViewController signUp start")
 
-    func login(){
-        
+        presenter.presentationType = .popup
+        presenter.transitionType = nil
+        presenter.dismissTransitionType = nil
+        presenter.keyboardTranslationType = .compress
+        presenter.dismissOnSwipe = true
+        customPresentViewController(presenter, viewController: signUpViewController, animated: true, completion: nil)
+
+        print("DEBUG_PRINT: HomeViewController signUp end")
     }
-
 }
 

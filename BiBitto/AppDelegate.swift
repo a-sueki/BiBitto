@@ -7,18 +7,20 @@
 //
 
 import UIKit
-import UserNotifications
 import Firebase
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
+        
+        // 初回起動チェック用
+        UserDefaults.standard.register(defaults: ["firstLaunch":true])
         
         // 初期表示
         if let tabvc = self.window!.rootViewController as? UITabBarController  {
@@ -83,6 +85,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         
         print("DEBUG_PRINT: AppDelegate.userNotificationCenter.willPresent end")
     }
-
+    
 }
 
