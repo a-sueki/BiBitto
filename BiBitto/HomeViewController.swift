@@ -21,13 +21,6 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var authorNameLabel: UILabel!
     @IBOutlet weak var noLabel: UILabel!
     
-    let presenter: Presentr = {
-        let presenter = Presentr(presentationType: .alert)
-        presenter.transitionType = TransitionType.coverHorizontalFromRight
-        presenter.dismissOnSwipe = true
-        return presenter
-    }()
-    
     lazy var signUpViewController: SignUpViewController = {
         let signUpViewController = self.storyboard?.instantiateViewController(withIdentifier: "SignUpViewController")
         return signUpViewController as! SignUpViewController
@@ -116,12 +109,12 @@ class HomeViewController: UIViewController {
     func signUp() {
         print("DEBUG_PRINT: HomeViewController signUp start")
 
-        presenter.presentationType = .popup
-        presenter.transitionType = nil
-        presenter.dismissTransitionType = nil
-        presenter.keyboardTranslationType = .compress
-        presenter.dismissOnSwipe = true
-        customPresentViewController(presenter, viewController: signUpViewController, animated: true, completion: nil)
+        PresentrAlert.presenter.presentationType = .popup
+        PresentrAlert.presenter.transitionType = nil
+        PresentrAlert.presenter.dismissTransitionType = nil
+        PresentrAlert.presenter.keyboardTranslationType = .compress
+        PresentrAlert.presenter.dismissOnSwipe = true
+        customPresentViewController(PresentrAlert.presenter, viewController: signUpViewController, animated: true, completion: nil)
 
         print("DEBUG_PRINT: HomeViewController signUp end")
     }

@@ -8,22 +8,31 @@
 
 import UIKit
 import Eureka
+import Firebase
+import FirebaseAuth
 import UserNotifications
+import Presentr
 
 class SettingViewController: FormViewController {
     
     var inputData = [String : Any]()
-    
+    var backupFlag = false
+        
+    lazy var signUpViewController: SignUpViewController = {
+        let signUpViewController = self.storyboard?.instantiateViewController(withIdentifier: "SignUpViewController")
+        return signUpViewController as! SignUpViewController
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("DEBUG_PRINT: SettingViewController.viewDidLoad start")
+        print("DEBUG_PRINT: SettingViewController viewDidLoad start")
         
         initializeForm()
         
         navigationItem.leftBarButtonItem?.target = self
         navigationItem.leftBarButtonItem?.action = #selector(SettingViewController.cancelTapped(_:))
         
-        print("DEBUG_PRINT: SettingViewController.viewDidLoad end")
+        print("DEBUG_PRINT: SettingViewController viewDidLoad end")
     }
     
     override func didReceiveMemoryWarning() {
@@ -31,7 +40,7 @@ class SettingViewController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
     func initializeForm(){
-        print("DEBUG_PRINT: SettingViewController.initializeForm start")
+        print("DEBUG_PRINT: SettingViewController initializeForm start")
         
         // 必須入力チェック
         LabelRow.defaultCellUpdate = { cell, row in
@@ -43,7 +52,7 @@ class SettingViewController: FormViewController {
         
         // フォーム
         form +++
-            Section("通知設定")
+            Section("通知")
             <<< SwitchRow("TimeNotification") {
                 $0.title = "時刻で通知する"
                 if UserDefaults.standard.object(forKey: DefaultString.NoticeFlag) != nil {
@@ -73,62 +82,31 @@ class SettingViewController: FormViewController {
                     vc.dismissOnSelection = false
                 })
             
-            +++ Section("アカウント")
-            <<< EmailRow("mail") {
-                $0.placeholder = "Email"
-                $0.value = UserDefaults.standard.string(forKey: DefaultString.Mail)
-                $0.add(rule: RuleRequired())
-                var ruleSet = RuleSet<String>()
-                ruleSet.add(rule: RuleRequired())
-                ruleSet.add(rule: RuleEmail())
-                $0.add(ruleSet: ruleSet)
-                $0.validationOptions = .validatesOnBlur
-                }.cellUpdate { cell, row in
-                    if !row.isValid {
-                        cell.titleLabel?.textColor = .red
-                    }
-                }.onRowValidationChanged { cell, row in
-                    let rowIndex = row.indexPath!.row
-                    while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                        row.section?.remove(at: rowIndex + 1)
-                    }
-                    if !row.isValid {
-                        for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
-                            let labelRow = LabelRow() {
-                                $0.title = validationMsg
-                                $0.cell.height = { 30 }
-                            }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                        }
-                    }
-            }
-            <<< PasswordRow("password") {
-                $0.placeholder = "Password"
-                $0.value = UserDefaults.standard.string(forKey: DefaultString.Password)
-                $0.add(rule: RuleRequired())
-                $0.add(rule: RuleMinLength(minLength: 6, msg: ErrorMsgString.RulePassword))
-                $0.add(rule: RuleMaxLength(maxLength: 12, msg: ErrorMsgString.RulePassword))
-                $0.validationOptions = .validatesOnBlur
-                }.cellUpdate { cell, row in
-                    if !row.isValid {
-                        cell.titleLabel?.textColor = .red
-                    }
-                }.onRowValidationChanged { cell, row in
-                    let rowIndex = row.indexPath!.row
-                    while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                        row.section?.remove(at: rowIndex + 1)
-                    }
-                    if !row.isValid {
-                        for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
-                            let labelRow = LabelRow() {
-                                $0.title = validationMsg
-                                $0.cell.height = { 30 }
-                            }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+            +++ Section("バックアップ")
+            <<< SwitchRow("Backup") {
+                $0.title = "自動バックアップをONにする"
+                if Auth.auth().currentUser == nil {
+                    $0.value = false
+                }else{
+                    $0.value = true
+                }
+                }.onChange { [weak self] in
+                    if $0.value == true {
+                        self?.backupFlag = true
+                        if UserDefaults.standard.object(forKey: DefaultString.Mail) == nil {
+                            self?.signUp()
                         }
                     }
             }
 
+            <<< ButtonRow("Account") { (row: ButtonRow) -> Void in
+                row.hidden = .function(["Backup"], { form -> Bool in
+                    let row: RowOf<Bool>! = form.rowBy(tag: "Backup")
+                    return row.value ?? false == false
+                })
+                row.title = "アカウント"
+                row.presentationMode = .segueName(segueName: "AccountControllerSegue", onDismiss: nil)
+            }
 
             +++ Section()
             <<< ButtonRow() { (row: ButtonRow) -> Void in
@@ -137,10 +115,14 @@ class SettingViewController: FormViewController {
                     if let error = row.section?.form?.validate(), error.count != 0 {
                         print("DEBUG_PRINT: SettingViewController.save \(error)のため処理は行いません")
                     }else{
-                        self?.save()
+                        if (self?.backupFlag)!, Auth.auth().currentUser == nil {
+                            self?.present(Alert.setAlertController(title: Alert.loginAlartTitle, message: Alert.loginAlartBody), animated: true)
+                        }else{
+                            self?.save()
+                        }
                     }
         }
-        print("DEBUG_PRINT: SettingViewController.initializeForm end")
+        print("DEBUG_PRINT: SettingViewController initializeForm end")
     }
     
     @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
@@ -157,26 +139,26 @@ class SettingViewController: FormViewController {
     }
     
     @IBAction func save() {
-        print("DEBUG_PRINT: SettingViewController.save start")
+        print("DEBUG_PRINT: SettingViewController save start")
         
         for (key,value) in form.values() {
             if value != nil {
                 inputData["\(key)"] = value
             }
         }
+        UserDefaults.standard.set(inputData["Backup"], forKey: DefaultString.Backup)
         registerLocalNotification(inputData: inputData)
-        
-        // UserDefaultsを更新
-        // UserDefaults.standard.set(false, forKey: DefaultString.GuestFlag)
         
         // 全てのモーダルを閉じる
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
-        
-        print("DEBUG_PRINT: SettingViewController.save end")
+        // 成功ポップアップ
+        self.present(Alert.setAlertController(title: Alert.successSaveTitle, message: nil), animated: true)
+
+        print("DEBUG_PRINT: SettingViewController save end")
     }
     
     func registerLocalNotification(inputData: [String : Any]) {
-        print("DEBUG_PRINT: SettingViewController.registerLocalNotification start")
+        print("DEBUG_PRINT: SettingViewController registerLocalNotification start")
 
         //　通知設定に必要なクラスをインスタンス化
         let trigger: UNNotificationTrigger
@@ -201,7 +183,7 @@ class SettingViewController: FormViewController {
 
         // 通知内容の設定
         content.title = "ビビッとくる！俺の名言コレクション"
-        content.body = "今日のビビッとフレーズは？"
+        content.body = "今日のビビッとくる言葉は？"
         content.sound = UNNotificationSound.default()
         content.badge = 0
         
@@ -210,7 +192,20 @@ class SettingViewController: FormViewController {
         // 通知をセット
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
 
-        print("DEBUG_PRINT: SettingViewController.registerLocalNotification end")
+        print("DEBUG_PRINT: SettingViewController registerLocalNotification end")
+    }
+    
+    func signUp() {
+        print("DEBUG_PRINT: SettingViewController signUp start")
+        
+        PresentrAlert.presenter.presentationType = .popup
+        PresentrAlert.presenter.transitionType = nil
+        PresentrAlert.presenter.dismissTransitionType = nil
+        PresentrAlert.presenter.keyboardTranslationType = .compress
+        PresentrAlert.presenter.dismissOnSwipe = true
+        customPresentViewController(PresentrAlert.presenter, viewController: signUpViewController, animated: true, completion: nil)
+        
+        print("DEBUG_PRINT: SettingViewController signUp end")
     }
 }
 

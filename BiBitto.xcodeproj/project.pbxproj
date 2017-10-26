@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5EA8BECB95022CDA6088B4BD /* Pods_BiBitto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80B0C69EB339563A95ACCD2 /* Pods_BiBitto.framework */; };
+		840272BB1FA2189B001C0BFB /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840272BA1FA2189B001C0BFB /* AccountViewController.swift */; };
+		840272BE1FA22ABC001C0BFB /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */; };
+		840272C01FA236E8001C0BFB /* Policy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 840272BF1FA2313A001C0BFB /* Policy.txt */; };
 		845851BA1F9C686E002F9AA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851B91F9C686E002F9AA0 /* AppDelegate.swift */; };
 		845851BC1F9C686E002F9AA0 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BB1F9C686E002F9AA0 /* ListViewController.swift */; };
 		845851BE1F9C686E002F9AA0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BD1F9C686E002F9AA0 /* HomeViewController.swift */; };
@@ -25,6 +28,9 @@
 
 /* Begin PBXFileReference section */
 		50B619A4C894BC1B5D5B0D6F /* Pods-BiBitto.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiBitto.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BiBitto/Pods-BiBitto.debug.xcconfig"; sourceTree = "<group>"; };
+		840272BA1FA2189B001C0BFB /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
+		840272BF1FA2313A001C0BFB /* Policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Policy.txt; sourceTree = "<group>"; };
 		845851B61F9C686E002F9AA0 /* BiBitto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BiBitto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		845851B91F9C686E002F9AA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		845851BB1F9C686E002F9AA0 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
@@ -97,8 +103,11 @@
 				845851BB1F9C686E002F9AA0 /* ListViewController.swift */,
 				845851BD1F9C686E002F9AA0 /* HomeViewController.swift */,
 				845851CF1F9C8116002F9AA0 /* SettingViewController.swift */,
+				840272BA1FA2189B001C0BFB /* AccountViewController.swift */,
+				840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */,
 				84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */,
 				845851C71F9C686E002F9AA0 /* Info.plist */,
+				840272BF1FA2313A001C0BFB /* Policy.txt */,
 			);
 			path = BiBitto;
 			sourceTree = "<group>";
@@ -174,6 +183,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				840272C01FA236E8001C0BFB /* Policy.txt in Resources */,
 				84C2613E1FA19A31004B3520 /* GoogleService-Info.plist in Resources */,
 				845851C61F9C686E002F9AA0 /* LaunchScreen.storyboard in Resources */,
 				845851C31F9C686E002F9AA0 /* Assets.xcassets in Resources */,
@@ -242,8 +252,10 @@
 				84C261441FA1AEDE004B3520 /* SignUpViewController.swift in Sources */,
 				845851CE1F9C6A86002F9AA0 /* TabBarController.swift in Sources */,
 				84F4D26E1F9EF80D001A614A /* CardData.swift in Sources */,
+				840272BB1FA2189B001C0BFB /* AccountViewController.swift in Sources */,
 				845851BA1F9C686E002F9AA0 /* AppDelegate.swift in Sources */,
 				845851BC1F9C686E002F9AA0 /* ListViewController.swift in Sources */,
+				840272BE1FA22ABC001C0BFB /* PasswordResetViewController.swift in Sources */,
 				845851D21F9C8259002F9AA0 /* Const.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

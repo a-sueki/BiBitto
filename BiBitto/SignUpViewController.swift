@@ -15,52 +15,32 @@ class SignUpViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    
-    let presenter: Presentr = {
-        let presenter = Presentr(presentationType: .alert)
-        presenter.transitionType = TransitionType.coverHorizontalFromRight
-        presenter.dismissOnSwipe = true
-        return presenter
-    }()
-    
-    lazy var emailValidationController: AlertViewController = {
-        let alertController = Presentr.alertViewController(title: "⚠️入力エラー", body: "メールアドレスが不正です")
-        let okAction = AlertAction(title: "OK", style: .cancel) {
-            print("OK")
-        }
-        alertController.addAction(okAction)
-        return alertController
-    }()
-    
-    lazy var existingEmailValidationController: AlertViewController = {
-        let alertController = Presentr.alertViewController(title: "⚠️入力エラー", body: "そのメールアドレスは既に登録されています")
-        let okAction = AlertAction(title: "OK", style: .cancel) {
-            print("OK")
-        }
-        alertController.addAction(okAction)
-        return alertController
-    }()
-    
-    lazy var passwordValidationController: AlertViewController = {
-        let alertController = Presentr.alertViewController(title: "⚠️入力エラー", body: "パスワードは6~12文字で設定してください")
-        let okAction = AlertAction(title: "OK", style: .cancel) {
-            print("OK")
-        }
-        alertController.addAction(okAction)
-        return alertController
-    }()
-
-
+    @IBOutlet weak var EULATextView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("DEBUG_PRINT: SignUpViewController viewDidLoad start")
-
+        
         // textFiel の情報を受け取るための delegate を設定
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
+        EULATextView.isEditable = false
+        if let filePath = Bundle.main.path(forResource: "Policy", ofType: "txt"){
+            if let data = NSData(contentsOfFile: filePath){
+                EULATextView.text = String(NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)!)
+            }else{
+                print("データなし")
+            }
+        }
+        
         print("DEBUG_PRINT: SignUpViewController viewDidLoad end")
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // 先頭行を初期表示
+        self.EULATextView.setContentOffset(CGPoint.zero, animated: false)
     }
     
     override func didReceiveMemoryWarning() {
@@ -70,27 +50,27 @@ class SignUpViewController: UIViewController {
     
     @IBAction func touchSignUpButton(_ sender: Any) {
         print("DEBUG_PRINT: SignUpViewController touchSignUpButton start")
-
+        
         let email = emailTextField.text
         let password = passwordTextField.text
         
         // 入力チェック
         if email != nil {
-            if email!.characters.isEmpty || isValidEmailAddress(emailAddressString: email!) == false {
-                showAlert(alertViewController: emailValidationController)
+            if email!.characters.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email!) == false {
+                self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationEmail), animated: true)
                 return
             }
         }else{
-            showAlert(alertViewController: emailValidationController)
+            self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationEmail), animated: true)
             return
         }
         if password != nil {
             if password!.characters.count < 6 || password!.characters.count > 12{
-                showAlert(alertViewController: passwordValidationController)
+                self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationPassword), animated: true)
                 return
             }
         }else{
-            showAlert(alertViewController: passwordValidationController)
+            self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationPassword), animated: true)
             return
         }
         
@@ -100,9 +80,11 @@ class SignUpViewController: UIViewController {
                 // エラーがあったら原因をprintして、returnすることで以降の処理を実行せずに処理を終了する
                 print("DEBUG_PRINT: SignUpViewController createUser " + error.localizedDescription)
                 if error.localizedDescription.contains("already in use") {
-                    self.showAlert(alertViewController: self.existingEmailValidationController)
+                    
+                    self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationExistingEmail), animated: true)
+                    
                 } else {
-                    self.showAlert(alertViewController: self.emailValidationController)
+                    self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationEmail), animated: true)
                 }
                 return
             }
@@ -119,63 +101,41 @@ class SignUpViewController: UIViewController {
                         print("DEBUG_PRINT: SignUpViewController createUser " + error.localizedDescription)
                     }
                 }
+                
+                // UserDefaultにアカウント情報を保存
+                UserDefaults.standard.set(email, forKey: DefaultString.Mail)
+                UserDefaults.standard.set(password, forKey: DefaultString.Password)
+                
                 // 確認メール送信
                 if !user.isEmailVerified {
                     print("DEBUG_PRINT: SignUpViewController sendEmailVerification ")
-                    DispatchQueue.global().async {
-                        user.sendEmailVerification(completion: nil)
-                    }
+                    // 成功ポップアップ
+                    self.present(Alert.setAlertController(title: Alert.successSaveTitle, message: nil), animated: true, completion: {() -> Void in
+                        DispatchQueue.global(qos: .default).async {
+                            // サブスレッド(バックグラウンド)で実行する方を書く
+                            user.sendEmailVerification(completion: nil)
+                            DispatchQueue.main.async {
+                                // Main Threadで実行する
+                                self.dismiss(animated: false, completion: nil)
+                            }
+                        }
+                    })
                 }
             }
         }
-
+        
         print("DEBUG_PRINT: SignUpViewController touchSignUpButton end")
     }
     
     @IBAction func touchSkipButton(_ sender: Any) {
         print("DEBUG_PRINT: SignUpViewController touchSkipButton start")
-
+        
         dismiss(animated: true, completion: nil)
-
+        
         print("DEBUG_PRINT: SignUpViewController touchSkipButton end")
     }
     
-    func showAlert(alertViewController: AlertViewController) {
-        print("DEBUG_PRINT: SignUpViewController showAlert start")
-
-        presenter.presentationType = .alert
-        presenter.transitionType = nil
-        presenter.dismissTransitionType = nil
-        presenter.dismissAnimated = true
-        customPresentViewController(presenter, viewController: alertViewController, animated: true, completion: nil)
-
-        print("DEBUG_PRINT: SignUpViewController showAlert end")
-    }
     
-    func isValidEmailAddress(emailAddressString: String) -> Bool {
-        print("DEBUG_PRINT: SignUpViewController isValidEmailAddress start")
-
-        var returnValue = true
-        let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
-        
-        do {
-            let regex = try NSRegularExpression(pattern: emailRegEx)
-            let nsString = emailAddressString as NSString
-            let results = regex.matches(in: emailAddressString, range: NSRange(location: 0, length: nsString.length))
-            
-            if results.count == 0
-            {
-                returnValue = false
-            }
-            
-        } catch let error as NSError {
-            print("invalid regex: \(error.localizedDescription)")
-            returnValue = false
-        }
-
-        print("DEBUG_PRINT: SignUpViewController isValidEmailAddress end")
-        return  returnValue
-    }
 }
 
 
@@ -184,11 +144,8 @@ class SignUpViewController: UIViewController {
 extension SignUpViewController: PresentrDelegate {
     
     func presentrShouldDismiss(keyboardShowing: Bool) -> Bool {
-        print("DEBUG_PRINT: SignUpViewController presentrShouldDismiss start")
-        print("DEBUG_PRINT: SignUpViewController presentrShouldDismiss end")
         return !keyboardShowing
     }
-    
 }
 
 // MARK: - UITextField Delegate
@@ -197,23 +154,13 @@ extension SignUpViewController: UITextFieldDelegate {
     
     // Returnキーでキーボードを閉じる
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("DEBUG_PRINT: SignUpViewController textFieldShouldReturn start")
-
         textField.resignFirstResponder()
-
-        print("DEBUG_PRINT: SignUpViewController textFieldShouldReturn end")
         return true
     }
-    
     // TextField以外の部分をタッチでキーボードを閉じる
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("DEBUG_PRINT: SignUpViewController touchesBegan start")
-
         self.view.endEditing(true)
-
-        print("DEBUG_PRINT: SignUpViewController touchesBegan end")
     }
-    
 }
 
 
