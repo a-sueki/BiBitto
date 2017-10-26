@@ -7,7 +7,10 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
 import TTTAttributedLabel
+//import SCLAlertView
 
 class HomeViewController: UIViewController {
 
@@ -20,6 +23,11 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // ログインしてなかったらポップアップ表示
+        if Auth.auth().currentUser == nil {
+            login()
+        }
 
         // ヘッダ
         categoryLabel.text = "MIND"
@@ -27,7 +35,6 @@ class HomeViewController: UIViewController {
         noLabel.text = "034"
 
         // 縦書き対応(本文)
-        print(view.frame)
         view.backgroundColor = UIColor.gray
         let titleLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(
             x: view.frame.width/20 * 8,
@@ -36,8 +43,7 @@ class HomeViewController: UIViewController {
             height: view.frame.width/10 * 1))
         titleLabel.backgroundColor = UIColor.white
         view.addSubview(titleLabel)
-        print(titleLabel.frame)
-
+        
         titleLabel.textColor = UIColor.black
         titleLabel.numberOfLines = 0
         titleLabel.font = UIFont.systemFont(ofSize: 24)
@@ -55,7 +61,6 @@ class HomeViewController: UIViewController {
         }
 
         // 縦書き対応(本文)
-        print(view.frame)
         let textLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(
             x: view.frame.width/100 * 7,
             y: view.frame.height/10 * 5,
@@ -63,7 +68,6 @@ class HomeViewController: UIViewController {
             height: view.frame.width/2))
         textLabel.backgroundColor = UIColor.white
         view.addSubview(textLabel)
-        print(textLabel.frame)
 
         textLabel.textColor = UIColor.black
         textLabel.numberOfLines = 0
@@ -91,6 +95,9 @@ class HomeViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
+    func login(){
+        
+    }
 
 }
 

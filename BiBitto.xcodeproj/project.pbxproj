@@ -17,6 +17,7 @@
 		845851CE1F9C6A86002F9AA0 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851CD1F9C6A86002F9AA0 /* TabBarController.swift */; };
 		845851D01F9C8116002F9AA0 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851CF1F9C8116002F9AA0 /* SettingViewController.swift */; };
 		845851D21F9C8259002F9AA0 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851D11F9C8259002F9AA0 /* Const.swift */; };
+		84C2613E1FA19A31004B3520 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */; };
 		84F4D26E1F9EF80D001A614A /* CardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F4D26D1F9EF80D001A614A /* CardData.swift */; };
 		84F4D2701F9EFD6F001A614A /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F4D26F1F9EFD6F001A614A /* UserData.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		845851CD1F9C6A86002F9AA0 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		845851CF1F9C8116002F9AA0 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		845851D11F9C8259002F9AA0 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
+		84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		84F4D26D1F9EF80D001A614A /* CardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardData.swift; sourceTree = "<group>"; };
 		84F4D26F1F9EFD6F001A614A /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		A3C178CB041547734C17373E /* Pods-BiBitto.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiBitto.release.xcconfig"; path = "Pods/Target Support Files/Pods-BiBitto/Pods-BiBitto.release.xcconfig"; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				845851BF1F9C686E002F9AA0 /* Main.storyboard */,
 				845851C21F9C686E002F9AA0 /* Assets.xcassets */,
 				845851C41F9C686E002F9AA0 /* LaunchScreen.storyboard */,
+				84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */,
 				845851C71F9C686E002F9AA0 /* Info.plist */,
 			);
 			path = BiBitto;
@@ -168,6 +171,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84C2613E1FA19A31004B3520 /* GoogleService-Info.plist in Resources */,
 				845851C61F9C686E002F9AA0 /* LaunchScreen.storyboard in Resources */,
 				845851C31F9C686E002F9AA0 /* Assets.xcassets in Resources */,
 				845851C11F9C686E002F9AA0 /* Main.storyboard in Resources */,
@@ -380,7 +384,7 @@
 				DEVELOPMENT_TEAM = 52B62KUG6G;
 				INFOPLIST_FILE = BiBitto/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = jp.techacademy.aoi.sueki.BiBitto;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.aoi.sueki.BiBitto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -396,7 +400,7 @@
 				DEVELOPMENT_TEAM = 52B62KUG6G;
 				INFOPLIST_FILE = BiBitto/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = jp.techacademy.aoi.sueki.BiBitto;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.aoi.sueki.BiBitto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
