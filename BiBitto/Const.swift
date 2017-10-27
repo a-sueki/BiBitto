@@ -17,10 +17,11 @@ struct Paths {
 struct DefaultString {
     static let NoticeFlag = "noticeFlag"
 
-    //static let Uid = "uid"
+    static let Uid = "uid"
     static let Mail = "mail"
     static let Password = "password"
     static let Backup = "backup"
+    static let CardDataArray = "cardDataArray"
 }
 struct ErrorMsgString {
     static let RulePassword = "パスワードは6~12文字で設定して下さい"
@@ -71,6 +72,7 @@ struct Alert {
     static let loginAlartBody = " バックアップを有効にするには、[アカウント] からログインして下さい"
 
     static let successSaveTitle = "✅保存しました"
+    static let successRestoreTitle = "✅データの復元に成功しました"
     static let successSendTitle = "✅送信しました"
     static let successLoginTitle = "✅ログインしました"
     static let successLogoutTitle = "✅ログアウトしました"

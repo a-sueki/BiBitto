@@ -113,7 +113,7 @@ class HomeViewController: UIViewController {
         PresentrAlert.presenter.transitionType = nil
         PresentrAlert.presenter.dismissTransitionType = nil
         PresentrAlert.presenter.keyboardTranslationType = .compress
-        PresentrAlert.presenter.dismissOnSwipe = true
+        PresentrAlert.presenter.dismissOnSwipe = false
         customPresentViewController(PresentrAlert.presenter, viewController: signUpViewController, animated: true, completion: nil)
 
         print("DEBUG_PRINT: HomeViewController signUp end")

@@ -157,10 +157,10 @@ class AccountViewController: FormViewController {
         print("DEBUG_PRINT: AccountViewController initializeForm end")
     }
 
-/*    @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
+    @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
     }
-*/
+
     @IBAction func login(){
         print("DEBUG_PRINT: AccountViewController login start")
         

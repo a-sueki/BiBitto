@@ -110,7 +110,21 @@ class SettingViewController: FormViewController {
 
             +++ Section()
             <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "保存"
+                row.title = "バックアップから復元する"
+                }.onCellSelection { [weak self] (cell, row) in
+                    if let error = row.section?.form?.validate(), error.count != 0 {
+                        print("DEBUG_PRINT: SettingViewController.restore \(error)のため処理は行いません")
+                    }else{
+                        if Auth.auth().currentUser == nil {
+                            self?.present(Alert.setAlertController(title: Alert.loginAlartTitle, message: Alert.loginAlartBody), animated: true)
+                        }else{
+                            self?.restore()
+                        }
+                    }
+            }
+
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.title = "設定を保存する"
                 }.onCellSelection { [weak self] (cell, row) in
                     if let error = row.section?.form?.validate(), error.count != 0 {
                         print("DEBUG_PRINT: SettingViewController.save \(error)のため処理は行いません")
@@ -156,6 +170,52 @@ class SettingViewController: FormViewController {
 
         print("DEBUG_PRINT: SettingViewController save end")
     }
+    
+    @IBAction func restore() {
+        print("DEBUG_PRINT: SettingViewController restore start")
+        
+        var cardDataArray: [CardData] = []
+        // Firebaseからデータを取得し、UserDefaultにセット
+        if let uid = Auth.auth().currentUser?.uid {
+            let ref = Database.database().reference().child(Paths.CardPath).child(uid)
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                print("DEBUG_PRINT: SettingViewController restore .observeSingleEventイベントが発生しました。")
+                if let _ = snapshot.value as? NSDictionary {
+                    let cardData = CardData(snapshot: snapshot, id: uid)
+                    cardDataArray.append(cardData)
+                }
+                // UserDefaultにセット
+                DispatchQueue.main.async {
+                    print("DEBUG_PRINT: SettingViewController restore [DispatchQueue.main.async]")
+
+                    print(cardDataArray)
+                    UserDefaults.standard.set(cardDataArray, forKey: DefaultString.CardDataArray)
+                }
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+        
+        // 全てのモーダルを閉じる
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+        // 成功ポップアップ
+        self.present(Alert.setAlertController(title: Alert.successRestoreTitle, message: nil), animated: true)
+        
+        print("DEBUG_PRINT: SettingViewController restore end")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("DEBUG_PRINT: SettingViewController viewWillDisappear start")
+        
+        if let uid = Auth.auth().currentUser?.uid {
+            let ref = Database.database().reference().child(Paths.CardPath).child(uid)
+            ref.removeAllObservers()
+        }
+        
+        print("DEBUG_PRINT: SettingViewController viewWillDisappear end")
+    }
+
     
     func registerLocalNotification(inputData: [String : Any]) {
         print("DEBUG_PRINT: SettingViewController registerLocalNotification start")
