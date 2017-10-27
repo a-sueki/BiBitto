@@ -25,11 +25,14 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource 
         self.bar.items = [Item(title: "Page 1"),
                           Item(title: "Page 2")]
         
-        // show search button and set action
+        // search button
         let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.search, target: self, action: #selector(searchButtonTapped))
-        // add the button to navigationBar
         self.navigationItem.setRightBarButtonItems([rightSearchBarButtonItem], animated: true)
+        // add button
+        let leftSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(addButtonTapped))
+        self.navigationItem.setLeftBarButtonItems([leftSearchBarButtonItem], animated: true)
 
+        
         print("DEBUG_PRINT: ListViewController viewDidLoad end")
     }
 
@@ -40,10 +43,21 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource 
     
     @objc func searchButtonTapped() {
         print("DEBUG_PRINT: ListViewController searchButtonTapped start")
-        print("DEBUG_PRINT: ListViewController searchButtonTapped end")
         
+        let searchViewController = self.storyboard?.instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
+        self.navigationController?.pushViewController(searchViewController, animated: true)
+        
+        print("DEBUG_PRINT: ListViewController searchButtonTapped end")
     }
-    
+    @objc func addButtonTapped() {
+        print("DEBUG_PRINT: ListViewController addButtonTapped start")
+        
+        let addViewController = self.storyboard?.instantiateViewController(withIdentifier: "AddViewController") as! AddViewController
+        self.navigationController?.pushViewController(addViewController, animated: true)
+        
+        print("DEBUG_PRINT: ListViewController addButtonTapped end")
+    }
+
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
         return viewControllers.count
     }

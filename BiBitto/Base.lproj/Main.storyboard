@@ -41,13 +41,30 @@
                     <connections>
                         <outlet property="tableView" destination="W3L-Ge-fI1" id="lzz-gI-zSo"/>
                         <segue destination="QbL-Kt-Bum" kind="push" id="AgP-bc-3Go"/>
+                        <segue destination="Noq-gP-fVd" kind="push" id="xId-xm-gcE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1449.375" y="-320.07042253521126"/>
+            <point key="canvasLocation" x="1463" y="-320"/>
         </scene>
-        <!--ワード検索-->
+        <!--追加-->
+        <scene sceneID="tYY-Bb-p82">
+            <objects>
+                <viewController storyboardIdentifier="AddViewController" id="Noq-gP-fVd" customClass="AddViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9Iv-5s-y6j">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Nbp-Is-ria"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="追加" id="77o-zF-4Zk"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xBd-8F-Tof" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2123" y="-1000"/>
+        </scene>
+        <!--検索-->
         <scene sceneID="8nS-bR-FkS">
             <objects>
                 <viewController storyboardIdentifier="SearchViewController" id="QbL-Kt-Bum" customClass="SearchViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -57,7 +74,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="e2g-hE-JMF"/>
                     </view>
-                    <navigationItem key="navigationItem" title="ワード検索" id="ygR-bA-eil"/>
+                    <navigationItem key="navigationItem" title="検索" id="ygR-bA-eil"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wS0-N0-tua" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

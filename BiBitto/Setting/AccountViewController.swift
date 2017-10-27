@@ -288,8 +288,6 @@ class AccountViewController: FormViewController {
             }
         })
 
-        //TODO: 戻る
-
         print("DEBUG_PRINT: AccountViewController logout end")
     }
 }
