@@ -9,16 +9,27 @@
 import UIKit
 import Tabman
 import Pageboy
+import Firebase
+import FirebaseAuth
 
-class ListViewController: TabmanViewController, PageboyViewControllerDataSource {
+class ListViewController: TabmanViewController, PageboyViewControllerDataSource, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     private var viewControllers = [UIViewController]()
-
+    var cardDataArray: [CardData] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("DEBUG_PRINT: ListViewController viewDidLoad start")
-
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        self.tableView.separatorColor = UIColor(red: 224/255, green: 224/255, blue: 224/255, alpha: 1.0)
+        
+        let nib = UINib(nibName: "ListTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "ListTableViewCell")
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
         self.dataSource = self
         
         // configure the bar
@@ -31,11 +42,41 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource 
         // add button
         let leftSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(addButtonTapped))
         self.navigationItem.setLeftBarButtonItems([leftSearchBarButtonItem], animated: true)
-
+        
         
         print("DEBUG_PRINT: ListViewController viewDidLoad end")
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("DEBUG_PRINT: ListViewController viewWillAppear start")
+        
+        cardDataArray.removeAll()
+        
+        if let uid = Auth.auth().currentUser?.uid {
+            let ref = Database.database().reference().child(Paths.CardPath).child(uid)
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                print("DEBUG_PRINT: ListViewController .observeSingleEventイベントが発生しました。")
+                if let _ = snapshot.value as? NSDictionary {
+                    for childSnap in snapshot.children {
+                        let cardData = CardData(snapshot: childSnap as! DataSnapshot, id: uid)
+                        self.cardDataArray.append(cardData)
+                    }
+                }
+                // tableViewを再表示する
+                DispatchQueue.main.async {
+                    print("DEBUG_PRINT: ListViewController [DispatchQueue.main.async]")
+                    self.tableView.reloadData()
+                }
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+        
+        
+        print("DEBUG_PRINT: ListViewController viewWillAppear end")
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -53,11 +94,12 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource 
         print("DEBUG_PRINT: ListViewController addButtonTapped start")
         
         let addViewController = self.storyboard?.instantiateViewController(withIdentifier: "AddViewController") as! AddViewController
+        addViewController.cardDataArray = self.cardDataArray
         self.navigationController?.pushViewController(addViewController, animated: true)
         
         print("DEBUG_PRINT: ListViewController addButtonTapped end")
     }
-
+    
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
         return viewControllers.count
     }
@@ -70,6 +112,46 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource 
         return nil
     }
     
-
+    
+    // データの数（＝セルの数）を返すメソッド
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("DEBUG_PRINT: ListViewController numberOfRowsInSection")
+        return cardDataArray.count
+    }
+    
+    // 各セルを選択した時に実行されるメソッド
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("DEBUG_PRINT: ListViewController didSelectRowAt start")
+        
+        // セルをタップされたら何もせずに選択状態を解除する
+        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+        
+        print("DEBUG_PRINT: ListViewController didSelectRowAt end")
+    }
+    
+    // セルが削除が可能なことを伝えるメソッド
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath)-> UITableViewCellEditingStyle {
+        print("DEBUG_PRINT: ListViewController editingStyleForRowAt")
+        return UITableViewCellEditingStyle.delete
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        print("DEBUG_PRINT: ListViewController editingStyleForRowAt ")
+        // Auto Layoutを使ってセルの高さを動的に変更する
+        return UITableViewAutomaticDimension
+    }
+    
+    //返すセルを決める
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("DEBUG_PRINT: ListViewController cellForRowAt start")
+        
+        //xibとカスタムクラスで作成したCellのインスタンスを作成
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
+        cell.setData(cardData: cardDataArray[indexPath.row])
+        
+        print("DEBUG_PRINT: ListViewController cellForRowAt end")
+        return cell
+    }
+    
+    
 }
-

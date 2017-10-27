@@ -84,3 +84,6 @@ struct Alert {
         return alertController
     }
 }
+struct Category {
+    static let continents = ["MINDE", "LEADERSHIP", "VISION", "WISDOM", "FELLOW"]
+}

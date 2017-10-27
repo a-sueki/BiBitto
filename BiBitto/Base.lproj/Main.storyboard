@@ -24,16 +24,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="W3L-Ge-fI1">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="114" width="320" height="454"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="W3L-Ge-fI1" firstAttribute="trailing" secondItem="PQr-Ze-W5v" secondAttribute="trailing" id="60O-0e-w6T"/>
                             <constraint firstItem="W3L-Ge-fI1" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="dQV-HU-IQy"/>
                             <constraint firstAttribute="bottom" secondItem="W3L-Ge-fI1" secondAttribute="bottom" id="hcK-9a-FRo"/>
-                            <constraint firstItem="W3L-Ge-fI1" firstAttribute="top" secondItem="tsR-hK-woN" secondAttribute="top" id="uMe-lI-Flr"/>
+                            <constraint firstItem="W3L-Ge-fI1" firstAttribute="top" secondItem="tsR-hK-woN" secondAttribute="top" constant="114" id="uMe-lI-Flr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
@@ -48,21 +48,37 @@
             </objects>
             <point key="canvasLocation" x="1463" y="-320"/>
         </scene>
-        <!--追加-->
+        <!--ビビッとくる言葉-->
         <scene sceneID="tYY-Bb-p82">
             <objects>
                 <viewController storyboardIdentifier="AddViewController" id="Noq-gP-fVd" customClass="AddViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Iv-5s-y6j">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="TQy-K4-LkG">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="TQy-K4-LkG" firstAttribute="trailing" secondItem="Nbp-Is-ria" secondAttribute="trailing" id="SUl-6L-Cji"/>
+                            <constraint firstItem="TQy-K4-LkG" firstAttribute="top" secondItem="9Iv-5s-y6j" secondAttribute="top" id="WiK-4N-eKF"/>
+                            <constraint firstItem="TQy-K4-LkG" firstAttribute="leading" secondItem="Nbp-Is-ria" secondAttribute="leading" id="i6T-DN-hSw"/>
+                            <constraint firstAttribute="bottom" secondItem="TQy-K4-LkG" secondAttribute="bottom" id="wqt-Hu-C2b"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Nbp-Is-ria"/>
                     </view>
-                    <navigationItem key="navigationItem" title="追加" id="77o-zF-4Zk"/>
+                    <navigationItem key="navigationItem" title="ビビッとくる言葉" id="77o-zF-4Zk"/>
+                    <connections>
+                        <outlet property="tableView" destination="TQy-K4-LkG" id="jHS-Oq-ssB"/>
+                        <segue destination="jJR-J5-FZc" kind="push" identifier="CategoryControllerSegue" id="MkH-XI-xOa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xBd-8F-Tof" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2123" y="-1000"/>
+            <point key="canvasLocation" x="2243" y="-320"/>
         </scene>
         <!--検索-->
         <scene sceneID="8nS-bR-FkS">
@@ -78,7 +94,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wS0-N0-tua" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2123" y="-320"/>
+            <point key="canvasLocation" x="2243" y="-1004"/>
         </scene>
         <!--次へ-->
         <scene sceneID="wg7-f3-ORb">
@@ -177,7 +193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="749.60000000000002" y="359.37031484257875"/>
+            <point key="canvasLocation" x="748.125" y="359.15492957746477"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="VRm-OI-4tf">
@@ -450,6 +466,37 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ifi-b0-Iod" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="750" y="-320"/>
+        </scene>
+        <!--カテゴリー-->
+        <scene sceneID="u4j-oX-HU9">
+            <objects>
+                <viewController storyboardIdentifier="CategoryViewController" id="jJR-J5-FZc" customClass="CategoryViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cjl-6Y-2kb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="tZj-Bg-4ZW">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="tZj-Bg-4ZW" firstAttribute="leading" secondItem="D8A-Ei-1r2" secondAttribute="leading" id="FLS-dv-eyC"/>
+                            <constraint firstItem="tZj-Bg-4ZW" firstAttribute="top" secondItem="cjl-6Y-2kb" secondAttribute="top" id="NdF-OU-VL5"/>
+                            <constraint firstItem="tZj-Bg-4ZW" firstAttribute="trailing" secondItem="D8A-Ei-1r2" secondAttribute="trailing" id="ZYX-PO-uHN"/>
+                            <constraint firstAttribute="bottom" secondItem="tZj-Bg-4ZW" secondAttribute="bottom" id="eye-wN-lVO"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="D8A-Ei-1r2"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="カテゴリー" id="Oi6-J2-E3z"/>
+                    <connections>
+                        <outlet property="tableView" destination="tZj-Bg-4ZW" id="qU3-Yi-UYq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OJe-uO-Gl2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2976" y="-320"/>
         </scene>
     </scenes>
     <resources>
