@@ -175,6 +175,26 @@ class HomeViewController: UIViewController {
 
         print("DEBUG_PRINT: HomeViewController signUp end")
     }
+    
+    
+    @IBAction func handleShearButton(_ sender: Any) {
+        print("DEBUG_PRINT: HomeViewController handleShearButton start")
+        
+        // 共有する項目
+        let shareText = ShareString.text + (cardData?.text)!
+        let shareWebsite = ShareString.website
+        let shareItems = [shareText, shareWebsite] as [Any]
+        
+        // LINEで送るボタンを追加
+        let line = UIActivity()
+        let avc = UIActivityViewController(activityItems: shareItems, applicationActivities: [line])
+        
+        present(avc, animated: true, completion: nil)
+        
+        print("DEBUG_PRINT: HomeViewController handleShearButton end")
+    }
+
+    
 }
 extension Array {
     

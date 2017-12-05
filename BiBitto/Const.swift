@@ -87,3 +87,20 @@ struct Alert {
 struct Category {
     static let continents = ["MINDE", "LEADERSHIP", "VISION", "WISDOM", "FELLOW"]
 }
+
+struct ShareString {
+    static let text = "#俺のビビッとくるアプリ "
+    static let website = NSURL(string: "https://www.apple.co.jp")! //TODO1
+    static let excludedActivityTypes = [
+        UIActivityType.postToWeibo,
+        UIActivityType.saveToCameraRoll,
+        UIActivityType.print,
+        UIActivityType.copyToPasteboard,
+        UIActivityType.airDrop,
+        UIActivityType.assignToContact,
+        UIActivityType.addToReadingList,
+        UIActivityType.mail,
+        UIActivityType.message
+    ]
+}
+

@@ -11,6 +11,7 @@
 		840272BB1FA2189B001C0BFB /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840272BA1FA2189B001C0BFB /* AccountViewController.swift */; };
 		840272BE1FA22ABC001C0BFB /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */; };
 		840272C01FA236E8001C0BFB /* Policy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 840272BF1FA2313A001C0BFB /* Policy.txt */; };
+		841BD9BE1FD605EF0058B1A4 /* WordReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841BD9BD1FD605EF0058B1A4 /* WordReader.swift */; };
 		845851BA1F9C686E002F9AA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851B91F9C686E002F9AA0 /* AppDelegate.swift */; };
 		845851BC1F9C686E002F9AA0 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BB1F9C686E002F9AA0 /* ListViewController.swift */; };
 		845851BE1F9C686E002F9AA0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BD1F9C686E002F9AA0 /* HomeViewController.swift */; };
@@ -20,6 +21,8 @@
 		845851CE1F9C6A86002F9AA0 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851CD1F9C6A86002F9AA0 /* TabBarController.swift */; };
 		845851D01F9C8116002F9AA0 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851CF1F9C8116002F9AA0 /* SettingViewController.swift */; };
 		845851D21F9C8259002F9AA0 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851D11F9C8259002F9AA0 /* Const.swift */; };
+		845E508D1FD6BC0200C062D2 /* data.txt in Resources */ = {isa = PBXBuildFile; fileRef = 841BD9BC1FD605D00058B1A4 /* data.txt */; };
+		846848E61FCB714500D7C0BF /* readme.strings in Resources */ = {isa = PBXBuildFile; fileRef = 846848E51FCB714500D7C0BF /* readme.strings */; };
 		84937CC81FA2E1D8003F5D1E /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84937CC61FA2E1D8003F5D1E /* ListTableViewCell.swift */; };
 		84937CC91FA2E1D8003F5D1E /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84937CC71FA2E1D8003F5D1E /* ListTableViewCell.xib */; };
 		84A4C6841FA2F53A002366FD /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4C6831FA2F53A002366FD /* SearchViewController.swift */; };
@@ -37,6 +40,8 @@
 		840272BA1FA2189B001C0BFB /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
 		840272BF1FA2313A001C0BFB /* Policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Policy.txt; sourceTree = "<group>"; };
+		841BD9BC1FD605D00058B1A4 /* data.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = data.txt; sourceTree = "<group>"; };
+		841BD9BD1FD605EF0058B1A4 /* WordReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordReader.swift; sourceTree = "<group>"; };
 		845851B61F9C686E002F9AA0 /* BiBitto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BiBitto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		845851B91F9C686E002F9AA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		845851BB1F9C686E002F9AA0 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +53,7 @@
 		845851CD1F9C6A86002F9AA0 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		845851CF1F9C8116002F9AA0 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		845851D11F9C8259002F9AA0 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
+		846848E51FCB714500D7C0BF /* readme.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = readme.strings; sourceTree = "<group>"; };
 		84937CC61FA2E1D8003F5D1E /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		84937CC71FA2E1D8003F5D1E /* ListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
 		84A4C6831FA2F53A002366FD /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +109,7 @@
 		845851B81F9C686E002F9AA0 /* BiBitto */ = {
 			isa = PBXGroup;
 			children = (
+				846848E51FCB714500D7C0BF /* readme.strings */,
 				845851B91F9C686E002F9AA0 /* AppDelegate.swift */,
 				845851D11F9C8259002F9AA0 /* Const.swift */,
 				84F4D26D1F9EF80D001A614A /* CardData.swift */,
@@ -116,6 +123,7 @@
 				845851BD1F9C686E002F9AA0 /* HomeViewController.swift */,
 				84937CCA1FA2E1F4003F5D1E /* Setting */,
 				84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */,
+				841BD9BC1FD605D00058B1A4 /* data.txt */,
 				845851C71F9C686E002F9AA0 /* Info.plist */,
 				840272BF1FA2313A001C0BFB /* Policy.txt */,
 			);
@@ -136,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				84A4C6831FA2F53A002366FD /* SearchViewController.swift */,
+				841BD9BD1FD605EF0058B1A4 /* WordReader.swift */,
 				84C4485C1FA3600200C0678C /* AddViewController.swift */,
 				84C4485F1FA36C7C00C0678C /* CategoryViewController.swift */,
 				84C448641FA3A3ED00C0678C /* CustomTabmanBar.swift */,
@@ -217,7 +226,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				845E508D1FD6BC0200C062D2 /* data.txt in Resources */,
 				840272C01FA236E8001C0BFB /* Policy.txt in Resources */,
+				846848E61FCB714500D7C0BF /* readme.strings in Resources */,
 				84937CC91FA2E1D8003F5D1E /* ListTableViewCell.xib in Resources */,
 				84C2613E1FA19A31004B3520 /* GoogleService-Info.plist in Resources */,
 				845851C61F9C686E002F9AA0 /* LaunchScreen.storyboard in Resources */,
@@ -289,6 +300,7 @@
 				845851CE1F9C6A86002F9AA0 /* TabBarController.swift in Sources */,
 				84937CC81FA2E1D8003F5D1E /* ListTableViewCell.swift in Sources */,
 				84C448651FA3A3ED00C0678C /* CustomTabmanBar.swift in Sources */,
+				841BD9BE1FD605EF0058B1A4 /* WordReader.swift in Sources */,
 				84F4D26E1F9EF80D001A614A /* CardData.swift in Sources */,
 				840272BB1FA2189B001C0BFB /* AccountViewController.swift in Sources */,
 				84A4C6841FA2F53A002366FD /* SearchViewController.swift in Sources */,
