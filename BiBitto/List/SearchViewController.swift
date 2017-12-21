@@ -12,36 +12,40 @@ import RAMReel
 class SearchViewController: UIViewController , UICollectionViewDelegate{
     var dataSource: SimplePrefixQueryDataSource!
     var ramReel: RAMReel<RAMCell, RAMTextField, SimplePrefixQueryDataSource>!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: SearchViewController viewWillAppear start")
         
-        print(Bundle.main.path(forResource: "data", ofType: "txt"))
+        let words = Files.readDocument()
+        dataSource = SimplePrefixQueryDataSource(words) //(Files.data)
+//        dataSource = SimplePrefixQueryDataSource(["わん","つー","abc"])
 
-        dataSource = SimplePrefixQueryDataSource(data)
-        
-
-        ramReel = RAMReel<RAMCell, RAMTextField, SimplePrefixQueryDataSource>(frame: self.view.frame, dataSource: dataSource, placeholder: "Start by typing…") {
-            print("Plain:", $0)
+        let ramReel = RAMReel<RAMCell, RAMTextField, SimplePrefixQueryDataSource>(frame: self.view.frame, dataSource: dataSource, placeholder: "Start by typing…") {
+            print("Plain:", $0) //Plain: awkwardly
+            
+            //TODO: 選択された単語で$0フィルタリング
+            
+            //TODO: 一覧に戻る
+            
         }
         
         ramReel.hooks.append {
             let r = Array($0.characters.reversed())
             let j = String(r)
-            print("Reversed:", j)
+            print("Reversed:", j) //Reversed: yldrawkwa
         }
         
         self.view.addSubview(ramReel.view)
@@ -49,24 +53,5 @@ class SearchViewController: UIViewController , UICollectionViewDelegate{
         
         print("DEBUG_PRINT: SearchViewController viewWillAppear end")
     }
-    
-    fileprivate let data: [String] = {
-        print("DEBUG_PRINT: SearchViewController fileprivate start")
-       do {
-            guard let dataPath = Bundle.main.path(forResource: "data", ofType: "txt") else {
-                return []
-            }
-            print("dataPath = " + dataPath)
-
-            let data = try WordReader(filepath: dataPath)
-        
-            print(data.words)
-            return data.words
-
-        }
-        catch let error {
-            print(error)
-            return []
-        }
-    }()
 }
+

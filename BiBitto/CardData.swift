@@ -24,7 +24,6 @@ class CardData: NSObject {
 
         self.id = snapshot.key
         let valueDictionary = snapshot.value as! [String: AnyObject]
-        print(valueDictionary)
         
         self.no = valueDictionary["no"] as! String
         self.text = valueDictionary["text"] as! String

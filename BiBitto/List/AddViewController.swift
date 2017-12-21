@@ -13,7 +13,7 @@ import Firebase
 import FirebaseAuth
 
 class AddViewController: FormViewController {
-    
+        
     var inputData = [String : Any]()
     var cardDataArray = [CardData]()
     var cardData: CardData?
@@ -182,6 +182,9 @@ class AddViewController: FormViewController {
 //            UserDefaults.standard.set(key , forKey: DefaultString.WithSearch)
         }
 
+        // 登録された文章に含まれる単語を検索用に、data.txtに追記
+        morphologicalAnalysis(inputData: inputData)
+      
         // 成功ポップアップ
         self.present(Alert.setAlertController(title: Alert.successSaveTitle, message: nil), animated: true, completion: {() -> Void in
             DispatchQueue.global(qos: .default).async {
@@ -192,7 +195,7 @@ class AddViewController: FormViewController {
                 }
             }
         })
-        
+
         print("DEBUG_PRINT: AddViewController addCard end")
     }
     
@@ -200,6 +203,51 @@ class AddViewController: FormViewController {
         if row.section === form[3] {
             print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue ?? "No row selected")")
         }
+    }
+    
+    // 形態素分析
+    func morphologicalAnalysis(inputData: [String : Any]) {
+        print("DEBUG_PRINT: AddViewController morphologicalAnalysis start")
+        
+        var orgStr = inputData["text"] as! String
+        if inputData["title"] as? String != nil {
+            let orgStr1 = inputData["title"] as! String
+            orgStr = orgStr + "\n" + orgStr1
+        }
+        if inputData["author"] as? String != nil {
+            let orgStr2 = inputData["author"] as! String
+            orgStr = orgStr + "\n" + orgStr2
+        }
+
+        var dataArray = Files.readDocument()
+        
+        let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "ja"), options: 0)
+        tagger.string = orgStr
+        tagger.enumerateTags(in: NSRange(location: 0, length: orgStr.characters.count),
+                             scheme: NSLinguisticTagScheme.tokenType,
+                             options: [.omitWhitespace]) { tag, tokenRange, sentenceRange, stop in
+                                // １行ごとに文字列を抜き出す
+                                let subString = (orgStr as NSString).substring(with: tokenRange)
+                                var lineIndex = 1
+                                subString.enumerateLines{
+                                    line, stop in
+                                    // 検索ワードリストに追加
+                                    dataArray.append(line)
+                                    lineIndex += 1
+                                }
+        }
+        // アルファベット順で並び替え（別にしなくてもいい）
+        let sortedDataArray = dataArray.sorted { $0 < $1 }
+        // 重複削除
+        let orderedSet:NSOrderedSet = NSOrderedSet(array: sortedDataArray)
+        let strArray2 = orderedSet.array as! [String]
+        
+        // ファイル内テキスト全件クリア
+        Files.refreshDocument()
+        // ファイル書き込み
+        Files.writeDocument(dataArray: strArray2)
+     
+        print("DEBUG_PRINT: AddViewController morphologicalAnalysis end")
     }
 }
 
@@ -266,4 +314,5 @@ public class ImageCheckCell<T: Equatable> : Cell<T>, CellType {
     }
     
 }
+
 

@@ -11,7 +11,6 @@
 		840272BB1FA2189B001C0BFB /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840272BA1FA2189B001C0BFB /* AccountViewController.swift */; };
 		840272BE1FA22ABC001C0BFB /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */; };
 		840272C01FA236E8001C0BFB /* Policy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 840272BF1FA2313A001C0BFB /* Policy.txt */; };
-		841BD9BE1FD605EF0058B1A4 /* WordReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841BD9BD1FD605EF0058B1A4 /* WordReader.swift */; };
 		845851BA1F9C686E002F9AA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851B91F9C686E002F9AA0 /* AppDelegate.swift */; };
 		845851BC1F9C686E002F9AA0 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BB1F9C686E002F9AA0 /* ListViewController.swift */; };
 		845851BE1F9C686E002F9AA0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845851BD1F9C686E002F9AA0 /* HomeViewController.swift */; };
@@ -41,7 +40,6 @@
 		840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
 		840272BF1FA2313A001C0BFB /* Policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Policy.txt; sourceTree = "<group>"; };
 		841BD9BC1FD605D00058B1A4 /* data.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = data.txt; sourceTree = "<group>"; };
-		841BD9BD1FD605EF0058B1A4 /* WordReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordReader.swift; sourceTree = "<group>"; };
 		845851B61F9C686E002F9AA0 /* BiBitto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BiBitto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		845851B91F9C686E002F9AA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		845851BB1F9C686E002F9AA0 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
@@ -144,7 +142,6 @@
 			isa = PBXGroup;
 			children = (
 				84A4C6831FA2F53A002366FD /* SearchViewController.swift */,
-				841BD9BD1FD605EF0058B1A4 /* WordReader.swift */,
 				84C4485C1FA3600200C0678C /* AddViewController.swift */,
 				84C4485F1FA36C7C00C0678C /* CategoryViewController.swift */,
 				84C448641FA3A3ED00C0678C /* CustomTabmanBar.swift */,
@@ -300,7 +297,6 @@
 				845851CE1F9C6A86002F9AA0 /* TabBarController.swift in Sources */,
 				84937CC81FA2E1D8003F5D1E /* ListTableViewCell.swift in Sources */,
 				84C448651FA3A3ED00C0678C /* CustomTabmanBar.swift in Sources */,
-				841BD9BE1FD605EF0058B1A4 /* WordReader.swift in Sources */,
 				84F4D26E1F9EF80D001A614A /* CardData.swift in Sources */,
 				840272BB1FA2189B001C0BFB /* AccountViewController.swift in Sources */,
 				84A4C6841FA2F53A002366FD /* SearchViewController.swift in Sources */,
