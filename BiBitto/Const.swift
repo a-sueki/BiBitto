@@ -131,14 +131,16 @@ struct Tokenizer {
 
 struct Files {
     
-    static let file_name = "data.txt"
-    
-    // Documentフォルダにファイルを全件クリア
-    static func refreshDocument() {
+    static let word_file = "word.txt"
+    static let card_file = "card.txt"
+    static let excludes = CharacterSet(charactersIn: "!#$%()*+,-./:;=?@[\\]^_`{|}~\t、。　！＃＄％（）＊＋，－．／：；＝？＠［＼］＾＿｀｛｜｝～゛†")
+
+    // Documentフォルダのファイルを全件クリア
+    static func refreshDocument(fileName: String) {
         print("DEBUG_PRINT: refreshDocument start")
         
         if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
-            let path_file_name = dir.appendingPathComponent( file_name )
+            let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 try "".write(to: path_file_name, atomically: true, encoding: String.Encoding.utf8)
             } catch {
@@ -146,12 +148,12 @@ struct Files {
             }
         }
     }
-    // Documentフォルダにファイルを保存
-    static func writeDocument(dataArray : [String]) {
+    // Documentフォルダのファイルにデータを保存（末尾に追記）
+    static func writeDocument(dataArray : [String], fileName: String) {
         print("DEBUG_PRINT: writeDocument start")
-
+        
         if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
-            let path_file_name = dir.appendingPathComponent( file_name )
+            let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 for  text in dataArray {
                     try text.appendLineToURL(fileURL: path_file_name as URL)
@@ -161,12 +163,29 @@ struct Files {
             }
         }
     }
+    
+    // Documentフォルダのファイルにデータを保存（末尾に追記）
+    static func writeCardDocument(card : [String: Any], fileName: String) {
+        print("DEBUG_PRINT: writeCardDocument start")
+
+        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+            let path_file_name = dir.appendingPathComponent( fileName )
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: card, options: [])
+                let jsonStr = String(bytes: jsonData, encoding: .utf8)!
+
+                try jsonStr.appendLineToURL(fileURL: path_file_name as URL)
+            } catch {
+                //エラー処理
+            }
+        }
+    }
     // Documentフォルダからファイルを読み込み
-    static func readDocument() -> [String] {
+    static func readDocument(fileName: String) -> [String] {
         print("DEBUG_PRINT: readDocument start")
         
         if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
-            let path_file_name = dir.appendingPathComponent( file_name )
+            let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 let contents = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
                 if !contents.isEmpty {
@@ -175,6 +194,44 @@ struct Files {
                 }
             } catch {
                 //エラー処理
+            }
+        }
+        return []
+    }
+    
+    // Documentフォルダからファイルを読み込み
+    static func readCardDocument(fileName: String) -> [CardData] {
+        print("DEBUG_PRINT: readCardDocument start")
+        
+        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+            let path_file_name = dir.appendingPathComponent( fileName )
+            print("DEBUG_PRINTpath_file_name: \(path_file_name)")
+            do {
+                
+                let contents = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
+                //let jsonData = try JSONSerialization.data(withJSONObject: contents, options: [])
+                if !contents.isEmpty {
+                    print("DEBUG_PRINTcontents: \(contents)")
+                    
+                    let binaryData: Data = contents.data(using: .utf8)!
+                
+                    // JSONパース。optionsは型推論可(".allowFragmets"等)
+                    let jsonData = try JSONSerialization.jsonObject(with:binaryData, options: JSONSerialization.ReadingOptions.allowFragments)
+                    print("DEBUG_PRINTjsonData: \(String(describing: jsonData))")
+
+                    let top = jsonData as! [[String : AnyObject]]
+                    print("DEBUG_PRINTtop: \(top)")
+
+                    var cardDataArray: [CardData] = []
+                    for roop in top {
+                        let cardData = CardData(valueDictionary: roop)
+                        cardDataArray.append(cardData)
+                    }
+                    return cardDataArray
+                }
+            } catch {
+                //エラー処理
+                print(error.localizedDescription)
             }
         }
         return []

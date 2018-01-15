@@ -25,7 +25,7 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         tableView.delegate = self
         tableView.dataSource = self
         self.tableView.separatorColor = UIColor(red: 224/255, green: 224/255, blue: 224/255, alpha: 1.0)
-        
+
         let nib = UINib(nibName: "ListTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "ListTableViewCell")
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -42,7 +42,12 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         // add button
         let leftSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(addButtonTapped))
         self.navigationItem.setLeftBarButtonItems([leftSearchBarButtonItem], animated: true)
-        
+
+        // 潜り込み防止策
+        tableView.contentInsetAdjustmentBehavior = .automatic
+        let edgeInsets = UIEdgeInsets(top: 42, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = edgeInsets
+        tableView.scrollIndicatorInsets = edgeInsets
         
         print("DEBUG_PRINT: ListViewController viewDidLoad end")
     }
@@ -51,7 +56,14 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: ListViewController viewWillAppear start")
         
-        cardDataArray.removeAll()
+        self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        // tableViewを再表示する
+        DispatchQueue.main.async {
+            print("DEBUG_PRINT: ListViewController [DispatchQueue.main.async]")
+            self.tableView.reloadData()
+        }
+
+        /*        cardDataArray.removeAll()
         
         if let uid = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child(Paths.CardPath).child(uid)
@@ -59,7 +71,7 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
                 print("DEBUG_PRINT: ListViewController .observeSingleEventイベントが発生しました。")
                 if let _ = snapshot.value as? NSDictionary {
                     for childSnap in snapshot.children {
-                        let cardData = CardData(snapshot: childSnap as! DataSnapshot, id: uid)
+                        let cardData = CardData(snapshot: childSnap as! DataSnapshot)
                         self.cardDataArray.append(cardData)
                     }
                 }
@@ -72,6 +84,7 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
                 print(error.localizedDescription)
             }
         }
+ */
         
         
         print("DEBUG_PRINT: ListViewController viewWillAppear end")
@@ -147,11 +160,30 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         
         //xibとカスタムクラスで作成したCellのインスタンスを作成
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
-        cell.setData(cardData: cardDataArray[indexPath.row])
+        let noStr = String(format: "%04d", cardDataArray.count + 1)
+        
+        cell.setData(cardData: cardDataArray[indexPath.row], no: noStr)
         
         print("DEBUG_PRINT: ListViewController cellForRowAt end")
         return cell
     }
     
-    
+    // 左スワイプで削除ボタン表示
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        print("DEBUG_PRINT: ListViewController commit editingStyle start")
+
+        // firebaseから削除
+        if editingStyle == .delete {
+            if let uid = Auth.auth().currentUser?.uid, !(cardDataArray[indexPath.row].id?.isEmpty)! {
+                let ref = Database.database().reference().child(Paths.CardPath).child(uid)
+                ref.child(cardDataArray[indexPath.row].id!).removeValue()
+            }
+        }
+        // リストから削除
+        cardDataArray.remove(at: indexPath.row)
+        // 一覧画面から削除
+        tableView.deleteRows(at: [indexPath], with: .fade)
+        
+        print("DEBUG_PRINT: ListViewController commit editingStyle end")
+    }
 }

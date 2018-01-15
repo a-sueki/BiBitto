@@ -25,7 +25,7 @@ class ListTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setData(cardData: CardData) {
+    func setData(cardData: CardData, no:String) {
         
         if cardData.category == Category.continents[0] {
             categoryImageView.backgroundColor = UIColor(red: 70/255, green: 72/255, blue: 184/255, alpha: 1.0)
@@ -38,7 +38,7 @@ class ListTableViewCell: UITableViewCell {
         }else if cardData.category == Category.continents[4] {
             categoryImageView.backgroundColor = UIColor(red: 255/255, green: 94/255, blue: 25/255, alpha: 1.0)
         }
-        noLabel.text = cardData.no
+        noLabel.text = no
         wordLabel.text = cardData.text.replacingOccurrences(of: "\n", with: "")
         
     }

@@ -32,8 +32,12 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("DEBUG_PRINT: HomeViewController viewDidLoad start")
+
+        self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        self.cardData = self.cardDataArray.shuffled.first
+        self.showWord()
         
-        cardDataArray.removeAll()
+/*        cardDataArray.removeAll()
         
         if let uid = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child(Paths.CardPath).child(uid)
@@ -49,13 +53,14 @@ class HomeViewController: UIViewController {
                 DispatchQueue.main.async {
                     print("DEBUG_PRINT: ListViewController [DispatchQueue.main.async]")
                     self.cardData = self.cardDataArray.shuffled.first
+                    //self.cardData = self.cardDataArray.last
                     self.showWord()
                 }
             }) { (error) in
                 print(error.localizedDescription)
             }
         }
-        
+*/
        
         print("DEBUG_PRINT: HomeViewController viewDidLoad end")
     }

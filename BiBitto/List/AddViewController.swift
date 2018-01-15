@@ -17,6 +17,7 @@ class AddViewController: FormViewController {
     var inputData = [String : Any]()
     var cardDataArray = [CardData]()
     var cardData: CardData?
+    var charCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,18 +125,6 @@ class AddViewController: FormViewController {
     @IBAction func addCard(){
         print("DEBUG_PRINT: AddViewController addCard start")
         
-/*        for (key,value) in form.values() {
-            if case let itemValue as String = value {
-                for categoryString in Category.continents {
-                    if itemValue == categoryString {
-                        self.inputData["category"] = itemValue
-                        continue
-                    }
-                }
-                self.inputData["\(key)"] = itemValue
-            }
-        }
-*/
         for (key,value) in form.values() {
             if case let itemValue as String = value {
                 switch key {
@@ -154,21 +143,14 @@ class AddViewController: FormViewController {
         // 辞書を作成
         let ref = Database.database().reference()
         // Noを取得
-        inputData["no"] = String(format: "%03d", cardDataArray.count + 1)
+        inputData["no"] = String(format: "%04d", cardDataArray.count + 1)
 
-        print(inputData) //["Title": "Titl", "MINDE": "MINDE", "Source": "Nam", "Notes": "Wor"]
-        
         //Firebaseに保存
         if let data = cardData {
             print("DEBUG_PRINT: AddViewController addCard update")
             // 更新しないデータを引き継ぎ
             inputData["createAt"] = String(data.createAt.timeIntervalSinceReferenceDate)
             inputData["updateAt"] = String(time)
-            // search初期化&更新
-//            ref.child(Paths.SearchPath).child(data.id!).removeValue()
-//            ref.child(Paths.SearchPath).child(data.id!).setValue(self.inputData)
-            // ユーザーデフォルトを更新
-//            UserDefaults.standard.set(key , forKey: DefaultString.WithSearch)
         }else{
             print("DEBUG_PRINT: AddViewController addCard insert")
             let key = ref.child(Paths.CardPath).childByAutoId().key
@@ -178,10 +160,11 @@ class AddViewController: FormViewController {
             if let uid = Auth.auth().currentUser?.uid {
                 ref.child(Paths.CardPath).child(uid).child(key).setValue(inputData)
             }
-            // ユーザーデフォルトを更新
-//            UserDefaults.standard.set(key , forKey: DefaultString.WithSearch)
         }
 
+        // ファイル書き込み（追記）
+        Files.writeCardDocument(card: inputData ,fileName: Files.card_file)
+        
         // 登録された文章に含まれる単語を検索用に、data.txtに追記
         morphologicalAnalysis(inputData: inputData)
       
@@ -219,7 +202,7 @@ class AddViewController: FormViewController {
             orgStr = orgStr + "\n" + orgStr2
         }
 
-        var dataArray = Files.readDocument()
+        var dataArray = Files.readDocument(fileName: Files.word_file)
         
         let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "ja"), options: 0)
         tagger.string = orgStr
@@ -231,9 +214,12 @@ class AddViewController: FormViewController {
                                 var lineIndex = 1
                                 subString.enumerateLines{
                                     line, stop in
-                                    // 検索ワードリストに追加
-                                    dataArray.append(line)
-                                    lineIndex += 1
+                                    let adjustedLine = line.components(separatedBy: Files.excludes).joined()
+                                    if !adjustedLine.isEmpty {
+                                        // 検索ワードリストに追加
+                                        dataArray.append(adjustedLine)
+                                        lineIndex += 1
+                                    }
                                 }
         }
         // アルファベット順で並び替え（別にしなくてもいい）
@@ -243,9 +229,9 @@ class AddViewController: FormViewController {
         let strArray2 = orderedSet.array as! [String]
         
         // ファイル内テキスト全件クリア
-        Files.refreshDocument()
+        Files.refreshDocument(fileName: Files.word_file)
         // ファイル書き込み
-        Files.writeDocument(dataArray: strArray2)
+        Files.writeDocument(dataArray: strArray2,fileName: Files.word_file)
      
         print("DEBUG_PRINT: AddViewController morphologicalAnalysis end")
     }

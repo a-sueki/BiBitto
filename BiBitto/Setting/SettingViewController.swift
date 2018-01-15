@@ -181,7 +181,7 @@ class SettingViewController: FormViewController {
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 print("DEBUG_PRINT: SettingViewController restore .observeSingleEventイベントが発生しました。")
                 if let _ = snapshot.value as? NSDictionary {
-                    let cardData = CardData(snapshot: snapshot, id: uid)
+                    let cardData = CardData(snapshot: snapshot)
                     cardDataArray.append(cardData)
                 }
                 // UserDefaultにセット

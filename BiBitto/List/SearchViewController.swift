@@ -29,13 +29,11 @@ class SearchViewController: UIViewController , UICollectionViewDelegate{
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: SearchViewController viewWillAppear start")
         
-        let words = Files.readDocument()
-        dataSource = SimplePrefixQueryDataSource(words) //(Files.data)
-//        dataSource = SimplePrefixQueryDataSource(["わん","つー","abc"])
+        let words = Files.readDocument(fileName: Files.word_file)
+        dataSource = SimplePrefixQueryDataSource(words)
 
         let ramReel = RAMReel<RAMCell, RAMTextField, SimplePrefixQueryDataSource>(frame: self.view.frame, dataSource: dataSource, placeholder: "Start by typing…") {
-            print("Plain:", $0) //Plain: awkwardly
-            
+            print("Plain:", $0)
             //TODO: 選択された単語で$0フィルタリング
             
             //TODO: 一覧に戻る
