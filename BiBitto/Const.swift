@@ -23,7 +23,6 @@ struct DefaultString {
     static let Password = "password"    // FBアカウント（パスワード）
     static let CardDataArray = "cardDataArray"  // カードデータ
     static let AutoBackup = "autoBackup"    // FBへの自動バックアップ（true:ON）
-    static let Difference = "difference"    // FBとの差分（true:あり）
 }
 struct ErrorMsgString {
     static let RulePassword = "パスワードは6~12文字で設定して下さい"

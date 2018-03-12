@@ -34,45 +34,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("DEBUG_PRINT: HomeViewController viewDidLoad start")
-
-
-/*        cardDataArray.removeAll()
         
-        if let uid = Auth.auth().currentUser?.uid {
-            let ref = Database.database().reference().child(Paths.CardPath).child(uid)
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                print("DEBUG_PRINT: HomeViewController .observeSingleEventイベントが発生しました。")
-                if let _ = snapshot.value as? NSDictionary {
-                    for childSnap in snapshot.children {
-                        let cardData = CardData(snapshot: childSnap as! DataSnapshot, id: uid)
-                        self.cardDataArray.append(cardData)
-                    }
-                }
-                // tableViewを再表示する
-                DispatchQueue.main.async {
-                    print("DEBUG_PRINT: ListViewController [DispatchQueue.main.async]")
-                    self.cardData = self.cardDataArray.shuffled.first
-                    //self.cardData = self.cardDataArray.last
-                    self.showWord()
-                }
-            }) { (error) in
-                print(error.localizedDescription)
-            }
-        }
-*/
-        
-        //TODO: 差分Flgがtrue、かつ、自動更新flgがtrueの場合、DBを更新
-/*        if let uid = Auth.auth().currentUser?.uid,
-            UserDefaults.standard.bool(forKey: DefaultString.Difference),
-            UserDefaults.standard.bool(forKey: DefaultString.AutoBackup) {
-            
-            let ref = Database.database().reference().child(Paths.CardPath).child(uid)
-            ref.removeValue()
-            
-            // 差分フラグをfalseにセット
-            UserDefaults.standard.set(false, forKey: DefaultString.Difference)
-        }
- */
         print("DEBUG_PRINT: HomeViewController viewDidLoad end")
     }
     
@@ -102,10 +64,10 @@ class HomeViewController: UIViewController {
         }
         // アカウントありで、かつ、ログインしてない場合
         if  UserDefaults.standard.string(forKey: DefaultString.Uid) != nil ,Auth.auth().currentUser == nil{
-            self.showAlert(title: "ログインしてください", message: "オンラインバックアップが無効になっています") {
+            self.showAlert(title: "警告", message: "現在、ログインしていません。") {
                 // OKが選択された場合の処理
-//                let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "AccountViewController") as! AccountViewController
-//                self.navigationController?.present(nextViewController, animated: true, completion: nil)
+                let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "AccountViewController") as! AccountViewController
+                self.navigationController?.present(nextViewController, animated: true, completion: nil)
             }
         }
         

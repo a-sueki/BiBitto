@@ -170,8 +170,6 @@ class AddViewController: FormViewController {
             card.no = counter 
             counter = counter + 1
         }
-
-        
         // ファイル書き込み用カード配列作成
         outputDataArray = CardUtils.cardToDictionary(cardDataArray: sortedCardDataArray)
         // ファイル内テキスト全件クリア
