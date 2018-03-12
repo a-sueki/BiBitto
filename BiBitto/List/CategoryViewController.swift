@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Presentr
+import SVProgressHUD
 import Eureka
 import Firebase
 import FirebaseAuth
@@ -100,19 +100,11 @@ class CategoryViewController: FormViewController {
             if case let itemValue as String = value {
                 self.inputData["\(key)"] = itemValue
             }
-        }
-
-        
+        }        
         // 成功ポップアップ
-        self.present(Alert.setAlertController(title: Alert.successSendTitle, message: nil), animated: true, completion: {() -> Void in
-            DispatchQueue.global(qos: .default).async {
-                // サブスレッド(バックグラウンド)で実行する方を書く
-                DispatchQueue.main.async {
-                    // Main Threadで実行する
-                    self.navigationController?.popViewController(animated: false)
-                }
-            }
-        })
+        SVProgressHUD.showError(withStatus: Alert.successSendTitle)
+        // 前画面に戻る
+        self.navigationController?.popViewController(animated: false)
         
         print("DEBUG_PRINT: CategoryViewController editCategory end")
     }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SVProgressHUD
 import Presentr
 
 struct Paths {
@@ -17,14 +18,18 @@ struct Paths {
 struct DefaultString {
     static let NoticeFlag = "noticeFlag"
     
-    static let Uid = "uid"
-    static let Mail = "mail"
-    static let Password = "password"
-    static let Backup = "backup"
-    static let CardDataArray = "cardDataArray"
+    static let Uid = "uid"              // FBアカウント（uid）
+    static let Mail = "mail"            // FBアカウント（メール）
+    static let Password = "password"    // FBアカウント（パスワード）
+    static let CardDataArray = "cardDataArray"  // カードデータ
+    static let AutoBackup = "autoBackup"    // FBへの自動バックアップ（true:ON）
+    static let Difference = "difference"    // FBとの差分（true:あり）
 }
 struct ErrorMsgString {
     static let RulePassword = "パスワードは6~12文字で設定して下さい"
+}
+struct DummyString {
+    static let Key = "DummyKey"
 }
 
 struct ValidEmailAddress {
@@ -63,26 +68,24 @@ struct PresentrAlert {
 }
 
 struct Alert {
-    static let validationTitle = "⚠️入力エラー"
     static let validationEmail = "メールアドレスが不正です"
     static let validationExistingEmail = "そのメールアドレスは既に登録されています"
     static let validationPassword = "パスワードは6~12文字で設定してください"
+    static let loginAlartTitle = "ログインしていません"
+    static let successSaveTitle = "保存しました"
+    static let successRestoreTitle = "データの復元に成功しました"
+    static let successSendTitle = "送信しました"
+    static let successLoginTitle = "ログインしました"
+    static let successLogoutTitle = "ログアウトしました"
     
-    static let loginAlartTitle = "⚠️ログインしていません"
-    static let loginAlartBody = " バックアップを有効にするには、[アカウント] からログインして下さい"
-    
-    static let successSaveTitle = "✅保存しました"
-    static let successRestoreTitle = "✅データの復元に成功しました"
-    static let successSendTitle = "✅送信しました"
-    static let successLoginTitle = "✅ログインしました"
-    static let successLogoutTitle = "✅ログアウトしました"
-    
-    static func setAlertController(title: String, message: String?) -> UIAlertController {
+/*    static func setAlertController(title: String, message: String?) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
         return alertController
     }
+*/
+    
 }
 struct Category {
     static let continents = ["MINDE", "LEADERSHIP", "VISION", "WISDOM", "FELLOW"]
@@ -134,7 +137,7 @@ struct Files {
     static let word_file = "word.txt"
     static let card_file = "card.txt"
     static let excludes = CharacterSet(charactersIn: "!#$%()*+,-./:;=?@[\\]^_`{|}~\t、。　！＃＄％（）＊＋，－．／：；＝？＠［＼］＾＿｀｛｜｝～゛†")
-
+    
     // Documentフォルダのファイルを全件クリア
     static func refreshDocument(fileName: String) {
         print("DEBUG_PRINT: refreshDocument start")
@@ -143,8 +146,8 @@ struct Files {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 try "".write(to: path_file_name, atomically: true, encoding: String.Encoding.utf8)
-            } catch {
-                //エラー処理
+            } catch let error{
+                print("DEBUG_PRINT: refreshDocument: \(error.localizedDescription)")
             }
         }
     }
@@ -158,29 +161,52 @@ struct Files {
                 for  text in dataArray {
                     try text.appendLineToURL(fileURL: path_file_name as URL)
                 }
-            } catch {
-                //エラー処理
+            } catch let error{
+                print("DEBUG_PRINT: writeDocument: \(error.localizedDescription)")
             }
         }
     }
     
-    // Documentフォルダのファイルにデータを保存（末尾に追記）
-    static func writeCardDocument(card : [String: Any], fileName: String) {
+    // Documentフォルダのファイルにデータを保存（全件洗い替え）
+    static func writeCardDocument(cardDataArray: Array<[String:Any]>, fileName: String) {
         print("DEBUG_PRINT: writeCardDocument start")
-
+        print("DEBUG_PRINT: writeCardDocument 0: \(cardDataArray)")
+        //[["no": "0001", "id": "no-id", "text": "力は、人がそこに宿ると思えばそこに宿る。", "createAt": 2018-02-07 23:12:09 +0000, "title": "", "author": "", "category": "LEADERSHIP", "updateAt": 2018-02-07 23:12:09 +0000]]
+        var jsonStrArray = Array<Any>()
+        for card in cardDataArray {
+            do {
+                print(card)
+                let jsonData = try JSONSerialization.data(withJSONObject: card, options: [])
+                let jsonStr = String(bytes: jsonData, encoding: .utf8)!
+                print("DEBUG_PRINT: 生成されたJSON文字列 =>\(jsonStr)")
+                //{"no":"0001","id":"no-id","text":"力は、人がそこに宿ると思えばそこに宿る。","createAt":"2018-18-08 08:18:22 +0900","title":"","author":"","category":"LEADERSHIP","updateAt":"2018-18-08 08:18:22 +0900"}
+                jsonStrArray.append(jsonStr)
+                print("DEBUG_PRINT: 生成されたJSON文字列の配列 =>\(jsonStrArray)")
+                //["{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"力は、人がそこに宿ると思えばそこに宿る。\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}"]
+            } catch let error {
+                print(error)
+            }
+        }
+        
         if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
-                let jsonData = try JSONSerialization.data(withJSONObject: card, options: [])
-                let jsonStr = String(bytes: jsonData, encoding: .utf8)!
-
-                try jsonStr.appendLineToURL(fileURL: path_file_name as URL)
-            } catch {
-                //エラー処理
+                print("DEBUG_PRINT: writeCardDocument 1: \(path_file_name)")
+                ///Users/admin/Library/Developer/CoreSimulator/Devices/2FDC8ACC-4AEA-485F-BDA1-C2E7B6CDB03D/data/Containers/Data/Application/AB50E162-E28D-4FF2-BC78-02298E8D966F/Documents/card.txt
+                
+                let jsonArrayData = try JSONSerialization.data(withJSONObject: jsonStrArray, options: [])
+                
+                print("DEBUG_PRINT: writeCardDocument 2: \(jsonArrayData)")
+                let jsonArrayStr = String(bytes: jsonArrayData, encoding: .utf8)!
+                print("DEBUG_PRINT: writeCardDocument 3: \(jsonArrayStr)")
+                //["{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"力は、人がそこに宿ると思えばそこに宿る。\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}"]
+                try jsonArrayStr.write(to: path_file_name, atomically: true, encoding: String.Encoding.utf8)
+            } catch let error{
+                print("DEBUG_PRINT: writeCardDocument: \(error.localizedDescription)")
             }
         }
     }
-    // Documentフォルダからファイルを読み込み
+    // DocumentフォルダからString配列（¥n区切り）を読み込み
     static func readDocument(fileName: String) -> [String] {
         print("DEBUG_PRINT: readDocument start")
         
@@ -192,52 +218,105 @@ struct Files {
                     let words = contents.characters.split(separator: "\n")
                     return words.map(String.init)
                 }
-            } catch {
-                //エラー処理
+            } catch let error{
+                print("DEBUG_PRINT: readDocument: \(error.localizedDescription)")
             }
         }
         return []
     }
     
-    // Documentフォルダからファイルを読み込み
+    // Documentフォルダからjsonデータ（cardファイル）を読み込み
     static func readCardDocument(fileName: String) -> [CardData] {
         print("DEBUG_PRINT: readCardDocument start")
+        
+        var cardDataArray: [CardData] = []
         
         if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             print("DEBUG_PRINTpath_file_name: \(path_file_name)")
+            // /Users/admin/Library/Developer/CoreSimulator/Devices/2FDC8ACC-4AEA-485F-BDA1-C2E7B6CDB03D/data/Containers/Data/Application/120E1165-6C63-4BDF-AEF2-681633D0429D/Documents/card.txt
             do {
-                
-                let contents = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
-                //let jsonData = try JSONSerialization.data(withJSONObject: contents, options: [])
-                if !contents.isEmpty {
-                    print("DEBUG_PRINTcontents: \(contents)")
-                    
-                    let binaryData: Data = contents.data(using: .utf8)!
-                
-                    // JSONパース。optionsは型推論可(".allowFragmets"等)
-                    let jsonData = try JSONSerialization.jsonObject(with:binaryData, options: JSONSerialization.ReadingOptions.allowFragments)
-                    print("DEBUG_PRINTjsonData: \(String(describing: jsonData))")
+                //                let jsonStringArray: String = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
+                let jsondata = try? Data(contentsOf: path_file_name)
+                //-- 配列データに変換して
+                if jsondata?.count != 0 {
+                let jsonArray = (try! JSONSerialization.jsonObject(with: jsondata!, options: [])) as! NSArray
+                print("DEBUG_PRINTjsonArray: \(jsonArray)")
+                /*
+                 (
+                 "{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"\U529b\U306f\U3001\U4eba\U304c\U305d\U3053\U306b\U5bbf\U308b\U3068\U601d\U3048\U3070\U305d\U3053\U306b\U5bbf\U308b\U3002\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}",
+                 "{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"\U529b\U306f\U3001\U4eba\U304c\U305d\U3053\U306b\U5bbf\U308b\U3068\U601d\U3048\U3070\U305d\U3053\U306b>\U5bbf\U308b\U3002\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}"
+                 )
+                 */
+                for jsonItem in jsonArray {
+                    print("1")
+                    print(jsonItem)
+                    //{"no":"0001","id":"no-id","text":"力は、人がそこに宿ると思えばそこに宿る。","createAt":"2018-18-08 08:18:22 +0900","title":"","author":"","category":"LEADERSHIP","updateAt":"2018-18-08 08:18:22 +0900"}
 
-                    let top = jsonData as! [[String : AnyObject]]
-                    print("DEBUG_PRINTtop: \(top)")
+                    let jsonData: Data =  (jsonItem as AnyObject).data(using: String.Encoding.utf8.rawValue)!
+                    print("2")
+                    print(jsonData)
+                    // パースする
+                    let card = try JSONSerialization.jsonObject(with: jsonData)  as! [String : AnyObject]
+                    //as! Dictionary<String, Any>
+                    print("3")
+                    print(card)
+                    //["no": 0001, "id": no-id, "text": 力は、人がそこに宿ると思えばそこに宿る。, "createAt": 2018-18-08 08:18:22 +0900, "title": , "author": , "category": LEADERSHIP, "updateAt": 2018-18-08 08:18:22 +0900]
 
-                    var cardDataArray: [CardData] = []
-                    for roop in top {
-                        let cardData = CardData(valueDictionary: roop)
-                        cardDataArray.append(cardData)
-                    }
-                    return cardDataArray
+                    let cardData = CardData(valueDictionary: card)
+                    print("4")
+                    print(cardData)
+                    cardDataArray.append(cardData)
+                    //<BiBitto.CardData: 0x600000360cc0>
                 }
-            } catch {
-                //エラー処理
-                print(error.localizedDescription)
+                }
+                
+                return cardDataArray
+                
+            } catch let error{
+                print("DEBUG_PRINT: readCardDocument: \(error.localizedDescription)")
             }
         }
         return []
     }
 }
 
+
+//let binaryData: Data = contents.data(using: .utf8)!
+//let jsonArray: NSArray = try JSONSerialization.jsonObject(with: binaryData, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSArray
+
+//                    let jsonArray: NSDictionary = try JSONSerialization.jsonObject(with: binaryData, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+
+// JSONパース。optionsは型推論可(".allowFragmets"等)
+//let jsonData = try JSONSerialization.jsonObject(with:binaryData, options: JSONSerialization.ReadingOptions.allowFragments)
+//print("DEBUG_PRINTjsonData: \(jsonArray)")
+
+/*
+ (
+ "{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"\U529b\U306f\U3001\U4eba\U304c\U305d\U3053\U306b\U5bbf\U308b\U3068\U601d\U3048\U3070\U305d\U3053\U306b\U5bbf\U308b\U3002\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}"
+ )
+ Could not cast value of type '__NSCFString' (0x108dbdfb8) to 'NSDictionary' (0x108dbefa8).
+ */
+
+//let top = items as! [[String : AnyObject]]
+//print("DEBUG_PRINTtop: \(top)")
+/*
+ for roop in items {
+ print("DEBUG_PRINTroop: \(roop)")
+ let cardData = CardData(valueDictionary: roop)
+ cardDataArray.append(cardData)
+ }
+ 
+ return cardDataArray
+ }
+ } catch let error{
+ print("DEBUG_PRINT: readCardDocument: \(error.localizedDescription)")
+ }
+ }
+ return []
+ }
+ }
+ */
 // ファイルの末尾に追記
 extension String {
     func appendLineToURL(fileURL: URL) throws {

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Presentr
+import SVProgressHUD
 import Eureka
 import Firebase
 import FirebaseAuth
@@ -175,11 +175,11 @@ class AccountViewController: FormViewController {
         
         // 入力チェック
         if email.characters.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email) == false {
-            self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationEmail), animated: true)
+            SVProgressHUD.showError(withStatus: Alert.validationEmail)
             return
         }
         if password.characters.count < 6 || password.characters.count > 12{
-            self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationPassword), animated: true)
+            SVProgressHUD.showError(withStatus: Alert.validationEmail)
             return
         }
         
@@ -190,18 +190,13 @@ class AccountViewController: FormViewController {
             } else {
                 print("DEBUG_PRINT: ログインに成功しました")
                 // UserDefaultにアカウント情報を保存
+                UserDefaults.standard.set(user?.uid, forKey: DefaultString.Uid)
                 UserDefaults.standard.set(email, forKey: DefaultString.Mail)
                 UserDefaults.standard.set(password, forKey: DefaultString.Password)
                 // 成功ポップアップ
-                self.present(Alert.setAlertController(title: Alert.successLoginTitle, message: nil), animated: true, completion: {() -> Void in
-                    DispatchQueue.global(qos: .default).async {
-                        // サブスレッド(バックグラウンド)で実行する方を書く
-                        DispatchQueue.main.async {
-                            // Main Threadで実行する
-                            self.navigationController?.popViewController(animated: false)
-                        }
-                    }
-                })
+                SVProgressHUD.showSuccess(withStatus: Alert.successLoginTitle)
+                // 前画面に戻る
+                self.navigationController?.popViewController(animated: false)
             }
         }
         
@@ -252,15 +247,9 @@ class AccountViewController: FormViewController {
         // 全てのモーダルを閉じる
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
         // 成功ポップアップ
-        self.present(Alert.setAlertController(title: Alert.successSaveTitle, message: nil), animated: true, completion: {() -> Void in
-            DispatchQueue.global(qos: .default).async {
-                // サブスレッド(バックグラウンド)で実行する方を書く
-                DispatchQueue.main.async {
-                    // Main Threadで実行する
-                    self.navigationController?.popViewController(animated: false)
-                }
-            }
-        })
+        SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
+        // 前画面に戻る
+        self.navigationController?.popViewController(animated: false)
 
         print("DEBUG_PRINT: SettingViewController.save end")
     }
@@ -278,15 +267,9 @@ class AccountViewController: FormViewController {
             print("\(error.localizedDescription)")
         }
         // 成功ポップアップ
-        self.present(Alert.setAlertController(title: Alert.successLogoutTitle, message: nil), animated: true, completion: {() -> Void in
-            DispatchQueue.global(qos: .default).async {
-                // サブスレッド(バックグラウンド)で実行する方を書く
-                DispatchQueue.main.async {
-                    // Main Threadで実行する
-                    self.navigationController?.popViewController(animated: false)
-                }
-            }
-        })
+        SVProgressHUD.showSuccess(withStatus: Alert.successLogoutTitle)
+        // 前画面に戻る
+        self.navigationController?.popViewController(animated: false)
 
         print("DEBUG_PRINT: AccountViewController logout end")
     }

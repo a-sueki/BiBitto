@@ -11,12 +11,12 @@ import Eureka
 import Firebase
 import FirebaseAuth
 import UserNotifications
-import Presentr
+import SVProgressHUD
 
 class SettingViewController: FormViewController {
     
     var inputData = [String : Any]()
-    var backupFlag = false
+    var autoBackupFlag = false
         
     lazy var signUpViewController: SignUpViewController = {
         let signUpViewController = self.storyboard?.instantiateViewController(withIdentifier: "SignUpViewController")
@@ -82,8 +82,14 @@ class SettingViewController: FormViewController {
                     vc.dismissOnSelection = false
                 })
             
+            +++ Section("アカウント")
+            <<< ButtonRow("Account") { (row: ButtonRow) -> Void in
+                row.title = "アカウント"
+                row.presentationMode = .segueName(segueName: "AccountControllerSegue", onDismiss: nil)
+            }
+            
             +++ Section("バックアップ")
-            <<< SwitchRow("Backup") {
+            <<< SwitchRow("AutoBackup") {
                 $0.title = "自動バックアップをONにする"
                 if Auth.auth().currentUser == nil {
                     $0.value = false
@@ -92,20 +98,11 @@ class SettingViewController: FormViewController {
                 }
                 }.onChange { [weak self] in
                     if $0.value == true {
-                        self?.backupFlag = true
+                        self?.autoBackupFlag = true
                         if UserDefaults.standard.object(forKey: DefaultString.Mail) == nil {
                             self?.signUp()
                         }
                     }
-            }
-
-            <<< ButtonRow("Account") { (row: ButtonRow) -> Void in
-                row.hidden = .function(["Backup"], { form -> Bool in
-                    let row: RowOf<Bool>! = form.rowBy(tag: "Backup")
-                    return row.value ?? false == false
-                })
-                row.title = "アカウント"
-                row.presentationMode = .segueName(segueName: "AccountControllerSegue", onDismiss: nil)
             }
 
             +++ Section()
@@ -116,7 +113,7 @@ class SettingViewController: FormViewController {
                         print("DEBUG_PRINT: SettingViewController.restore \(error)のため処理は行いません")
                     }else{
                         if Auth.auth().currentUser == nil {
-                            self?.present(Alert.setAlertController(title: Alert.loginAlartTitle, message: Alert.loginAlartBody), animated: true)
+                            SVProgressHUD.showSuccess(withStatus: Alert.loginAlartTitle)
                         }else{
                             self?.restore()
                         }
@@ -129,8 +126,8 @@ class SettingViewController: FormViewController {
                     if let error = row.section?.form?.validate(), error.count != 0 {
                         print("DEBUG_PRINT: SettingViewController.save \(error)のため処理は行いません")
                     }else{
-                        if (self?.backupFlag)!, Auth.auth().currentUser == nil {
-                            self?.present(Alert.setAlertController(title: Alert.loginAlartTitle, message: Alert.loginAlartBody), animated: true)
+                        if (self?.autoBackupFlag)!, Auth.auth().currentUser == nil {
+                            SVProgressHUD.showSuccess(withStatus: Alert.loginAlartTitle)
                         }else{
                             self?.save()
                         }
@@ -160,13 +157,13 @@ class SettingViewController: FormViewController {
                 inputData["\(key)"] = value
             }
         }
-        UserDefaults.standard.set(inputData["Backup"], forKey: DefaultString.Backup)
+        UserDefaults.standard.set(inputData["AutoBackup"], forKey: DefaultString.AutoBackup)
         registerLocalNotification(inputData: inputData)
         
         // 全てのモーダルを閉じる
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
         // 成功ポップアップ
-        self.present(Alert.setAlertController(title: Alert.successSaveTitle, message: nil), animated: true)
+        SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
 
         print("DEBUG_PRINT: SettingViewController save end")
     }
@@ -199,7 +196,7 @@ class SettingViewController: FormViewController {
         // 全てのモーダルを閉じる
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
         // 成功ポップアップ
-        self.present(Alert.setAlertController(title: Alert.successRestoreTitle, message: nil), animated: true)
+        SVProgressHUD.showSuccess(withStatus: Alert.successRestoreTitle)
         
         print("DEBUG_PRINT: SettingViewController restore end")
     }

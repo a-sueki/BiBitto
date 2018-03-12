@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Presentr
+import SVProgressHUD
 import Eureka
 import Firebase
 import FirebaseAuth
@@ -103,7 +103,7 @@ class PasswordResetViewController: FormViewController {
 
         // 入力チェック
         if email.characters.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email) == false {
-            self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationEmail), animated: true)
+            SVProgressHUD.showError(withStatus: Alert.validationEmail)
             return
         }
         
@@ -119,15 +119,9 @@ class PasswordResetViewController: FormViewController {
         }
         
         // 成功ポップアップ
-        self.present(Alert.setAlertController(title: Alert.successSendTitle, message: nil), animated: true, completion: {() -> Void in
-            DispatchQueue.global(qos: .default).async {
-                // サブスレッド(バックグラウンド)で実行する方を書く
-                DispatchQueue.main.async {
-                    // Main Threadで実行する
-                    self.navigationController?.popViewController(animated: false)
-                }
-            }
-        })
+        SVProgressHUD.showSuccess(withStatus: Alert.successSendTitle)
+        // 前画面に戻る
+        self.navigationController?.popViewController(animated: false)
         
         print("DEBUG_PRINT: PasswordResetViewController ok end")
     }    

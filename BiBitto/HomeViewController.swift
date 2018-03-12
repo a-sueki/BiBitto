@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import TTTAttributedLabel
+import SVProgressHUD
 import Presentr
 
 class HomeViewController: UIViewController {
@@ -23,6 +24,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var authorNameLabel: UILabel!
     @IBOutlet weak var noLabel: UILabel!
+    @IBOutlet weak var nextButton: UIButton!
     
     lazy var signUpViewController: SignUpViewController = {
         let signUpViewController = self.storyboard?.instantiateViewController(withIdentifier: "SignUpViewController")
@@ -33,10 +35,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         print("DEBUG_PRINT: HomeViewController viewDidLoad start")
 
-        self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
-        self.cardData = self.cardDataArray.shuffled.first
-        self.showWord()
-        
+
 /*        cardDataArray.removeAll()
         
         if let uid = Auth.auth().currentUser?.uid {
@@ -61,7 +60,19 @@ class HomeViewController: UIViewController {
             }
         }
 */
-       
+        
+        //TODO: 差分Flgがtrue、かつ、自動更新flgがtrueの場合、DBを更新
+/*        if let uid = Auth.auth().currentUser?.uid,
+            UserDefaults.standard.bool(forKey: DefaultString.Difference),
+            UserDefaults.standard.bool(forKey: DefaultString.AutoBackup) {
+            
+            let ref = Database.database().reference().child(Paths.CardPath).child(uid)
+            ref.removeValue()
+            
+            // 差分フラグをfalseにセット
+            UserDefaults.standard.set(false, forKey: DefaultString.Difference)
+        }
+ */
         print("DEBUG_PRINT: HomeViewController viewDidLoad end")
     }
     
@@ -69,8 +80,13 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: HomeViewController viewWillAppear start")
         
-        self.cardData = self.cardDataArray.shuffled.first
-        showWord()
+        SVProgressHUD.show()
+        self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        if self.cardDataArray.count != 0 {
+            self.cardData = self.cardDataArray.shuffled.first
+            self.showWord()
+        }
+        SVProgressHUD.dismiss()
         
         print("DEBUG_PRINT: HomeViewController viewWillAppear end")
     }
@@ -83,6 +99,14 @@ class HomeViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: "firstLaunch") {
             UserDefaults.standard.set(false, forKey: "firstLaunch")
             signUp()
+        }
+        // アカウントありで、かつ、ログインしてない場合
+        if  UserDefaults.standard.string(forKey: DefaultString.Uid) != nil ,Auth.auth().currentUser == nil{
+            self.showAlert(title: "ログインしてください", message: "オンラインバックアップが無効になっています") {
+                // OKが選択された場合の処理
+//                let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "AccountViewController") as! AccountViewController
+//                self.navigationController?.present(nextViewController, animated: true, completion: nil)
+            }
         }
         
         print("DEBUG_PRINT: HomeViewController viewDidAppear end")
@@ -97,7 +121,7 @@ class HomeViewController: UIViewController {
                 subview.removeFromSuperview()
             }
         }
-        
+            
         print("DEBUG_PRINT: HomeViewController viewWillDisappear end")
     }
     
@@ -105,14 +129,29 @@ class HomeViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    func removeSubviews(parentView: UIView){
+        print("DEBUG_PRINT: HomeViewController removeAllSubviews start")
+
+        let subviews = parentView.subviews
+        for subview in subviews {
+            print(subview)
+            if subview.tag == 1 || subview.tag == 2 {
+                subview.removeFromSuperview()
+            }
+        }
+        print("DEBUG_PRINT: HomeViewController removeAllSubviews end")
+    }
+    
     func showWord(){
         print("DEBUG_PRINT: HomeViewController showWord start")
+
+        // 古いsubviewを削除
+        removeSubviews(parentView: self.view)
 
         // ヘッダ
         categoryLabel.text = cardData?.category
         authorNameLabel.text = cardData?.author
-        noLabel.text = cardData?.no
-        
+        noLabel.text = String(format: "%04d", (cardData?.no)!)
         // 縦書き対応(本文)
         view.backgroundColor = UIColor.gray
         let titleLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(
@@ -120,7 +159,7 @@ class HomeViewController: UIViewController {
             y: view.frame.height/10 * 5,
             width: view.frame.height/2 ,
             height: view.frame.width/10 * 1))
-        titleLabel.backgroundColor = UIColor.white
+        titleLabel.backgroundColor = UIColor.clear
         titleLabel.tag = 1
         view.addSubview(titleLabel)
         
@@ -146,7 +185,7 @@ class HomeViewController: UIViewController {
             y: view.frame.height/10 * 5,
             width: view.frame.height/2,
             height: view.frame.width/2))
-        textLabel.backgroundColor = UIColor.white
+        textLabel.backgroundColor = UIColor.clear
         textLabel.tag = 2
         view.addSubview(textLabel)
         
@@ -181,6 +220,14 @@ class HomeViewController: UIViewController {
         print("DEBUG_PRINT: HomeViewController signUp end")
     }
     
+    @IBAction func handleNextButton(_ sender: Any) {
+        print("DEBUG_PRINT: HomeViewController handleNextButton start")
+
+        self.cardData = self.cardDataArray.shuffled.first
+        self.showWord()
+
+        print("DEBUG_PRINT: HomeViewController handleNextButton end")
+    }
     
     @IBAction func handleShearButton(_ sender: Any) {
         print("DEBUG_PRINT: HomeViewController handleShearButton start")
@@ -199,6 +246,25 @@ class HomeViewController: UIViewController {
         print("DEBUG_PRINT: HomeViewController handleShearButton end")
     }
 
+    // OK or CancelToast
+    func showAlert(title: String, message: String, callback: @escaping () -> Void) {
+        print("DEBUG_PRINT: HomeViewController showAlert start")
+
+        let alert: UIAlertController = UIAlertController(title: title, message: message, preferredStyle:  UIAlertControllerStyle.alert)
+        let defaultAction: UIAlertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
+            (action: UIAlertAction!) -> Void in
+            callback()
+        })
+//        let cancelAction: UIAlertAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel, handler: {
+//            (action: UIAlertAction!) -> Void in
+//        })
+//        alert.addAction(cancelAction)
+        alert.addAction(defaultAction)
+        
+        present(alert, animated: true, completion: nil)
+
+        print("DEBUG_PRINT: HomeViewController showAlert end")
+    }
     
 }
 extension Array {

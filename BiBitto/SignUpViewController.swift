@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import Presentr
 import Firebase
 import FirebaseAuth
+import SVProgressHUD
 
 class SignUpViewController: UIViewController {
     
@@ -57,20 +57,20 @@ class SignUpViewController: UIViewController {
         // 入力チェック
         if email != nil {
             if email!.characters.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email!) == false {
-                self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationEmail), animated: true)
+                SVProgressHUD.showError(withStatus: Alert.validationEmail)
                 return
             }
         }else{
-            self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationEmail), animated: true)
+            SVProgressHUD.showError(withStatus: Alert.validationEmail)
             return
         }
         if password != nil {
             if password!.characters.count < 6 || password!.characters.count > 12{
-                self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationPassword), animated: true)
+                SVProgressHUD.showError(withStatus: Alert.validationPassword)
                 return
             }
         }else{
-            self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationPassword), animated: true)
+            SVProgressHUD.showError(withStatus: Alert.validationPassword)
             return
         }
         
@@ -80,11 +80,9 @@ class SignUpViewController: UIViewController {
                 // エラーがあったら原因をprintして、returnすることで以降の処理を実行せずに処理を終了する
                 print("DEBUG_PRINT: SignUpViewController createUser " + error.localizedDescription)
                 if error.localizedDescription.contains("already in use") {
-                    
-                    self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationExistingEmail), animated: true)
-                    
+                    SVProgressHUD.showError(withStatus: Alert.validationExistingEmail)
                 } else {
-                    self.present(Alert.setAlertController(title: Alert.validationTitle, message: Alert.validationEmail), animated: true)
+                    SVProgressHUD.showError(withStatus: Alert.validationEmail)
                 }
                 return
             }
@@ -103,6 +101,7 @@ class SignUpViewController: UIViewController {
                 }
                 
                 // UserDefaultにアカウント情報を保存
+                UserDefaults.standard.set(user.uid, forKey: DefaultString.Uid)
                 UserDefaults.standard.set(email, forKey: DefaultString.Mail)
                 UserDefaults.standard.set(password, forKey: DefaultString.Password)
                 
@@ -110,16 +109,9 @@ class SignUpViewController: UIViewController {
                 if !user.isEmailVerified {
                     print("DEBUG_PRINT: SignUpViewController sendEmailVerification ")
                     // 成功ポップアップ
-                    self.present(Alert.setAlertController(title: Alert.successSaveTitle, message: nil), animated: true, completion: {() -> Void in
-                        DispatchQueue.global(qos: .default).async {
-                            // サブスレッド(バックグラウンド)で実行する方を書く
-                            user.sendEmailVerification(completion: nil)
-                            DispatchQueue.main.async {
-                                // Main Threadで実行する
-                                self.dismiss(animated: false, completion: nil)
-                            }
-                        }
-                    })
+                    SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
+                    user.sendEmailVerification(completion: nil)
+
                 }
             }
         }
@@ -136,16 +128,6 @@ class SignUpViewController: UIViewController {
     }
     
     
-}
-
-
-// MARK: - Presentr Delegate
-
-extension SignUpViewController: PresentrDelegate {
-    
-    func presentrShouldDismiss(keyboardShowing: Bool) -> Bool {
-        return !keyboardShowing
-    }
 }
 
 // MARK: - UITextField Delegate

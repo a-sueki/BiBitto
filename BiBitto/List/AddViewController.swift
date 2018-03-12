@@ -7,14 +7,15 @@
 //
 
 import UIKit
-import Presentr
+import SVProgressHUD
 import Eureka
 import Firebase
 import FirebaseAuth
 
 class AddViewController: FormViewController {
-        
+    
     var inputData = [String : Any]()
+    var outputDataArray = Array<[String : Any]>()
     var cardDataArray = [CardData]()
     var cardData: CardData?
     var charCount = 0
@@ -23,8 +24,8 @@ class AddViewController: FormViewController {
         super.viewDidLoad()
         
         initializeForm()
-        navigationItem.leftBarButtonItem?.target = self
-        navigationItem.leftBarButtonItem?.action = #selector(SettingViewController.cancelTapped(_:))
+        self.navigationItem.leftBarButtonItem?.target = self
+        self.navigationItem.leftBarButtonItem?.action = #selector(SettingViewController.cancelTapped(_:))
     }
     
     override func didReceiveMemoryWarning() {
@@ -85,7 +86,7 @@ class AddViewController: FormViewController {
             <<< TextRow("author").cellSetup { cell, row in
                 cell.textField.placeholder = "出典/著者"
         }
-                
+        
         form +++ SelectableSection<ImageCheckRow<String>>() { section in
             section.header = HeaderFooterView(title: "カテゴリー")
         }
@@ -137,48 +138,55 @@ class AddViewController: FormViewController {
                 }
             }
         }
-
+        
         // inputDataに必要な情報を取得しておく
         let time = NSDate.timeIntervalSinceReferenceDate
-        // 辞書を作成
-        let ref = Database.database().reference()
-        // Noを取得
-        inputData["no"] = String(format: "%04d", cardDataArray.count + 1)
-
-        //Firebaseに保存
-        if let data = cardData {
-            print("DEBUG_PRINT: AddViewController addCard update")
-            // 更新しないデータを引き継ぎ
-            inputData["createAt"] = String(data.createAt.timeIntervalSinceReferenceDate)
-            inputData["updateAt"] = String(time)
-        }else{
-            print("DEBUG_PRINT: AddViewController addCard insert")
+        inputData["updateAt"] = String(time)
+        inputData["createAt"] = String(time)
+        // ログインしている場合、firebaseにinsert
+        if let uid = Auth.auth().currentUser?.uid {
+            // 辞書を作成
+            let ref = Database.database().reference()
             let key = ref.child(Paths.CardPath).childByAutoId().key
-            inputData["updateAt"] = String(time)
-            inputData["createAt"] = String(time)
-            // insert
-            if let uid = Auth.auth().currentUser?.uid {
-                ref.child(Paths.CardPath).child(uid).child(key).setValue(inputData)
-            }
+            inputData["id"] = key
+            ref.child(Paths.CardPath).child(uid).child(key).setValue(inputData)
+            print("DEBUG_PRINT: AddViewController FB inserted!")
+        }else{
+            inputData["id"] = DummyString.Key
+        }
+        // No付与
+        inputData["no"] = cardDataArray.count + 1 //String(format: "%04d", cardDataArray.count + 1)
+
+        // カード追加
+        let cardData = CardData(valueDictionary: inputData as [String : AnyObject])
+        cardDataArray.append(cardData)
+        // 作成日で並び替え
+        let sortedCardDataArray = cardDataArray.sorted(by: {
+            $1.createAt.compare($0.createAt as Date) == ComparisonResult.orderedDescending
+        })
+        // No洗い替え
+        var counter = 1
+        for card in sortedCardDataArray {
+            card.no = counter 
+            counter = counter + 1
         }
 
-        // ファイル書き込み（追記）
-        Files.writeCardDocument(card: inputData ,fileName: Files.card_file)
         
-        // 登録された文章に含まれる単語を検索用に、data.txtに追記
+        // ファイル書き込み用カード配列作成
+        outputDataArray = CardUtils.cardToDictionary(cardDataArray: sortedCardDataArray)
+        // ファイル内テキスト全件クリア
+        Files.refreshDocument(fileName: Files.card_file)
+        // ファイル書き込み（全件洗い替え）
+        Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
+        
+        // 検索用ワードをファイル書き込み（追記）
         morphologicalAnalysis(inputData: inputData)
-      
+        
         // 成功ポップアップ
-        self.present(Alert.setAlertController(title: Alert.successSaveTitle, message: nil), animated: true, completion: {() -> Void in
-            DispatchQueue.global(qos: .default).async {
-                // サブスレッド(バックグラウンド)で実行する方を書く
-                DispatchQueue.main.async {
-                    // Main Threadで実行する
-                    self.navigationController?.popViewController(animated: false)
-                }
-            }
-        })
-
+        SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
+        // 前画面に戻る
+        self.navigationController?.popViewController(animated: false)
+        
         print("DEBUG_PRINT: AddViewController addCard end")
     }
     
@@ -201,7 +209,7 @@ class AddViewController: FormViewController {
             let orgStr2 = inputData["author"] as! String
             orgStr = orgStr + "\n" + orgStr2
         }
-
+        
         var dataArray = Files.readDocument(fileName: Files.word_file)
         
         let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "ja"), options: 0)
@@ -232,7 +240,7 @@ class AddViewController: FormViewController {
         Files.refreshDocument(fileName: Files.word_file)
         // ファイル書き込み
         Files.writeDocument(dataArray: strArray2,fileName: Files.word_file)
-     
+        
         print("DEBUG_PRINT: AddViewController morphologicalAnalysis end")
     }
 }

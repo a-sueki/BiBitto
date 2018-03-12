@@ -56,7 +56,12 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: ListViewController viewWillAppear start")
         
-        self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        let originCardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        // 作成日で並び替え
+        self.cardDataArray = originCardDataArray.sorted(by: {
+            $0.createAt.compare($1.createAt as Date) == ComparisonResult.orderedDescending
+        })
+
         // tableViewを再表示する
         DispatchQueue.main.async {
             print("DEBUG_PRINT: ListViewController [DispatchQueue.main.async]")
@@ -160,9 +165,9 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         
         //xibとカスタムクラスで作成したCellのインスタンスを作成
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
-        let noStr = String(format: "%04d", cardDataArray.count + 1)
+//        let noStr = String(format: "%04d", cardDataArray.count + 1)
         
-        cell.setData(cardData: cardDataArray[indexPath.row], no: noStr)
+        cell.setData(cardData: cardDataArray[indexPath.row])
         
         print("DEBUG_PRINT: ListViewController cellForRowAt end")
         return cell
@@ -172,15 +177,39 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         print("DEBUG_PRINT: ListViewController commit editingStyle start")
 
-        // firebaseから削除
         if editingStyle == .delete {
-            if let uid = Auth.auth().currentUser?.uid, !(cardDataArray[indexPath.row].id?.isEmpty)! {
+            // firebase同期
+            if let uid = Auth.auth().currentUser?.uid, !(cardDataArray[indexPath.row].id.isEmpty) {
                 let ref = Database.database().reference().child(Paths.CardPath).child(uid)
-                ref.child(cardDataArray[indexPath.row].id!).removeValue()
+                ref.child(cardDataArray[indexPath.row].id).removeValue()
             }
+
+            //リストから削除
+            cardDataArray.remove(at: indexPath.row)
+            
+            // 作成日で並び替え
+            let sortedCardDataArray = cardDataArray.sorted(by: {
+                $0.createAt.compare($1.createAt as Date) == ComparisonResult.orderedDescending
+            })
+            // No洗い替え
+            var counter = 1
+            for card in sortedCardDataArray {
+                card.no = counter
+                counter = counter + 1
+            }
+
+            var outputDataArray = Array<[String : Any]>()
+            // ファイル書き込み用カード配列作成
+            outputDataArray = CardUtils.cardToDictionary(cardDataArray: sortedCardDataArray)
+            // ファイル内テキスト全件クリア
+            Files.refreshDocument(fileName: Files.card_file)
+            // ファイル書き込み（全件洗い替え）
+            Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
+
+            //TODO: 検索ワードtxtも洗い替え？
+        
         }
-        // リストから削除
-        cardDataArray.remove(at: indexPath.row)
+
         // 一覧画面から削除
         tableView.deleteRows(at: [indexPath], with: .fade)
         
