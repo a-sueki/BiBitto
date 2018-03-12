@@ -155,7 +155,7 @@ class AddViewController: FormViewController {
             inputData["id"] = DummyString.Key
         }
         // No付与
-        inputData["no"] = cardDataArray.count + 1 //String(format: "%04d", cardDataArray.count + 1)
+        inputData["no"] = cardDataArray.count + 1 //String(format: "%03d", cardDataArray.count + 1)
 
         // カード追加
         let cardData = CardData(valueDictionary: inputData as [String : AnyObject])

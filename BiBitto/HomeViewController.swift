@@ -47,7 +47,10 @@ class HomeViewController: UIViewController {
         if self.cardDataArray.count != 0 {
             self.cardData = self.cardDataArray.shuffled.first
             self.showWord()
+        }else{
+            SVProgressHUD.showError(withStatus: "カードがありません")
         }
+        
         SVProgressHUD.dismiss()
         
         print("DEBUG_PRINT: HomeViewController viewWillAppear end")
@@ -64,7 +67,7 @@ class HomeViewController: UIViewController {
         }
         // アカウントありで、かつ、ログインしてない場合
         if  UserDefaults.standard.string(forKey: DefaultString.Uid) != nil ,Auth.auth().currentUser == nil{
-            self.showAlert(title: "警告", message: "現在、ログインしていません。") {
+            self.showAlert(title: "警告", message: "現在、ログインしていません") {
                 // OKが選択された場合の処理
                 let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "AccountViewController") as! AccountViewController
                 self.navigationController?.present(nextViewController, animated: true, completion: nil)
@@ -113,7 +116,7 @@ class HomeViewController: UIViewController {
         // ヘッダ
         categoryLabel.text = cardData?.category
         authorNameLabel.text = cardData?.author
-        noLabel.text = String(format: "%04d", (cardData?.no)!)
+        noLabel.text = String(format: "%03d", (cardData?.no)!)
         // 縦書き対応(本文)
         view.backgroundColor = UIColor.gray
         let titleLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(

@@ -38,7 +38,7 @@ class ListTableViewCell: UITableViewCell {
         }else if cardData.category == Category.continents[4] {
             categoryImageView.backgroundColor = UIColor(red: 255/255, green: 94/255, blue: 25/255, alpha: 1.0)
         }
-        noLabel.text =  String(format: "%04d", cardData.no)
+        noLabel.text =  String(format: "%03d", cardData.no)
         wordLabel.text = cardData.text //cardData.text.replacingOccurrences(of: "\n", with: "")
         
     }

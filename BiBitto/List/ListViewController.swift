@@ -165,7 +165,7 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         
         //xibとカスタムクラスで作成したCellのインスタンスを作成
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
-//        let noStr = String(format: "%04d", cardDataArray.count + 1)
+//        let noStr = String(format: "%03d", cardDataArray.count + 1)
         
         cell.setData(cardData: cardDataArray[indexPath.row])
         
