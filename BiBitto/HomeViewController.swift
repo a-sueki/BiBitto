@@ -147,7 +147,7 @@ class HomeViewController: UIViewController {
         // 縦書き対応(本文)
         let textLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(
             x: view.frame.width/100 * 7,
-            y: view.frame.height/10 * 5,
+            y: view.frame.height/12.9 * 5,
             width: view.frame.height/2,
             height: view.frame.width/2))
         textLabel.backgroundColor = UIColor.clear
