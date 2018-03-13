@@ -42,16 +42,19 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: HomeViewController viewWillAppear start")
         
-        SVProgressHUD.show()
         self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
         if self.cardDataArray.count != 0 {
+            SVProgressHUD.show()
+            self.nextButton.isHidden = false
             self.cardData = self.cardDataArray.shuffled.first
             self.showWord()
+            SVProgressHUD.dismiss()
         }else{
-            SVProgressHUD.showError(withStatus: "カードがありません")
+            self.nextButton.isHidden = true
+            self.noLabel.text = String(format: "%03d",0)
+            SVProgressHUD.showInfo(withStatus: "カードがありません")
         }
         
-        SVProgressHUD.dismiss()
         
         print("DEBUG_PRINT: HomeViewController viewWillAppear end")
     }
@@ -114,9 +117,9 @@ class HomeViewController: UIViewController {
         removeSubviews(parentView: self.view)
 
         // ヘッダ
-        categoryLabel.text = cardData?.category
-        authorNameLabel.text = cardData?.author
-        noLabel.text = String(format: "%03d", (cardData?.no)!)
+        categoryLabel.text = self.cardData?.category
+        authorNameLabel.text = self.cardData?.author
+        noLabel.text = String(format: "%03d", (self.cardData?.no)!)
         // 縦書き対応(本文)
         view.backgroundColor = UIColor.gray
         let titleLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(
@@ -137,7 +140,7 @@ class HomeViewController: UIViewController {
         let angle = Double.pi/2
         titleLabel.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
         
-        if let title = cardData?.title {
+        if let title = self.cardData?.title {
             titleLabel.setText(title) { (mutableAttributedString) -> NSMutableAttributedString! in
                 mutableAttributedString?.addAttribute(NSAttributedStringKey(rawValue: kCTVerticalFormsAttributeName as String as String), value: true, range: NSMakeRange(0,(mutableAttributedString?.length)!))
                 return mutableAttributedString
@@ -162,7 +165,7 @@ class HomeViewController: UIViewController {
         // ラベルを90°回転させる
         textLabel.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
         
-        if let text = cardData?.text {
+        if let text = self.cardData?.text {
             textLabel.setText(text) { (mutableAttributedString) -> NSMutableAttributedString! in
                 mutableAttributedString?.addAttribute(NSAttributedStringKey(rawValue: kCTVerticalFormsAttributeName as String as String), value: true, range: NSMakeRange(0,(mutableAttributedString?.length)!))
                 return mutableAttributedString
@@ -188,8 +191,12 @@ class HomeViewController: UIViewController {
     @IBAction func handleNextButton(_ sender: Any) {
         print("DEBUG_PRINT: HomeViewController handleNextButton start")
 
-        self.cardData = self.cardDataArray.shuffled.first
-        self.showWord()
+        if self.cardDataArray.count != 0 {
+            self.cardData = self.cardDataArray.shuffled.first
+            self.showWord()
+        }else{
+            SVProgressHUD.showError(withStatus: "カードがありません")
+        }
 
         print("DEBUG_PRINT: HomeViewController handleNextButton end")
     }
