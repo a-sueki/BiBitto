@@ -80,9 +80,6 @@ class AddViewController: FormViewController {
                     return row.value ?? false == false
                 })
             }
-            <<< TextRow("title").cellSetup {cell, row in
-                cell.textField.placeholder = "タイトル"
-            }
             <<< TextRow("author").cellSetup { cell, row in
                 cell.textField.placeholder = "出典/著者"
         }
@@ -199,10 +196,6 @@ class AddViewController: FormViewController {
         print("DEBUG_PRINT: AddViewController morphologicalAnalysis start")
         
         var orgStr = inputData["text"] as! String
-        if inputData["title"] as? String != nil {
-            let orgStr1 = inputData["title"] as! String
-            orgStr = orgStr + "\n" + orgStr1
-        }
         if inputData["author"] as? String != nil {
             let orgStr2 = inputData["author"] as! String
             orgStr = orgStr + "\n" + orgStr2

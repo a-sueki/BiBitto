@@ -238,7 +238,7 @@ struct Files {
                 //                let jsonStringArray: String = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
                 let jsondata = try? Data(contentsOf: path_file_name)
                 //-- 配列データに変換して
-                if jsondata?.count != 0 {
+                if jsondata != nil {
                 let jsonArray = (try! JSONSerialization.jsonObject(with: jsondata!, options: [])) as! NSArray
                 print("DEBUG_PRINTjsonArray: \(jsonArray)")
                 /*
@@ -326,6 +326,64 @@ extension String {
         let data = self.data(using: String.Encoding.utf8)!
         try data.append(fileURL: fileURL)
     }
+    
+    /// 「漢字」かどうか
+    var isKanji: Bool {
+        let range = "^[\u{3005}\u{3007}\u{303b}\u{3400}-\u{9fff}\u{f900}-\u{faff}\u{20000}-\u{2ffff}]+$"
+        return NSPredicate(format: "SELF MATCHES %@", range).evaluate(with: self)
+    }
+    
+    /// 「ひらがな」かどうか
+    var isHiragana: Bool {
+        let range = "^[ぁ-ゞ]+$"
+        return NSPredicate(format: "SELF MATCHES %@", range).evaluate(with: self)
+    }
+    
+    /// 「カタカナ」かどうか
+    var isKatakana: Bool {
+        let range = "^[ァ-ヾ]+$"
+        return NSPredicate(format: "SELF MATCHES %@", range).evaluate(with: self)
+    }
+
+    
+    /// 「ひらがな」に変換 ※１
+    var toHiragana: String? {
+        return self.applyingTransform(.hiraganaToKatakana, reverse: false)
+    }
+    
+    /// 「カタカナ」に変換
+    var toKatakana: String? {
+        return self.applyingTransform(.hiraganaToKatakana, reverse: true)
+    }
+    
+    /// 「漢字」を「カタカナ」に変換
+/*    var kanjiToKatakana: String? {
+        let hira = TextConverter.convert(self, to: .hiragana)
+        return hira.applyingTransform(.hiraganaToKatakana, reverse: true)
+    }
+*/
+    
+    /// 「ひらがな」を含むかどうか ※2
+    var hasHiragana: Bool {
+        guard let hiragana = self.toKatakana else { return false }
+        return self != hiragana // １文字でもカタカナに変換されている場合は含まれると断定できる
+    }
+    
+    /// 「カタカナ」を含むかどうか
+    var hasKatakana: Bool {
+        guard let katakana = self.toHiragana else { return false }
+        return self != katakana // １文字でもひらがなに変換されている場合は含まれると断定できる
+    }
+    /// 漢字を含むかどうか
+    var hasKanji: Bool {
+        let characters = self.characters.map { String($0) } // String -> [String]
+        for moji in characters {
+            if moji.isKanji {
+                return  true
+            }
+        }
+        return false
+    }
 }
 extension Data {
     func append(fileURL: URL) throws {
@@ -339,5 +397,45 @@ extension Data {
         else {
             try write(to: fileURL, options: .atomic)
         }
+    }
+}
+
+final class TextConverter {
+    private init() {}
+    enum JPCharacter {
+        case hiragana
+        case katakana
+        fileprivate var transform: CFString {
+            switch self {
+            case .hiragana:
+                return kCFStringTransformLatinHiragana
+            case .katakana:
+                return kCFStringTransformLatinKatakana
+            }
+        }
+    }
+    
+    static func convert(_ text: String, to jpCharacter: JPCharacter) -> String {
+        let input = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        var output = ""
+        let locale = CFLocaleCreate(kCFAllocatorDefault, CFLocaleCreateCanonicalLanguageIdentifierFromString(kCFAllocatorDefault, "ja" as CFString))
+        let range = CFRangeMake(0, input.utf16.count)
+        let tokenizer = CFStringTokenizerCreate(
+            kCFAllocatorDefault,
+            input as CFString,
+            range,
+            kCFStringTokenizerUnitWordBoundary,
+            locale
+        )
+        
+        var tokenType = CFStringTokenizerGoToTokenAtIndex(tokenizer, 0)
+        while (tokenType.rawValue != 0) {
+            if let text = (CFStringTokenizerCopyCurrentTokenAttribute(tokenizer, kCFStringTokenizerAttributeLatinTranscription) as? NSString).map({ $0.mutableCopy() }) {
+                CFStringTransform(text as! CFMutableString, nil, jpCharacter.transform, false)
+                output.append(text as! String)
+            }
+            tokenType = CFStringTokenizerAdvanceToNextToken(tokenizer)
+        }
+        return output
     }
 }

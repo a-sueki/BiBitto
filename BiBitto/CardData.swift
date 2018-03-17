@@ -14,7 +14,6 @@ class CardData: NSObject {
     var id: String
     var no: Int
     var text: String
-    var title: String?
     var author: String?
     var category: String
     var createAt: NSDate
@@ -25,7 +24,6 @@ class CardData: NSObject {
         self.id = valueDictionary["id"] as! String
         self.no = valueDictionary["no"] as! Int
         self.text = valueDictionary["text"] as! String
-        self.title = valueDictionary["title"] as? String
         self.author = valueDictionary["author"] as? String
         self.category = valueDictionary["category"] as! String
         let createAt = valueDictionary["createAt"] as? String
@@ -81,7 +79,6 @@ class CardUtils {
             outputData["author"] = $0.author ?? ""
             outputData["category"] = $0.category
             outputData["id"] = $0.id
-            outputData["title"] = $0.title ?? ""
             outputData["updateAt"] = DateUtils.stringFromDate(date: $0.updateAt, format: "yyyy-mm-dd HH:mm:ss Z")
             outputDataArray.append(outputData)
         }

@@ -120,59 +120,68 @@ class HomeViewController: UIViewController {
         categoryLabel.text = self.cardData?.category
         authorNameLabel.text = self.cardData?.author
         noLabel.text = String(format: "%03d", (self.cardData?.no)!)
-        // 縦書き対応(本文)
         view.backgroundColor = UIColor.gray
-        let titleLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(
-            x: view.frame.width/20 * 8,
-            y: view.frame.height/10 * 5,
-            width: view.frame.height/2 ,
-            height: view.frame.width/10 * 1))
-        titleLabel.backgroundColor = UIColor.clear
-        titleLabel.tag = 1
-        view.addSubview(titleLabel)
-        
-        titleLabel.textColor = UIColor.black
-        titleLabel.numberOfLines = 0
-        titleLabel.font = UIFont.systemFont(ofSize: 24)
-        titleLabel.verticalAlignment = .top
-        
-        // ラベルを90°回転させる
-        let angle = Double.pi/2
-        titleLabel.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
-        
-        if let title = self.cardData?.title {
-            titleLabel.setText(title) { (mutableAttributedString) -> NSMutableAttributedString! in
-                mutableAttributedString?.addAttribute(NSAttributedStringKey(rawValue: kCTVerticalFormsAttributeName as String as String), value: true, range: NSMakeRange(0,(mutableAttributedString?.length)!))
-                return mutableAttributedString
-            }
+
+        // 日本語判定
+        var hasJp = false
+        if let textString = self.cardData?.text, textString.hasHiragana || textString.hasKatakana || textString.hasKanji  {
+            print(textString)
+            hasJp = true
+        }
+
+        var textLabel :UILabel
+        if hasJp {
+            // 縦書き対応
+            textLabel = TTTAttributedLabel(frame: CGRect(
+                x: -10,
+                y: view.frame.height/3,
+                width: view.frame.height/5 * 3,
+                height: view.frame.width/10 * 8))
+            print(view.frame.height)    //736.0
+            print(view.frame.width)     //414.0
+            // ラベルを90°回転させる
+            rotateAngle(label: textLabel as! TTTAttributedLabel, data: self.cardData?.text)
+            (textLabel as! TTTAttributedLabel).verticalAlignment = .center
+
+            //textLabel.backgroundColor = UIColor.yellow
+
+        }else{
+            // 横書き
+            textLabel = UILabel(frame: CGRect(
+                x: view.frame.width/10,
+                y: view.frame.height/4,
+                width: view.frame.width/10 * 8 ,
+                height: view.frame.height/5  * 3))
+            textLabel.text = self.cardData?.text
+            textLabel.textAlignment = .center
+            //textLabel.backgroundColor = UIColor.red
+
         }
         
-        // 縦書き対応(本文)
-        let textLabel: TTTAttributedLabel = TTTAttributedLabel(frame: CGRect(
-            x: view.frame.width/100 * 7,
-            y: view.frame.height/12.9 * 5,
-            width: view.frame.height/2,
-            height: view.frame.width/2))
+        // デザイン
         textLabel.backgroundColor = UIColor.clear
         textLabel.tag = 2
         view.addSubview(textLabel)
-        
         textLabel.textColor = UIColor.black
         textLabel.numberOfLines = 0
         textLabel.font = UIFont.systemFont(ofSize: 16)
-        textLabel.verticalAlignment = .center
         
-        // ラベルを90°回転させる
-        textLabel.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
+        print("DEBUG_PRINT: HomeViewController showWord end")
+    }
+    
+    func rotateAngle(label: TTTAttributedLabel, data: String?) {
+        print("DEBUG_PRINT: HomeViewController rotateAngle start")
+
+        let angle = Double.pi/2
+        label.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
         
-        if let text = self.cardData?.text {
-            textLabel.setText(text) { (mutableAttributedString) -> NSMutableAttributedString! in
+        if let text = data {
+            label.setText(text) { (mutableAttributedString) -> NSMutableAttributedString! in
                 mutableAttributedString?.addAttribute(NSAttributedStringKey(rawValue: kCTVerticalFormsAttributeName as String as String), value: true, range: NSMakeRange(0,(mutableAttributedString?.length)!))
                 return mutableAttributedString
             }
         }
-
-        print("DEBUG_PRINT: HomeViewController showWord end")
+        print("DEBUG_PRINT: HomeViewController rotateAngle end")
     }
     
     func signUp() {
