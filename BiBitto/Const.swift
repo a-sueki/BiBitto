@@ -76,15 +76,7 @@ struct Alert {
     static let successSendTitle = "送信しました"
     static let successLoginTitle = "ログインしました"
     static let successLogoutTitle = "ログアウトしました"
-    
-/*    static func setAlertController(title: String, message: String?) -> UIAlertController {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(defaultAction)
-        return alertController
-    }
-*/
-    
+        
 }
 struct Category {
     static let continents = ["MINDE", "LEADERSHIP", "VISION", "WISDOM", "FELLOW"]
@@ -116,11 +108,6 @@ struct Tokenizer {
         let range = text.startIndex ..< text.endIndex
         var tokens: [String] = []
         
-        /*        text.enumerateLinguisticTagsInRange(range, scheme: scheme, options: options, orthography: nil) { (_, range, _, _) in
-         let token = text.substringWithRange(range)
-         tokens.append(token)
-         }
-         */
         text.enumerateLinguisticTags(in: range, scheme: scheme, options: options, orthography: nil, invoking:{(_, range, _, _) in
             //let token = text.substringWithRange(range)
             let token = text[text.startIndex ..< text.endIndex]
@@ -170,7 +157,6 @@ struct Files {
     static func writeCardDocument(cardDataArray: Array<[String:Any]>, fileName: String) {
         print("DEBUG_PRINT: writeCardDocument start")
         print("DEBUG_PRINT: writeCardDocument 0: \(cardDataArray)")
-        //[["no": "0001", "id": "no-id", "text": "力は、人がそこに宿ると思えばそこに宿る。", "createAt": 2018-02-07 23:12:09 +0000, "title": "", "author": "", "category": "LEADERSHIP", "updateAt": 2018-02-07 23:12:09 +0000]]
         var jsonStrArray = Array<Any>()
         for card in cardDataArray {
             do {
@@ -178,10 +164,8 @@ struct Files {
                 let jsonData = try JSONSerialization.data(withJSONObject: card, options: [])
                 let jsonStr = String(bytes: jsonData, encoding: .utf8)!
                 print("DEBUG_PRINT: 生成されたJSON文字列 =>\(jsonStr)")
-                //{"no":"0001","id":"no-id","text":"力は、人がそこに宿ると思えばそこに宿る。","createAt":"2018-18-08 08:18:22 +0900","title":"","author":"","category":"LEADERSHIP","updateAt":"2018-18-08 08:18:22 +0900"}
                 jsonStrArray.append(jsonStr)
                 print("DEBUG_PRINT: 生成されたJSON文字列の配列 =>\(jsonStrArray)")
-                //["{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"力は、人がそこに宿ると思えばそこに宿る。\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}"]
             } catch let error {
                 print(error)
             }
@@ -191,14 +175,12 @@ struct Files {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 print("DEBUG_PRINT: writeCardDocument 1: \(path_file_name)")
-                ///Users/admin/Library/Developer/CoreSimulator/Devices/2FDC8ACC-4AEA-485F-BDA1-C2E7B6CDB03D/data/Containers/Data/Application/AB50E162-E28D-4FF2-BC78-02298E8D966F/Documents/card.txt
                 
                 let jsonArrayData = try JSONSerialization.data(withJSONObject: jsonStrArray, options: [])
                 
                 print("DEBUG_PRINT: writeCardDocument 2: \(jsonArrayData)")
                 let jsonArrayStr = String(bytes: jsonArrayData, encoding: .utf8)!
                 print("DEBUG_PRINT: writeCardDocument 3: \(jsonArrayStr)")
-                //["{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"力は、人がそこに宿ると思えばそこに宿る。\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}"]
                 try jsonArrayStr.write(to: path_file_name, atomically: true, encoding: String.Encoding.utf8)
             } catch let error{
                 print("DEBUG_PRINT: writeCardDocument: \(error.localizedDescription)")
@@ -233,25 +215,15 @@ struct Files {
         if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             print("DEBUG_PRINTpath_file_name: \(path_file_name)")
-            // /Users/admin/Library/Developer/CoreSimulator/Devices/2FDC8ACC-4AEA-485F-BDA1-C2E7B6CDB03D/data/Containers/Data/Application/120E1165-6C63-4BDF-AEF2-681633D0429D/Documents/card.txt
             do {
-                //                let jsonStringArray: String = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
                 let jsondata = try? Data(contentsOf: path_file_name)
                 //-- 配列データに変換して
                 if jsondata != nil {
                 let jsonArray = (try! JSONSerialization.jsonObject(with: jsondata!, options: [])) as! NSArray
                 print("DEBUG_PRINTjsonArray: \(jsonArray)")
-                /*
-                 (
-                 "{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"\U529b\U306f\U3001\U4eba\U304c\U305d\U3053\U306b\U5bbf\U308b\U3068\U601d\U3048\U3070\U305d\U3053\U306b\U5bbf\U308b\U3002\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}",
-                 "{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"\U529b\U306f\U3001\U4eba\U304c\U305d\U3053\U306b\U5bbf\U308b\U3068\U601d\U3048\U3070\U305d\U3053\U306b>\U5bbf\U308b\U3002\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}"
-                 )
-                 */
                 for jsonItem in jsonArray {
                     print("1")
                     print(jsonItem)
-                    //{"no":"0001","id":"no-id","text":"力は、人がそこに宿ると思えばそこに宿る。","createAt":"2018-18-08 08:18:22 +0900","title":"","author":"","category":"LEADERSHIP","updateAt":"2018-18-08 08:18:22 +0900"}
-
                     let jsonData: Data =  (jsonItem as AnyObject).data(using: String.Encoding.utf8.rawValue)!
                     print("2")
                     print(jsonData)
@@ -260,13 +232,10 @@ struct Files {
                     //as! Dictionary<String, Any>
                     print("3")
                     print(card)
-                    //["no": 0001, "id": no-id, "text": 力は、人がそこに宿ると思えばそこに宿る。, "createAt": 2018-18-08 08:18:22 +0900, "title": , "author": , "category": LEADERSHIP, "updateAt": 2018-18-08 08:18:22 +0900]
-
                     let cardData = CardData(valueDictionary: card)
                     print("4")
                     print(cardData)
                     cardDataArray.append(cardData)
-                    //<BiBitto.CardData: 0x600000360cc0>
                 }
                 }
                 
@@ -280,42 +249,6 @@ struct Files {
     }
 }
 
-
-//let binaryData: Data = contents.data(using: .utf8)!
-//let jsonArray: NSArray = try JSONSerialization.jsonObject(with: binaryData, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSArray
-
-//                    let jsonArray: NSDictionary = try JSONSerialization.jsonObject(with: binaryData, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-
-// JSONパース。optionsは型推論可(".allowFragmets"等)
-//let jsonData = try JSONSerialization.jsonObject(with:binaryData, options: JSONSerialization.ReadingOptions.allowFragments)
-//print("DEBUG_PRINTjsonData: \(jsonArray)")
-
-/*
- (
- "{\"no\":\"0001\",\"id\":\"no-id\",\"text\":\"\U529b\U306f\U3001\U4eba\U304c\U305d\U3053\U306b\U5bbf\U308b\U3068\U601d\U3048\U3070\U305d\U3053\U306b\U5bbf\U308b\U3002\",\"createAt\":\"2018-18-08 08:18:22 +0900\",\"title\":\"\",\"author\":\"\",\"category\":\"LEADERSHIP\",\"updateAt\":\"2018-18-08 08:18:22 +0900\"}"
- )
- Could not cast value of type '__NSCFString' (0x108dbdfb8) to 'NSDictionary' (0x108dbefa8).
- */
-
-//let top = items as! [[String : AnyObject]]
-//print("DEBUG_PRINTtop: \(top)")
-/*
- for roop in items {
- print("DEBUG_PRINTroop: \(roop)")
- let cardData = CardData(valueDictionary: roop)
- cardDataArray.append(cardData)
- }
- 
- return cardDataArray
- }
- } catch let error{
- print("DEBUG_PRINT: readCardDocument: \(error.localizedDescription)")
- }
- }
- return []
- }
- }
- */
 // ファイルの末尾に追記
 extension String {
     func appendLineToURL(fileURL: URL) throws {
@@ -355,13 +288,6 @@ extension String {
     var toKatakana: String? {
         return self.applyingTransform(.hiraganaToKatakana, reverse: true)
     }
-    
-    /// 「漢字」を「カタカナ」に変換
-/*    var kanjiToKatakana: String? {
-        let hira = TextConverter.convert(self, to: .hiragana)
-        return hira.applyingTransform(.hiraganaToKatakana, reverse: true)
-    }
-*/
     
     /// 「ひらがな」を含むかどうか ※2
     var hasHiragana: Bool {
