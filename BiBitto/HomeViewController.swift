@@ -129,7 +129,9 @@ class HomeViewController: UIViewController {
             hasJp = true
         }
 
+        // ラベル作成
         var textLabel :UILabel
+
         if hasJp {
             // 縦書き対応
             textLabel = TTTAttributedLabel(frame: CGRect(
@@ -139,10 +141,18 @@ class HomeViewController: UIViewController {
                 height: view.frame.width/10 * 8))
             print(view.frame.height)    //736.0
             print(view.frame.width)     //414.0
+            
+            textLabel.backgroundColor = UIColor.clear
+            textLabel.tag = 2
+            view.addSubview(textLabel)
+            textLabel.textColor = UIColor.black
+            textLabel.numberOfLines = 0
+            textLabel.font = UIFont.systemFont(ofSize: 16)
+            textLabel.lineBreakMode = NSLineBreakMode.byCharWrapping //文字で改行
+
             // ラベルを90°回転させる
             rotateAngle(label: textLabel as! TTTAttributedLabel, data: self.cardData?.text)
             (textLabel as! TTTAttributedLabel).verticalAlignment = .center
-
             //textLabel.backgroundColor = UIColor.yellow
 
         }else{
@@ -155,16 +165,17 @@ class HomeViewController: UIViewController {
             textLabel.text = self.cardData?.text
             textLabel.textAlignment = .center
             //textLabel.backgroundColor = UIColor.red
+            
+            textLabel.backgroundColor = UIColor.clear
+            textLabel.tag = 2
+            view.addSubview(textLabel)
+            textLabel.textColor = UIColor.black
+            textLabel.numberOfLines = 0
+            textLabel.font = UIFont.systemFont(ofSize: 16)
+            textLabel.lineBreakMode = NSLineBreakMode.byCharWrapping //文字で改行
 
         }
         
-        // デザイン
-        textLabel.backgroundColor = UIColor.clear
-        textLabel.tag = 2
-        view.addSubview(textLabel)
-        textLabel.textColor = UIColor.black
-        textLabel.numberOfLines = 0
-        textLabel.font = UIFont.systemFont(ofSize: 16)
         
         print("DEBUG_PRINT: HomeViewController showWord end")
     }
@@ -236,10 +247,6 @@ class HomeViewController: UIViewController {
             (action: UIAlertAction!) -> Void in
             callback()
         })
-//        let cancelAction: UIAlertAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel, handler: {
-//            (action: UIAlertAction!) -> Void in
-//        })
-//        alert.addAction(cancelAction)
         alert.addAction(defaultAction)
         
         present(alert, animated: true, completion: nil)
