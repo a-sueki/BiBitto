@@ -92,7 +92,11 @@ class AddViewController: FormViewController {
             form.last! <<< ImageCheckRow<String>(option){ lrow in
                 lrow.title = option
                 lrow.selectableValue = option
-                lrow.value = nil
+                if option == Category.continents.first {
+                    lrow.value = option
+                }else{
+                    lrow.value = nil
+                }
             }
         }
         
