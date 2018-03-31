@@ -108,9 +108,9 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="000" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="fbt-Yd-O71">
-                                        <rect key="frame" x="0.0" y="103.5" width="320" height="55"/>
+                                        <rect key="frame" x="0.0" y="89" width="320" height="55"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="55" id="kOP-vF-B5N"/>
+                                            <constraint firstAttribute="height" constant="55" id="Gue-EC-cZb"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="48"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -131,16 +131,16 @@
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Category" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="zEq-FU-wV5">
                                         <rect key="frame" x="66" y="29" width="188" height="32"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="zkh-XD-FJQ"/>
+                                            <constraint firstAttribute="height" constant="32" id="Zda-5v-BGA"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="28"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Author name" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="XTf-1c-xY3">
-                                        <rect key="frame" x="0.0" y="59" width="320" height="19.5"/>
+                                        <rect key="frame" x="0.0" y="62" width="320" height="19"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="8nH-Ej-UYA"/>
+                                            <constraint firstAttribute="height" constant="19" id="Uq1-1w-jjX"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -150,7 +150,7 @@
                                         <rect key="frame" x="8" y="477" width="304" height="34"/>
                                         <color key="backgroundColor" red="1" green="0.1857388616" blue="0.57339501380000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="34" id="8lV-hS-W9m"/>
+                                            <constraint firstAttribute="height" constant="34" id="EGB-ow-upi"/>
                                         </constraints>
                                         <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="NEXT"/>
@@ -158,26 +158,34 @@
                                             <action selector="handleNextButton:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="71f-uN-hl4"/>
                                         </connections>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7h0-Av-6Ya">
+                                        <rect key="frame" x="8" y="152" width="304" height="315"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="fbt-Yd-O71" firstAttribute="leading" secondItem="koM-Jv-e5a" secondAttribute="leading" id="7dz-ic-myG"/>
                                     <constraint firstAttribute="trailing" secondItem="8YE-wV-DcY" secondAttribute="trailing" constant="8" id="8uv-FI-0BG"/>
+                                    <constraint firstAttribute="trailing" secondItem="7h0-Av-6Ya" secondAttribute="trailing" constant="8" id="BLC-pi-g54"/>
                                     <constraint firstAttribute="trailing" secondItem="6ul-rz-vtG" secondAttribute="trailing" constant="8" id="Epl-Im-OIt"/>
+                                    <constraint firstItem="8YE-wV-DcY" firstAttribute="top" secondItem="7h0-Av-6Ya" secondAttribute="bottom" constant="10" id="EtD-Z7-6Wg"/>
+                                    <constraint firstItem="7h0-Av-6Ya" firstAttribute="top" secondItem="fbt-Yd-O71" secondAttribute="bottom" constant="8" id="Fcp-TD-Wt3"/>
                                     <constraint firstItem="6ul-rz-vtG" firstAttribute="leading" secondItem="zEq-FU-wV5" secondAttribute="trailing" constant="8" id="Hns-xa-eqU"/>
                                     <constraint firstItem="6ul-rz-vtG" firstAttribute="top" secondItem="koM-Jv-e5a" secondAttribute="top" constant="20" id="I3m-hI-lD1"/>
                                     <constraint firstItem="8YE-wV-DcY" firstAttribute="leading" secondItem="koM-Jv-e5a" secondAttribute="leading" constant="8" id="M3q-K4-vyH"/>
                                     <constraint firstItem="zEq-FU-wV5" firstAttribute="centerY" secondItem="6ul-rz-vtG" secondAttribute="centerY" id="MJV-XM-hHf"/>
-                                    <constraint firstItem="fbt-Yd-O71" firstAttribute="top" secondItem="XTf-1c-xY3" secondAttribute="bottom" constant="25" id="Mo7-US-Jzw"/>
+                                    <constraint firstItem="fbt-Yd-O71" firstAttribute="top" secondItem="XTf-1c-xY3" secondAttribute="bottom" constant="8" id="Mo7-US-Jzw"/>
                                     <constraint firstAttribute="trailing" secondItem="XTf-1c-xY3" secondAttribute="trailing" id="Pnx-6O-A4q"/>
                                     <constraint firstItem="zEq-FU-wV5" firstAttribute="centerX" secondItem="koM-Jv-e5a" secondAttribute="centerX" id="T4K-Rg-miE"/>
                                     <constraint firstItem="8YE-wV-DcY" firstAttribute="centerX" secondItem="koM-Jv-e5a" secondAttribute="centerX" id="Zjy-1m-Cxf"/>
                                     <constraint firstItem="XTf-1c-xY3" firstAttribute="centerX" secondItem="koM-Jv-e5a" secondAttribute="centerX" id="aVr-Dd-taE"/>
+                                    <constraint firstItem="7h0-Av-6Ya" firstAttribute="leading" secondItem="koM-Jv-e5a" secondAttribute="leading" constant="8" id="afm-H9-H1U"/>
                                     <constraint firstItem="XTf-1c-xY3" firstAttribute="leading" secondItem="koM-Jv-e5a" secondAttribute="leading" id="b3I-Am-Uhd"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="8YE-wV-DcY" secondAttribute="bottom" id="ebK-G9-jJz"/>
                                     <constraint firstItem="fbt-Yd-O71" firstAttribute="centerX" secondItem="koM-Jv-e5a" secondAttribute="centerX" id="iD9-hU-nYh"/>
                                     <constraint firstAttribute="trailing" secondItem="fbt-Yd-O71" secondAttribute="trailing" id="uja-ER-Bay"/>
-                                    <constraint firstItem="XTf-1c-xY3" firstAttribute="top" secondItem="zEq-FU-wV5" secondAttribute="bottom" constant="-2" id="wzw-lE-xZY"/>
+                                    <constraint firstItem="XTf-1c-xY3" firstAttribute="top" secondItem="zEq-FU-wV5" secondAttribute="bottom" constant="1" id="wzw-lE-xZY"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -194,6 +202,7 @@
                     <connections>
                         <outlet property="authorNameLabel" destination="XTf-1c-xY3" id="Qgc-pU-vPX"/>
                         <outlet property="backgroundView" destination="koM-Jv-e5a" id="rec-hD-185"/>
+                        <outlet property="baseView" destination="7h0-Av-6Ya" id="Y4F-88-nYR"/>
                         <outlet property="categoryLabel" destination="zEq-FU-wV5" id="b5c-iC-af7"/>
                         <outlet property="nextButton" destination="8YE-wV-DcY" id="Btj-Ry-uU0"/>
                         <outlet property="noLabel" destination="fbt-Yd-O71" id="EMq-6G-7of"/>

@@ -25,6 +25,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var authorNameLabel: UILabel!
     @IBOutlet weak var noLabel: UILabel!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var baseView: UIView!
     
     lazy var signUpViewController: SignUpViewController = {
         let signUpViewController = self.storyboard?.instantiateViewController(withIdentifier: "SignUpViewController")
@@ -100,7 +101,7 @@ class HomeViewController: UIViewController {
     func removeSubviews(parentView: UIView){
         print("DEBUG_PRINT: HomeViewController removeAllSubviews start")
 
-        let subviews = parentView.subviews
+        let subviews = baseView.subviews
         for subview in subviews {
             print(subview)
             if subview.tag == 1 || subview.tag == 2 {
@@ -134,46 +135,38 @@ class HomeViewController: UIViewController {
 
         if hasJp {
             // 縦書き対応
-            textLabel = TTTAttributedLabel(frame: CGRect(
-                x: -10,
-                y: view.frame.height/3,
-                width: view.frame.height/5 * 3,
-                height: view.frame.width/10 * 8))
-            print(view.frame.height)    //736.0
-            print(view.frame.width)     //414.0
-            
+            textLabel = TTTAttributedLabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+            // デザイン
             textLabel.backgroundColor = UIColor.clear
-            textLabel.tag = 2
+            textLabel.tag = 1
             view.addSubview(textLabel)
             textLabel.textColor = UIColor.black
             textLabel.numberOfLines = 0
-            textLabel.font = UIFont.systemFont(ofSize: 16)
             textLabel.lineBreakMode = NSLineBreakMode.byCharWrapping //文字で改行
 
             // ラベルを90°回転させる
             rotateAngle(label: textLabel as! TTTAttributedLabel, data: self.cardData?.text)
             (textLabel as! TTTAttributedLabel).verticalAlignment = .center
-            //textLabel.backgroundColor = UIColor.yellow
-
+            
+            // 配置
+            baseView.addSubview(textLabel)
+            baseView.addFitConstraints(to: textLabel)
+            
         }else{
             // 横書き
-            textLabel = UILabel(frame: CGRect(
-                x: view.frame.width/10,
-                y: view.frame.height/4,
-                width: view.frame.width/10 * 8 ,
-                height: view.frame.height/5  * 3))
+            textLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
             textLabel.text = self.cardData?.text
             textLabel.textAlignment = .center
-            //textLabel.backgroundColor = UIColor.red
-            
+            // デザイン
             textLabel.backgroundColor = UIColor.clear
             textLabel.tag = 2
-            view.addSubview(textLabel)
             textLabel.textColor = UIColor.black
             textLabel.numberOfLines = 0
-            textLabel.font = UIFont.systemFont(ofSize: 16)
             textLabel.lineBreakMode = NSLineBreakMode.byCharWrapping //文字で改行
 
+            // 配置
+            baseView.addSubview(textLabel)
+            baseView.addFitConstraints(to: textLabel)
         }
         
         
@@ -270,5 +263,39 @@ extension Array {
         var copied = Array<Element>(self)
         copied.shuffle()
         return copied
+    }
+}
+
+extension UIView {
+    func addFitConstraints(to: UIView) {
+        to.translatesAutoresizingMaskIntoConstraints = false
+        self.addConstraint(NSLayoutConstraint(item: to,
+                                              attribute: .top,
+                                              relatedBy: .equal,
+                                              toItem: self,
+                                              attribute: .top,
+                                              multiplier: 1.0,
+                                              constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: to,
+                                              attribute: .leading,
+                                              relatedBy: .equal,
+                                              toItem: self,
+                                              attribute: .leading,
+                                              multiplier: 1.0,
+                                              constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: self,
+                                              attribute: .bottom,
+                                              relatedBy: .equal,
+                                              toItem: to,
+                                              attribute: .bottom,
+                                              multiplier: 1.0,
+                                              constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: self,
+                                              attribute: .trailing,
+                                              relatedBy: .equal,
+                                              toItem: to,
+                                              attribute: .trailing,
+                                              multiplier: 1.0,
+                                              constant: 0))
     }
 }
