@@ -150,8 +150,7 @@ class HomeViewController: UIViewController {
             // 配置
             baseView.addSubview(textLabel)
             baseView.addFitConstraints(to: textLabel)
-            
-        }else{
+         }else{
             // 横書き
             textLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
             textLabel.text = self.cardData?.text
