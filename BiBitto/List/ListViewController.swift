@@ -49,6 +49,13 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         tableView.contentInset = edgeInsets
         tableView.scrollIndicatorInsets = edgeInsets
         
+        // カード一覧をローカルファイルから取得
+        let originCardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        // 作成日で並び替え
+        self.cardDataArray = originCardDataArray.sorted(by: {
+            $0.createAt.compare($1.createAt as Date) == ComparisonResult.orderedDescending
+        })
+        
         print("DEBUG_PRINT: ListViewController viewDidLoad end")
     }
     
@@ -56,9 +63,8 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: ListViewController viewWillAppear start")
         
-        let originCardDataArray = Files.readCardDocument(fileName: Files.card_file)
         // 作成日で並び替え
-        self.cardDataArray = originCardDataArray.sorted(by: {
+        self.cardDataArray = self.cardDataArray.sorted(by: {
             $0.createAt.compare($1.createAt as Date) == ComparisonResult.orderedDescending
         })
 
@@ -67,30 +73,6 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
             print("DEBUG_PRINT: ListViewController [DispatchQueue.main.async]")
             self.tableView.reloadData()
         }
-
-        /*        cardDataArray.removeAll()
-        
-        if let uid = Auth.auth().currentUser?.uid {
-            let ref = Database.database().reference().child(Paths.CardPath).child(uid)
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                print("DEBUG_PRINT: ListViewController .observeSingleEventイベントが発生しました。")
-                if let _ = snapshot.value as? NSDictionary {
-                    for childSnap in snapshot.children {
-                        let cardData = CardData(snapshot: childSnap as! DataSnapshot)
-                        self.cardDataArray.append(cardData)
-                    }
-                }
-                // tableViewを再表示する
-                DispatchQueue.main.async {
-                    print("DEBUG_PRINT: ListViewController [DispatchQueue.main.async]")
-                    self.tableView.reloadData()
-                }
-            }) { (error) in
-                print(error.localizedDescription)
-            }
-        }
- */
-        
         
         print("DEBUG_PRINT: ListViewController viewWillAppear end")
     }
@@ -100,10 +82,26 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("DEBUG_PRINT: ListViewController viewWillDisappear start")
+        
+        /* Searchでの絞り込みリセット */
+        // カード一覧をローカルファイルから取得
+        let originCardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        // 作成日で並び替え
+        self.cardDataArray = originCardDataArray.sorted(by: {
+            $0.createAt.compare($1.createAt as Date) == ComparisonResult.orderedDescending
+        })
+        
+        print("DEBUG_PRINT: ListViewController viewWillDisappear end")
+    }
+    
     @objc func searchButtonTapped() {
         print("DEBUG_PRINT: ListViewController searchButtonTapped start")
         
         let searchViewController = self.storyboard?.instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
+        searchViewController.cardDataArray = self.cardDataArray
         self.navigationController?.pushViewController(searchViewController, animated: true)
         
         print("DEBUG_PRINT: ListViewController searchButtonTapped end")
@@ -165,7 +163,6 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         
         //xibとカスタムクラスで作成したCellのインスタンスを作成
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
-//        let noStr = String(format: "%03d", cardDataArray.count + 1)
         
         cell.setData(cardData: cardDataArray[indexPath.row])
         
@@ -207,7 +204,7 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
             Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
 
             //TODO: 検索ワードtxtも洗い替え？
-        
+            
         }
 
         // 一覧画面から削除

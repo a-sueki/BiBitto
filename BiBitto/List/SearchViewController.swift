@@ -12,7 +12,8 @@ import RAMReel
 class SearchViewController: UIViewController , UICollectionViewDelegate{
     var dataSource: SimplePrefixQueryDataSource!
     var ramReel: RAMReel<RAMCell, RAMTextField, SimplePrefixQueryDataSource>!
-    
+    var cardDataArray: [CardData] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,19 +32,28 @@ class SearchViewController: UIViewController , UICollectionViewDelegate{
         
         let words = Files.readDocument(fileName: Files.word_file)
         dataSource = SimplePrefixQueryDataSource(words)
-
+        
         let ramReel = RAMReel<RAMCell, RAMTextField, SimplePrefixQueryDataSource>(frame: self.view.frame, dataSource: dataSource, placeholder: "Start by typing…") {
             print("Plain:", $0)
-            //TODO: 選択された単語で$0フィルタリング
-            
-            //TODO: 一覧に戻る
-            
         }
         
+        var refinedCardDataArray = Array<CardData>()
         ramReel.hooks.append {
-            let r = Array($0.characters.reversed())
-            let j = String(r)
-            print("Reversed:", j) //Reversed: yldrawkwa
+            
+            for card in self.cardDataArray {
+                //大文字小文字を無視させて評価
+                if card.text.lowercased().contains($0) || card.text.localizedCaseInsensitiveContains($0){
+                    refinedCardDataArray.append(card)
+                }
+            }
+            // 一覧へのデータ渡し
+            let nav = self.navigationController!
+            //呼び出し元のView Controllerを遷移履歴から取得しパラメータを渡す
+            let listViewController = nav.viewControllers[nav.viewControllers.count-2] as! ListViewController
+            listViewController.cardDataArray = refinedCardDataArray
+            // 前画面に戻る
+            self.navigationController?.popViewController(animated: false)
+
         }
         
         self.view.addSubview(ramReel.view)

@@ -56,7 +56,6 @@ class HomeViewController: UIViewController {
             SVProgressHUD.showInfo(withStatus: "カードがありません")
         }
         
-        
         print("DEBUG_PRINT: HomeViewController viewWillAppear end")
     }
         
@@ -90,7 +89,7 @@ class HomeViewController: UIViewController {
                 subview.removeFromSuperview()
             }
         }
-            
+                
         print("DEBUG_PRINT: HomeViewController viewWillDisappear end")
     }
     
