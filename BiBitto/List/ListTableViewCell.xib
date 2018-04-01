@@ -21,7 +21,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="spK-iF-MQa">
                         <rect key="frame" x="4" y="2" width="397" height="92.5"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v7F-iL-8eV">
+                            <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v7F-iL-8eV">
                                 <rect key="frame" x="64" y="0.0" width="8" height="93"/>
                                 <color key="backgroundColor" red="0.27450980392156865" green="0.28235294117647058" blue="0.72156862745098038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -76,6 +76,7 @@
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="baseView" destination="spK-iF-MQa" id="EJR-KK-587"/>
                 <outlet property="categoryImageView" destination="v7F-iL-8eV" id="Jnj-Cq-AGT"/>
                 <outlet property="noLabel" destination="KY7-el-kth" id="eGa-Bz-2ck"/>
                 <outlet property="wordLabel" destination="QwA-Ng-okf" id="4IB-1k-AvS"/>
