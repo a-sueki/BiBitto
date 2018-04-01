@@ -218,7 +218,7 @@ struct Files {
             do {
                 let jsondata = try? Data(contentsOf: path_file_name)
                 //-- 配列データに変換して
-                if jsondata != nil {
+                if jsondata?.hashValue != 0 {
                 let jsonArray = (try! JSONSerialization.jsonObject(with: jsondata!, options: [])) as! NSArray
                 print("DEBUG_PRINTjsonArray: \(jsonArray)")
                 for jsonItem in jsonArray {

@@ -10,7 +10,7 @@ import Firebase
 import FirebaseDatabase
 
 class CardData: NSObject {
-
+    
     var id: String
     var no: Int
     var text: String
@@ -28,20 +28,20 @@ class CardData: NSObject {
         self.category = valueDictionary["category"] as! String
         let createAt = valueDictionary["createAt"] as? String
         if createAt?.characters.count == 25 {
-            self.createAt = DateUtils.dateFromString(string:createAt!, format: "yyyy-mm-dd HH:mm:ss Z")
+            self.createAt = DateUtils.dateFromString(string:createAt!, format: "yyyy-MM-dd HH:mm:ss Z")
         }else{
             self.createAt = NSDate(timeIntervalSinceReferenceDate: TimeInterval(createAt!)!)
         }
         let updateAt = valueDictionary["updateAt"] as? String
         if updateAt?.characters.count == 25 {
-            self.updateAt = DateUtils.dateFromString(string:updateAt!, format: "yyyy-mm-dd HH:mm:ss Z")
+            self.updateAt = DateUtils.dateFromString(string:updateAt!, format: "yyyy-MM-dd HH:mm:ss Z")
         }else{
             self.updateAt = NSDate(timeIntervalSinceReferenceDate: TimeInterval(updateAt!)!)
         }
     }
     
     convenience init(snapshot: DataSnapshot) {
-
+        
         let valueDictionary = snapshot.value as! [String: AnyObject]
         self.init(valueDictionary: valueDictionary)
         self.id = snapshot.key
@@ -75,14 +75,15 @@ class CardUtils {
             var outputData = [String : Any]()
             outputData["no"] = $0.no
             outputData["text"] = $0.text
-            outputData["createAt"] = DateUtils.stringFromDate(date: $0.createAt, format: "yyyy-mm-dd HH:mm:ss Z")
+            outputData["createAt"] = DateUtils.stringFromDate(date: $0.createAt, format: "yyyy-MM-dd HH:mm:ss Z")
             outputData["author"] = $0.author ?? ""
             outputData["category"] = $0.category
             outputData["id"] = $0.id
-            outputData["updateAt"] = DateUtils.stringFromDate(date: $0.updateAt, format: "yyyy-mm-dd HH:mm:ss Z")
+            outputData["updateAt"] = DateUtils.stringFromDate(date: $0.updateAt, format: "yyyy-MM-dd HH:mm:ss Z")
             outputDataArray.append(outputData)
         }
         print("DEBUG_PRINT: CardUtils.cardToDictionary: end")
         return outputDataArray
     }
 }
+
