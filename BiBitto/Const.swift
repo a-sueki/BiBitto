@@ -21,8 +21,6 @@ struct DefaultString {
     static let Uid = "uid"              // FBアカウント（uid）
     static let Mail = "mail"            // FBアカウント（メール）
     static let Password = "password"    // FBアカウント（パスワード）
-    static let CardDataArray = "cardDataArray"  // カードデータ
-    static let AutoBackup = "autoBackup"    // FBへの自動バックアップ（true:ON）
 }
 struct ErrorMsgString {
     static let RulePassword = "パスワードは6~12文字で設定して下さい"
@@ -124,11 +122,11 @@ struct Files {
     static let card_file = "card.txt"
     static let excludes = CharacterSet(charactersIn: "!#$%()*+,-./:;=?@[\\]^_`{|}~\t、。　！＃＄％（）＊＋，－．／：；＝？＠［＼］＾＿｀｛｜｝～゛†")
     
-    // Documentフォルダのファイルを全件クリア
+    // Libraryフォルダのファイルを全件クリア
     static func refreshDocument(fileName: String) {
         print("DEBUG_PRINT: refreshDocument start")
         
-        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+        if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 try "".write(to: path_file_name, atomically: true, encoding: String.Encoding.utf8)
@@ -137,11 +135,11 @@ struct Files {
             }
         }
     }
-    // Documentフォルダのファイルにデータを保存（末尾に追記）
+    // Libraryフォルダのファイルにデータを保存（末尾に追記）
     static func writeDocument(dataArray : [String], fileName: String) {
         print("DEBUG_PRINT: writeDocument start")
         
-        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+        if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 for  text in dataArray {
@@ -153,7 +151,7 @@ struct Files {
         }
     }
     
-    // Documentフォルダのファイルにデータを保存（全件洗い替え）
+    // Libraryフォルダのファイルにデータを保存（全件洗い替え）
     static func writeCardDocument(cardDataArray: Array<[String:Any]>, fileName: String) {
         print("DEBUG_PRINT: writeCardDocument start")
         print("DEBUG_PRINT: writeCardDocument 0: \(cardDataArray)")
@@ -171,7 +169,7 @@ struct Files {
             }
         }
         
-        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+        if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 print("DEBUG_PRINT: writeCardDocument 1: \(path_file_name)")
@@ -187,11 +185,11 @@ struct Files {
             }
         }
     }
-    // DocumentフォルダからString配列（¥n区切り）を読み込み
+    // LibraryフォルダからString配列（¥n区切り）を読み込み
     static func readDocument(fileName: String) -> [String] {
         print("DEBUG_PRINT: readDocument start")
         
-        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+        if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 let contents = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
@@ -206,13 +204,32 @@ struct Files {
         return []
     }
     
-    // Documentフォルダからjsonデータ（cardファイル）を読み込み
+    // DocumentフォルダのimportファイルからString配列（任意の区切り文字）を読み込み
+    static func readImportDocument(fileName: String, separator: Character) -> [String] {
+        print("DEBUG_PRINT: readImportDocument start")
+        
+        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+            let path_file_name = dir.appendingPathComponent( fileName )
+            do {
+                let contents = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
+                if !contents.isEmpty {
+                    let data = contents.characters.split(separator: separator)
+                    return data.map(String.init)
+                }
+            } catch let error{
+                print("DEBUG_PRINT: readImportDocument: \(error.localizedDescription)")
+            }
+        }
+        return []
+    }
+    
+    // Libraryフォルダからjsonデータ（cardファイル）を読み込み
     static func readCardDocument(fileName: String) -> [CardData] {
         print("DEBUG_PRINT: readCardDocument start")
         
         var cardDataArray: [CardData] = []
         
-        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+        if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             print("DEBUG_PRINTpath_file_name: \(path_file_name)")
             do {

@@ -36,6 +36,15 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         print("DEBUG_PRINT: HomeViewController viewDidLoad start")
         
+        // ユーザに見えるファイル。一括読み込み対応
+        let fm = FileManager.default
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        //let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let filePath = documentsPath + "/importFile.txt"
+        if !fm.fileExists(atPath: filePath) {
+            fm.createFile(atPath: filePath, contents: nil, attributes: [:])
+        }
+        
         print("DEBUG_PRINT: HomeViewController viewDidLoad end")
     }
     

@@ -15,7 +15,7 @@ import FirebaseAuth
 class AccountViewController: FormViewController {
     
     var inputData = [String : Any]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("DEBUG_PRINT: AccountViewController viewDidLoad start")
@@ -129,7 +129,8 @@ class AccountViewController: FormViewController {
                     }
                 })
             }
-            <<< ButtonRow() { (row: ButtonRow) -> Void in
+            
+         <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "変更を保存"
                 }.onCellSelection { [weak self] (cell, row) in
                     if let error = row.section?.form?.validate(), error.count != 0 {

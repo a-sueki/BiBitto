@@ -24,6 +24,7 @@
 		846848E61FCB714500D7C0BF /* readme.strings in Resources */ = {isa = PBXBuildFile; fileRef = 846848E51FCB714500D7C0BF /* readme.strings */; };
 		84937CC81FA2E1D8003F5D1E /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84937CC61FA2E1D8003F5D1E /* ListTableViewCell.swift */; };
 		84937CC91FA2E1D8003F5D1E /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84937CC71FA2E1D8003F5D1E /* ListTableViewCell.xib */; };
+		84A0A61A2074868000D940BD /* ImportDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A0A6192074868000D940BD /* ImportDataViewController.swift */; };
 		84A4C6841FA2F53A002366FD /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4C6831FA2F53A002366FD /* SearchViewController.swift */; };
 		84C2613E1FA19A31004B3520 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */; };
 		84C261441FA1AEDE004B3520 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C261431FA1AEDE004B3520 /* SignUpViewController.swift */; };
@@ -53,6 +54,7 @@
 		846848E51FCB714500D7C0BF /* readme.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = readme.strings; sourceTree = "<group>"; };
 		84937CC61FA2E1D8003F5D1E /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		84937CC71FA2E1D8003F5D1E /* ListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
+		84A0A6192074868000D940BD /* ImportDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportDataViewController.swift; sourceTree = "<group>"; };
 		84A4C6831FA2F53A002366FD /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		84C261431FA1AEDE004B3520 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				845851CF1F9C8116002F9AA0 /* SettingViewController.swift */,
 				840272BA1FA2189B001C0BFB /* AccountViewController.swift */,
 				840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */,
+				84A0A6192074868000D940BD /* ImportDataViewController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				84C448601FA36C7C00C0678C /* CategoryViewController.swift in Sources */,
 				845851BA1F9C686E002F9AA0 /* AppDelegate.swift in Sources */,
 				845851BC1F9C686E002F9AA0 /* ListViewController.swift in Sources */,
+				84A0A61A2074868000D940BD /* ImportDataViewController.swift in Sources */,
 				840272BE1FA22ABC001C0BFB /* PasswordResetViewController.swift in Sources */,
 				845851D21F9C8259002F9AA0 /* Const.swift in Sources */,
 			);

@@ -363,6 +363,7 @@
                     <connections>
                         <outlet property="tableView" destination="9iF-T6-hc4" id="1Ot-30-VVv"/>
                         <segue destination="0q0-ks-WhQ" kind="push" identifier="AccountControllerSegue" id="elL-py-Oil"/>
+                        <segue destination="hRR-lW-VSD" kind="push" identifier="ImportDataViewControllerSegue" id="i3z-0H-chA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C3m-Tl-IQG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -377,9 +378,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Vyj-Jw-h1Q">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Vyj-Jw-h1Q">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -393,6 +394,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="アカウント" id="APZ-bH-zUt"/>
                     <connections>
+                        <outlet property="tableView" destination="Vyj-Jw-h1Q" id="Rxo-8w-jzx"/>
                         <segue destination="DsM-MV-7u9" kind="push" identifier="PasswordResetControllerSegue" id="lQe-M2-PtG"/>
                     </connections>
                 </viewController>
@@ -400,7 +402,38 @@
             </objects>
             <point key="canvasLocation" x="1438" y="1099"/>
         </scene>
-        <!--Password Reset View Controller-->
+        <!--ファイルから読み込み-->
+        <scene sceneID="JP4-R2-Tse">
+            <objects>
+                <viewController storyboardIdentifier="ImportDataViewController" id="hRR-lW-VSD" customClass="ImportDataViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IY0-Jz-Dgf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ioV-x6-KOg">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ioV-x6-KOg" firstAttribute="bottom" secondItem="rEU-Z0-QdT" secondAttribute="bottom" id="3wP-7v-ScF"/>
+                            <constraint firstItem="ioV-x6-KOg" firstAttribute="top" secondItem="IY0-Jz-Dgf" secondAttribute="top" id="QE5-cj-LKk"/>
+                            <constraint firstItem="ioV-x6-KOg" firstAttribute="leading" secondItem="rEU-Z0-QdT" secondAttribute="leading" id="W3s-vb-3yO"/>
+                            <constraint firstItem="ioV-x6-KOg" firstAttribute="trailing" secondItem="rEU-Z0-QdT" secondAttribute="trailing" id="lCe-5H-90E"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="rEU-Z0-QdT"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="ファイルから読み込み" id="iA0-iV-dqw"/>
+                    <connections>
+                        <outlet property="tableView" destination="ioV-x6-KOg" id="mFK-YI-1eL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YWC-rd-Yuo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1436" y="1838"/>
+        </scene>
+        <!--パスワードリセット-->
         <scene sceneID="FgY-0w-BYT">
             <objects>
                 <viewController storyboardIdentifier="PasswordResetViewController" id="DsM-MV-7u9" customClass="PasswordResetViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -408,9 +441,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="yOM-a4-8Ie">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="yOM-a4-8Ie">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -422,7 +455,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="E9d-jD-Tac"/>
                     </view>
-                    <navigationItem key="navigationItem" id="A6L-N9-gW3"/>
+                    <navigationItem key="navigationItem" title="パスワードリセット" id="A6L-N9-gW3"/>
+                    <connections>
+                        <outlet property="tableView" destination="yOM-a4-8Ie" id="9Fn-WE-Uua"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ac9-au-MdW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

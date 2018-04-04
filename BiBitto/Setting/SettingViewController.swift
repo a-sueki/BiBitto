@@ -16,7 +16,6 @@ import SVProgressHUD
 class SettingViewController: FormViewController {
     
     var inputData = [String : Any]()
-    var autoBackupFlag = false
         
     lazy var signUpViewController: SignUpViewController = {
         let signUpViewController = self.storyboard?.instantiateViewController(withIdentifier: "SignUpViewController")
@@ -81,58 +80,29 @@ class SettingViewController: FormViewController {
                     vc.enableDeselection = false
                     vc.dismissOnSelection = false
                 })
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.title = "通知設定を保存する"
+                }.onCellSelection { [weak self] (cell, row) in
+                    if let error = row.section?.form?.validate(), error.count != 0 {
+                        print("DEBUG_PRINT: SettingViewController.save \(error)のため処理は行いません")
+                    }else{
+                        self?.save()
+                    }
+            }
             
             +++ Section("アカウント")
             <<< ButtonRow("Account") { (row: ButtonRow) -> Void in
                 row.title = "アカウント"
                 row.presentationMode = .segueName(segueName: "AccountControllerSegue", onDismiss: nil)
             }
+
             
-            +++ Section("バックアップ")
-            <<< SwitchRow("AutoBackup") {
-                $0.title = "自動バックアップをONにする"
-                if Auth.auth().currentUser == nil {
-                    $0.value = false
-                }else{
-                    $0.value = true
-                }
-                }.onChange { [weak self] in
-                    if $0.value == true {
-                        self?.autoBackupFlag = true
-                        if UserDefaults.standard.object(forKey: DefaultString.Mail) == nil {
-                            self?.signUp()
-                        }
-                    }
+            +++ Section("データ管理")
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.title = "復元/ファイル読込"
+                row.presentationMode = .segueName(segueName: "ImportDataViewControllerSegue", onDismiss: nil)
             }
 
-            +++ Section()
-            <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "バックアップから復元する"
-                }.onCellSelection { [weak self] (cell, row) in
-                    if let error = row.section?.form?.validate(), error.count != 0 {
-                        print("DEBUG_PRINT: SettingViewController.restore \(error)のため処理は行いません")
-                    }else{
-                        if Auth.auth().currentUser == nil {
-                            SVProgressHUD.showSuccess(withStatus: Alert.loginAlartTitle)
-                        }else{
-                            self?.restore()
-                        }
-                    }
-            }
-
-            <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "設定を保存する"
-                }.onCellSelection { [weak self] (cell, row) in
-                    if let error = row.section?.form?.validate(), error.count != 0 {
-                        print("DEBUG_PRINT: SettingViewController.save \(error)のため処理は行いません")
-                    }else{
-                        if (self?.autoBackupFlag)!, Auth.auth().currentUser == nil {
-                            SVProgressHUD.showSuccess(withStatus: Alert.loginAlartTitle)
-                        }else{
-                            self?.save()
-                        }
-                    }
-        }
         print("DEBUG_PRINT: SettingViewController initializeForm end")
     }
     
@@ -157,7 +127,6 @@ class SettingViewController: FormViewController {
                 inputData["\(key)"] = value
             }
         }
-        UserDefaults.standard.set(inputData["AutoBackup"], forKey: DefaultString.AutoBackup)
         registerLocalNotification(inputData: inputData)
         
         // 全てのモーダルを閉じる
@@ -167,40 +136,7 @@ class SettingViewController: FormViewController {
 
         print("DEBUG_PRINT: SettingViewController save end")
     }
-    
-    @IBAction func restore() {
-        print("DEBUG_PRINT: SettingViewController restore start")
         
-        var cardDataArray: [CardData] = []
-        // Firebaseからデータを取得し、UserDefaultにセット
-        if let uid = Auth.auth().currentUser?.uid {
-            let ref = Database.database().reference().child(Paths.CardPath).child(uid)
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                print("DEBUG_PRINT: SettingViewController restore .observeSingleEventイベントが発生しました。")
-                if let _ = snapshot.value as? NSDictionary {
-                    let cardData = CardData(snapshot: snapshot)
-                    cardDataArray.append(cardData)
-                }
-                // UserDefaultにセット
-                DispatchQueue.main.async {
-                    print("DEBUG_PRINT: SettingViewController restore [DispatchQueue.main.async]")
-
-                    print(cardDataArray)
-                    UserDefaults.standard.set(cardDataArray, forKey: DefaultString.CardDataArray)
-                }
-            }) { (error) in
-                print(error.localizedDescription)
-            }
-        }
-        
-        // 全てのモーダルを閉じる
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
-        // 成功ポップアップ
-        SVProgressHUD.showSuccess(withStatus: Alert.successRestoreTitle)
-        
-        print("DEBUG_PRINT: SettingViewController restore end")
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("DEBUG_PRINT: SettingViewController viewWillDisappear start")
