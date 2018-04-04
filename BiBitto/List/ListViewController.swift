@@ -7,12 +7,11 @@
 //
 
 import UIKit
-import Tabman
 import Pageboy
 import Firebase
 import FirebaseAuth
 
-class ListViewController: TabmanViewController, PageboyViewControllerDataSource, UITableViewDelegate, UITableViewDataSource {
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     private var viewControllers = [UIViewController]()
@@ -30,12 +29,6 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
         tableView.register(nib, forCellReuseIdentifier: "ListTableViewCell")
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        self.dataSource = self
-        
-        // configure the bar
-        self.bar.items = [Item(title: "Page 1"),
-                          Item(title: "Page 2")]
-        
         // search button
         let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.search, target: self, action: #selector(searchButtonTapped))
         self.navigationItem.setRightBarButtonItems([rightSearchBarButtonItem], animated: true)
@@ -45,7 +38,7 @@ class ListViewController: TabmanViewController, PageboyViewControllerDataSource,
 
         // 潜り込み防止策
         tableView.contentInsetAdjustmentBehavior = .automatic
-        let edgeInsets = UIEdgeInsets(top: 42, left: 0, bottom: 0, right: 0)
+        let edgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         tableView.contentInset = edgeInsets
         tableView.scrollIndicatorInsets = edgeInsets
         
