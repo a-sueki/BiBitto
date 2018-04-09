@@ -15,6 +15,10 @@ struct Paths {
     static let CardPath = "card"
 }
 
+struct URLs {
+    static let HowToUseLink = "https://www.apple.co.jp"
+}
+
 struct DefaultString {
     static let NoticeFlag = "noticeFlag"
     

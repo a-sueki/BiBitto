@@ -402,7 +402,7 @@
             </objects>
             <point key="canvasLocation" x="1438" y="1099"/>
         </scene>
-        <!--ファイルから読み込み-->
+        <!--復元／一括取込-->
         <scene sceneID="JP4-R2-Tse">
             <objects>
                 <viewController storyboardIdentifier="ImportDataViewController" id="hRR-lW-VSD" customClass="ImportDataViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -424,7 +424,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rEU-Z0-QdT"/>
                     </view>
-                    <navigationItem key="navigationItem" title="ファイルから読み込み" id="iA0-iV-dqw"/>
+                    <navigationItem key="navigationItem" title="復元／一括取込" id="iA0-iV-dqw"/>
                     <connections>
                         <outlet property="tableView" destination="ioV-x6-KOg" id="mFK-YI-1eL"/>
                     </connections>

@@ -47,7 +47,7 @@ class ImportDataViewController: FormViewController {
         
         // フォーム
         form +++
-            Section(header:"復元", footer:"最終保存日時:\(lastSavingDateTime)" )
+            Section(header:"復元（最終保存日時:\(lastSavingDateTime)）", footer:"オンラインバックアップの利用にはアカウント作成が必要です。" )
             <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "オンラインバックアップから復元"
                 // ログインしてない場合、非活性にして表示
@@ -70,13 +70,56 @@ class ImportDataViewController: FormViewController {
                     }
             }
             
-        +++ Section("ファイルから読み込み")
+        +++ Section(header:"ファイルから一括取込", footer:"取込対象のファイル（.csv形式）はご使用のiOSデバイスの「ファイル > BiBitto」内に格納してください")
+            // importデータのファイル名を取得
+            <<< NameRow("filename") {
+                $0.title = "ファイル名"
+                $0.placeholder = "TestCSV"
+                $0.value = nil
+                $0.add(rule: RuleRequired())
+                $0.validationOptions = .validatesOnBlur
+                }.cellUpdate { cell, row in
+                    if !row.isValid {
+                        cell.textLabel?.textColor = .red
+                    }
+                }.onRowValidationChanged { cell, row in
+                    let rowIndex = row.indexPath!.row
+                    while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                        row.section?.remove(at: rowIndex + 1)
+                    }
+                    if !row.isValid {
+                        for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                            let labelRow = LabelRow() {
+                                $0.title = validationMsg
+                                $0.cell.height = { 30 }
+                            }
+                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                        }
+                    }
+            }
+
             // 追加か、全件洗い替えか
-            // importデータのファイルパスを取得
-            // 区切り文字を選択させる
+            <<< PushRow<LoadingType>("LoadingType") {
+                $0.title = "追加/更新"
+                $0.options = LoadingType.allValues
+                $0.value = .Add
+                }.onPresent({ (_, vc) in
+                    vc.enableDeselection = false
+                    vc.dismissOnSelection = false
+                })
+            
+            // 区切り文字を選択させるLoading format
+            <<< PushRow<Delimiter>("Delimiter") {
+                $0.title = "区切り文字"
+                $0.options = Delimiter.allValues
+                $0.value = .Indention1
+                }.onPresent({ (_, vc) in
+                    vc.enableDeselection = false
+                    vc.dismissOnSelection = false
+                })
 
             <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "読み込み実行"
+                row.title = "一括取込の実行"
                 }.onCellSelection { [weak self] (cell, row) in
                     if let error = row.section?.form?.validate() , error.count != 0 {
                         print("DEBUG_PRINT: \(error)のため処理は行いません")
@@ -84,6 +127,14 @@ class ImportDataViewController: FormViewController {
                         self?.importFile()
                     }
             }
+
+            +++ Section("※チュートリアル※")
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.title = "ファイル取込方法を確認する"
+                }.onCellSelection { [weak self] (cell, row) in
+                    self?.jumpToHowtousePage()
+        }
+        
         
         print("DEBUG_PRINT: ImportDataViewController initializeForm end")
     }
@@ -192,6 +243,49 @@ class ImportDataViewController: FormViewController {
         
         
         print("DEBUG_PRINT: ImportDataViewController importFile end")
+    }
+    
+    @IBAction func jumpToHowtousePage() {
+        print("DEBUG_PRINT: ImportDataViewController jumpToHowtousePage start")
+        
+        guard let url = URL(string: URLs.HowToUseLink) else {
+            return //be safe
+        }
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+        
+        print("DEBUG_PRINT: ImportDataViewController jumpToHowtousePage end")
+    }
+    
+    enum LoadingType : String, CustomStringConvertible {
+        case Add = "追加"
+        case Update = "更新（全件削除→ファイルデータを取込）"
+        
+        var description : String { return rawValue }
+        
+        static let allValues = [Add, Update]
+    }
+/*
+    enum LoadingFileFormat : String, CustomStringConvertible {
+        case Csv = ".csvファイル"
+        case Txt = ".txtファイル" // 文字コードを指定させる必要あり
+        
+        var description : String { return rawValue }
+        
+        static let allValues = [Csv, Txt]
+    }
+    */
+    enum Delimiter : String, CustomStringConvertible {
+        case Indention1 = "改行（¥n）"
+        case Indention2 = "改行その２（\n）"
+        case Comma = "コンマ（,）"
+        
+        var description : String { return rawValue }
+        
+        static let allValues = [Indention1, Indention2, Comma]
     }
 
 }

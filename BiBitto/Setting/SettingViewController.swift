@@ -99,7 +99,7 @@ class SettingViewController: FormViewController {
             
             +++ Section("データ管理")
             <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "復元/ファイル読込"
+                row.title = "復元/外部ファイルから取込"
                 row.presentationMode = .segueName(segueName: "ImportDataViewControllerSegue", onDismiss: nil)
             }
 
