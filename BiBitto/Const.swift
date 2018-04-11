@@ -78,7 +78,8 @@ struct Alert {
     static let successSendTitle = "送信しました"
     static let successLoginTitle = "ログインしました"
     static let successLogoutTitle = "ログアウトしました"
-        
+    static let waiting = "Now Loading..."
+    static let limited = "999件以上はアカウント登録が必要です"
 }
 struct Category {
     static let continents = ["MINDE", "LEADERSHIP", "VISION", "WISDOM", "FELLOW"]
@@ -141,8 +142,6 @@ struct Files {
     }
     // Libraryフォルダのファイルにデータを保存（末尾に追記）
     static func writeDocument(dataArray : [String], fileName: String) {
-        print("DEBUG_PRINT: writeDocument start")
-        
         if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
@@ -155,19 +154,30 @@ struct Files {
         }
     }
     
+    // Libraryフォルダのファイルにデータを保存（末尾に追記）
+    static func writeDocument(dataArrayList : [[String]], fileName: String) {
+        if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
+            let path_file_name = dir.appendingPathComponent( fileName )
+            do {
+                for  textArray in dataArrayList {
+                    for text in textArray {
+                        try text.appendLineToURL(fileURL: path_file_name as URL)
+                    }
+                }
+            } catch let error{
+                print("DEBUG_PRINT: writeDocument: \(error.localizedDescription)")
+            }
+        }
+    }
+
     // Libraryフォルダのファイルにデータを保存（全件洗い替え）
     static func writeCardDocument(cardDataArray: Array<[String:Any]>, fileName: String) {
-        print("DEBUG_PRINT: writeCardDocument start")
-        print("DEBUG_PRINT: writeCardDocument 0: \(cardDataArray)")
         var jsonStrArray = Array<Any>()
         for card in cardDataArray {
             do {
-                print(card)
                 let jsonData = try JSONSerialization.data(withJSONObject: card, options: [])
                 let jsonStr = String(bytes: jsonData, encoding: .utf8)!
-                print("DEBUG_PRINT: 生成されたJSON文字列 =>\(jsonStr)")
                 jsonStrArray.append(jsonStr)
-                print("DEBUG_PRINT: 生成されたJSON文字列の配列 =>\(jsonStrArray)")
             } catch let error {
                 print(error)
             }
@@ -176,13 +186,8 @@ struct Files {
         if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
-                print("DEBUG_PRINT: writeCardDocument 1: \(path_file_name)")
-                
                 let jsonArrayData = try JSONSerialization.data(withJSONObject: jsonStrArray, options: [])
-                
-                print("DEBUG_PRINT: writeCardDocument 2: \(jsonArrayData)")
                 let jsonArrayStr = String(bytes: jsonArrayData, encoding: .utf8)!
-                print("DEBUG_PRINT: writeCardDocument 3: \(jsonArrayStr)")
                 try jsonArrayStr.write(to: path_file_name, atomically: true, encoding: String.Encoding.utf8)
             } catch let error{
                 print("DEBUG_PRINT: writeCardDocument: \(error.localizedDescription)")
@@ -191,14 +196,12 @@ struct Files {
     }
     // LibraryフォルダからString配列（¥n区切り）を読み込み
     static func readDocument(fileName: String) -> [String] {
-        print("DEBUG_PRINT: readDocument start")
-        
         if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 let contents = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
                 if !contents.isEmpty {
-                    let words = contents.characters.split(separator: "\n")
+                    let words = contents.split(separator: "\n")
                     return words.map(String.init)
                 }
             } catch let error{
@@ -210,14 +213,12 @@ struct Files {
     
     // DocumentフォルダのimportファイルからString配列（任意の区切り文字）を読み込み
     static func readImportDocument(fileName: String, separator: Character) -> [String] {
-        print("DEBUG_PRINT: readImportDocument start")
-        
         if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
             do {
                 let contents = try String(contentsOf: path_file_name, encoding: String.Encoding.utf8 )
                 if !contents.isEmpty {
-                    let data = contents.characters.split(separator: separator)
+                    let data = contents.split(separator: separator)
                     return data.map(String.init)
                 }
             } catch let error{
@@ -229,33 +230,20 @@ struct Files {
     
     // Libraryフォルダからjsonデータ（cardファイル）を読み込み
     static func readCardDocument(fileName: String) -> [CardData] {
-        print("DEBUG_PRINT: readCardDocument start")
-        
         var cardDataArray: [CardData] = []
         
         if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             let path_file_name = dir.appendingPathComponent( fileName )
-            print("DEBUG_PRINTpath_file_name: \(path_file_name)")
             do {
                 let jsondata = try? Data(contentsOf: path_file_name)
                 //-- 配列データに変換して
                 if jsondata != nil && jsondata?.hashValue != 0 {
                 let jsonArray = (try! JSONSerialization.jsonObject(with: jsondata!, options: [])) as! NSArray
-                print("DEBUG_PRINTjsonArray: \(jsonArray)")
                 for jsonItem in jsonArray {
-                    print("1")
-                    print(jsonItem)
                     let jsonData: Data =  (jsonItem as AnyObject).data(using: String.Encoding.utf8.rawValue)!
-                    print("2")
-                    print(jsonData)
                     // パースする
                     let card = try JSONSerialization.jsonObject(with: jsonData)  as! [String : AnyObject]
-                    //as! Dictionary<String, Any>
-                    print("3")
-                    print(card)
                     let cardData = CardData(valueDictionary: card)
-                    print("4")
-                    print(cardData)
                     cardDataArray.append(cardData)
                 }
                 }
@@ -323,7 +311,7 @@ extension String {
     }
     /// 漢字を含むかどうか
     var hasKanji: Bool {
-        let characters = self.characters.map { String($0) } // String -> [String]
+        let characters = self.map { String($0) } // String -> [String]
         for moji in characters {
             if moji.isKanji {
                 return  true
