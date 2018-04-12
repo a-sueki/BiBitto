@@ -33,7 +33,7 @@ class SearchViewController: UIViewController , UICollectionViewDelegate{
         let words = Files.readDocument(fileName: Files.word_file)
         dataSource = SimplePrefixQueryDataSource(words)
         
-        let ramReel = RAMReel<RAMCell, RAMTextField, SimplePrefixQueryDataSource>(frame: self.view.frame, dataSource: dataSource, placeholder: "Start by typing…") {
+        let ramReel = RAMReel<RAMCell, RAMTextField, SimplePrefixQueryDataSource>(frame: self.view.frame, dataSource: dataSource, placeholder: "Start by typing…", attemptToDodgeKeyboard: true) {
             print("Plain:", $0)
         }
         

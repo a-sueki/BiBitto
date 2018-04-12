@@ -102,7 +102,7 @@ class PasswordResetViewController: FormViewController {
         let email = self.inputData["mail"] as! String
 
         // 入力チェック
-        if email.characters.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email) == false {
+        if email.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email) == false {
             SVProgressHUD.showError(withStatus: Alert.validationEmail)
             return
         }

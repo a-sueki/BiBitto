@@ -175,11 +175,11 @@ class AccountViewController: FormViewController {
         let password = self.inputData["password"] as! String
         
         // 入力チェック
-        if email.characters.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email) == false {
+        if email.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email) == false {
             SVProgressHUD.showError(withStatus: Alert.validationEmail)
             return
         }
-        if password.characters.count < 6 || password.characters.count > 12{
+        if password.count < 6 || password.characters.count > 12{
             SVProgressHUD.showError(withStatus: Alert.validationEmail)
             return
         }

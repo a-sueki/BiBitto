@@ -56,7 +56,7 @@ class SignUpViewController: UIViewController {
         
         // 入力チェック
         if email != nil {
-            if email!.characters.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email!) == false {
+            if email!.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email!) == false {
                 SVProgressHUD.showError(withStatus: Alert.validationEmail)
                 return
             }
@@ -65,7 +65,7 @@ class SignUpViewController: UIViewController {
             return
         }
         if password != nil {
-            if password!.characters.count < 6 || password!.characters.count > 12{
+            if password!.count < 6 || password!.characters.count > 12{
                 SVProgressHUD.showError(withStatus: Alert.validationPassword)
                 return
             }

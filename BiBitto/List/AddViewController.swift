@@ -215,7 +215,7 @@ class AddViewController: FormViewController {
         
         let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "ja"), options: 0)
         tagger.string = orgStr
-        tagger.enumerateTags(in: NSRange(location: 0, length: orgStr.characters.count),
+        tagger.enumerateTags(in: NSRange(location: 0, length: orgStr.count),
                              scheme: NSLinguisticTagScheme.tokenType,
                              options: [.omitWhitespace]) { tag, tokenRange, sentenceRange, stop in
                                 // １行ごとに文字列を抜き出す

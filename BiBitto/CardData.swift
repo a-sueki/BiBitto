@@ -27,13 +27,13 @@ class CardData: NSObject {
         self.author = valueDictionary["author"] as? String
         self.category = valueDictionary["category"] as! String
         let createAt = valueDictionary["createAt"] as? String
-        if createAt?.characters.count == 25 {
+        if createAt?.count == 25 {
             self.createAt = DateUtils.dateFromString(string:createAt!, format: "yyyy-MM-dd HH:mm:ss Z")
         }else{
             self.createAt = NSDate(timeIntervalSinceReferenceDate: TimeInterval(createAt!)!)
         }
         let updateAt = valueDictionary["updateAt"] as? String
-        if updateAt?.characters.count == 25 {
+        if updateAt?.count == 25 {
             self.updateAt = DateUtils.dateFromString(string:updateAt!, format: "yyyy-MM-dd HH:mm:ss Z")
         }else{
             self.updateAt = NSDate(timeIntervalSinceReferenceDate: TimeInterval(updateAt!)!)
