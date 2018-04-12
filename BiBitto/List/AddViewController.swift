@@ -179,7 +179,11 @@ class AddViewController: FormViewController {
         Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
         
         // 検索用ワードをファイル書き込み（追記）
-        morphologicalAnalysis(inputData: inputData)
+        let strArray2 = Files.morphologicalAnalysis(inputData: inputData)
+        // ファイル内テキスト全件クリア
+        Files.refreshDocument(fileName: Files.word_file)
+        // ファイル書き込み
+        Files.writeDocument(dataArray: strArray2,fileName: Files.word_file)
         
         // 成功ポップアップ
         SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
@@ -198,50 +202,6 @@ class AddViewController: FormViewController {
         if row.section === form[3] {
             print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue ?? "No row selected")")
         }
-    }
-    
-    // 形態素分析
-    func morphologicalAnalysis(inputData: [String : Any]) {
-        print("DEBUG_PRINT: AddViewController morphologicalAnalysis start")
-        
-        var orgStr = inputData["text"] as! String
-        if inputData["author"] as? String != nil {
-            let orgStr2 = inputData["author"] as! String
-            orgStr = orgStr + "\n" + orgStr2
-        }
-        
-        var dataArray = Files.readDocument(fileName: Files.word_file)
-        
-        let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "ja"), options: 0)
-        tagger.string = orgStr
-        tagger.enumerateTags(in: NSRange(location: 0, length: orgStr.count),
-                             scheme: NSLinguisticTagScheme.tokenType,
-                             options: [.omitWhitespace]) { tag, tokenRange, sentenceRange, stop in
-                                // １行ごとに文字列を抜き出す
-                                let subString = (orgStr as NSString).substring(with: tokenRange)
-                                var lineIndex = 1
-                                subString.enumerateLines{
-                                    line, stop in
-                                    let adjustedLine = line.components(separatedBy: Files.excludes).joined()
-                                    if !adjustedLine.isEmpty {
-                                        // 検索ワードリストに追加
-                                        dataArray.append(adjustedLine)
-                                        lineIndex += 1
-                                    }
-                                }
-        }
-        // アルファベット順で並び替え（別にしなくてもいい）
-        let sortedDataArray = dataArray.sorted { $0 < $1 }
-        // 重複削除
-        let orderedSet:NSOrderedSet = NSOrderedSet(array: sortedDataArray)
-        let strArray2 = orderedSet.array as! [String]
-        
-        // ファイル内テキスト全件クリア
-        Files.refreshDocument(fileName: Files.word_file)
-        // ファイル書き込み
-        Files.writeDocument(dataArray: strArray2,fileName: Files.word_file)
-        
-        print("DEBUG_PRINT: AddViewController morphologicalAnalysis end")
     }
 }
 

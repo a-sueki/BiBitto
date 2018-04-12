@@ -24,11 +24,61 @@ struct URLs {
 struct StorageRef{
     static let storage = Storage.storage()
     static let storageRef = storage.reference(forURL: "gs://bibitto-37cdc.appspot.com/")
-//    static let placeholderImage = UIImage(named: "loading")
-    
     static func getRiversRef(fileType: String,key: String) -> StorageReference {
         let riversRef = storageRef.child("\(fileType)/\(key).txt")
         return riversRef
+    }
+}
+
+struct StorageProcessing{
+    static func storageUpload(fileType: String, key: String){
+        if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
+            // File located on disk
+            let path_file_name = dir.appendingPathComponent(fileType)
+            let fileName = fileType.components(separatedBy: ".")
+            
+            // Create a reference to the file you want to upload
+            let riversRef = StorageRef.getRiversRef(fileType: fileName.first!, key: key)
+            
+            // Create file metadata including the content type
+            let metadata = StorageMetadata()
+            metadata.contentType = "text/plain"
+            
+            // Upload file and metadata
+            _ = riversRef.putFile(from: path_file_name, metadata: nil) { metadata, error in
+                if let error = error {
+                    print("DEBUG_PRINT: ImportDataViewController storageUpload: \(error.localizedDescription)")
+                } else {
+                    // Metadata contains file metadata such as size, content-type, and download URL.
+                    if fileType == Files.card_file {
+                        UserDefaults.standard.set(metadata!.updated, forKey: DefaultString.CardMetaUpdated)
+                    }else{
+                        UserDefaults.standard.set(metadata!.updated, forKey: DefaultString.WordMetaUpdated)
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    static func storageDownload(fileType: String, key: String){
+        if let dir = FileManager.default.urls( for: .libraryDirectory,in: .userDomainMask ).first {
+            // File located on disk
+            let path_file_name = dir.appendingPathComponent(fileType)
+            let fileName = fileType.components(separatedBy: ".")
+            
+            // Create a reference to the file you want to download
+            let islandRef = StorageRef.getRiversRef(fileType: fileName.first!, key: key)
+            
+            // Download to the local filesystem
+            _ = islandRef.write(toFile: path_file_name) { url, error in
+                if let error = error {
+                    print("DEBUG_PRINT: ImportDataViewController storageDownload: \(error.localizedDescription)")
+                } else {
+                    // Local file URL for "images/island.jpg" is returned
+                }
+            }
+        }
     }
 }
 
@@ -135,7 +185,6 @@ struct Tokenizer {
         return tokens
     }
 }
-
 
 struct Files {
     
@@ -271,6 +320,43 @@ struct Files {
             }
         }
         return []
+    }
+
+    // 形態素分析
+    static func morphologicalAnalysis(inputData: [String : Any]) -> [String]{
+        var orgStr = inputData["text"] as! String
+        if inputData["author"] as? String != nil {
+            let orgStr2 = inputData["author"] as! String
+            orgStr = orgStr + "\n" + orgStr2
+        }
+        
+        var dataArray = Files.readDocument(fileName: Files.word_file)
+        
+        let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "ja"), options: 0)
+        tagger.string = orgStr
+        tagger.enumerateTags(in: NSRange(location: 0, length: orgStr.count),
+                             scheme: NSLinguisticTagScheme.tokenType,
+                             options: [.omitWhitespace]) { tag, tokenRange, sentenceRange, stop in
+                                // １行ごとに文字列を抜き出す
+                                let subString = (orgStr as NSString).substring(with: tokenRange)
+                                var lineIndex = 1
+                                subString.enumerateLines{
+                                    line, stop in
+                                    let adjustedLine = line.components(separatedBy: Files.excludes).joined()
+                                    if !adjustedLine.isEmpty {
+                                        // 検索ワードリストに追加
+                                        dataArray.append(adjustedLine)
+                                        lineIndex += 1
+                                    }
+                                }
+        }
+        // アルファベット順で並び替え（別にしなくてもいい）
+        let sortedDataArray = dataArray.sorted { $0 < $1 }
+        // 重複削除
+        let orderedSet:NSOrderedSet = NSOrderedSet(array: sortedDataArray)
+        let strArray2 = orderedSet.array as! [String]
+        
+        return strArray2
     }
 }
 

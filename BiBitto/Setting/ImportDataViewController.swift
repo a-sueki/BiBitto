@@ -144,8 +144,8 @@ class ImportDataViewController: FormViewController {
         // ログインしている場合、firebaseStorageからdownload
         if let uid = Auth.auth().currentUser?.uid {
             // ストレージから取得
-            storageDownload(fileType: Files.card_file, key: uid)
-            storageDownload(fileType: Files.word_file, key: uid)
+            StorageProcessing.storageDownload(fileType: Files.card_file, key: uid)
+            StorageProcessing.storageDownload(fileType: Files.word_file, key: uid)
             print("DEBUG_PRINT: ImportDataViewController FB Storage uploaded!")
         }
         // 全てのモーダルを閉じる
@@ -225,7 +225,7 @@ class ImportDataViewController: FormViewController {
             cardDataArray.append(cardData)
             
             // 検索用ワードをファイル書き込み（追記）
-            let wordArray = morphologicalAnalysis(inputData: importData)
+            let wordArray = Files.morphologicalAnalysis(inputData: importData)
             wordArrayList.append(wordArray)
         }
         
@@ -249,8 +249,8 @@ class ImportDataViewController: FormViewController {
         // ログインしている場合、firebaseStorageにupdate
         if let uid = Auth.auth().currentUser?.uid {
             // ストレージに保存
-            storageUpload(fileType: Files.card_file, key: uid)
-            storageUpload(fileType: Files.word_file, key: uid)
+            StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
+            StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
             print("DEBUG_PRINT: ImportDataViewController FB Storage uploaded!")
         }
         
@@ -265,102 +265,6 @@ class ImportDataViewController: FormViewController {
         print("DEBUG_PRINT: ImportDataViewController importFile end")
     }
     
-    // 形態素分析
-    func morphologicalAnalysis(inputData: [String : Any]) -> [String]{
-        print("DEBUG_PRINT: ImportDataViewController morphologicalAnalysis start")
-        
-        var orgStr = inputData["text"] as! String
-        if inputData["author"] as? String != nil {
-            let orgStr2 = inputData["author"] as! String
-            orgStr = orgStr + "\n" + orgStr2
-        }
-
-        var dataArray = Files.readDocument(fileName: Files.word_file)
-        
-        let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "ja"), options: 0)
-        tagger.string = orgStr
-        tagger.enumerateTags(in: NSRange(location: 0, length: orgStr.count),
-                             scheme: NSLinguisticTagScheme.tokenType,
-                             options: [.omitWhitespace]) { tag, tokenRange, sentenceRange, stop in
-                                // １行ごとに文字列を抜き出す
-                                let subString = (orgStr as NSString).substring(with: tokenRange)
-                                var lineIndex = 1
-                                subString.enumerateLines{
-                                    line, stop in
-                                    let adjustedLine = line.components(separatedBy: Files.excludes).joined()
-                                    if !adjustedLine.isEmpty {
-                                        // 検索ワードリストに追加
-                                        dataArray.append(adjustedLine)
-                                        lineIndex += 1
-                                    }
-                                }
-        }
-        // アルファベット順で並び替え（別にしなくてもいい）
-        let sortedDataArray = dataArray.sorted { $0 < $1 }
-        // 重複削除
-        let orderedSet:NSOrderedSet = NSOrderedSet(array: sortedDataArray)
-        let strArray2 = orderedSet.array as! [String]
-
-        return strArray2
-    }
-    
-    func storageUpload(fileType: String, key: String){
-        print("DEBUG_PRINT: ImportDataViewController storageUpload start")
-
-        if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
-            // File located on disk
-            let path_file_name = dir.appendingPathComponent(fileType)
-            let fileName = fileType.components(separatedBy: ".")
-            
-            // Create a reference to the file you want to upload
-            let riversRef = StorageRef.getRiversRef(fileType: fileName.first!, key: key)
-
-            // Create file metadata including the content type
-            let metadata = StorageMetadata()
-            metadata.contentType = "text/plain"
-            
-            // Upload file and metadata
-            _ = riversRef.putFile(from: path_file_name, metadata: nil) { metadata, error in
-                if let error = error {
-                    print("DEBUG_PRINT: ImportDataViewController storageUpload: \(error.localizedDescription)")
-                } else {
-                    // Metadata contains file metadata such as size, content-type, and download URL.
-                    if fileType == Files.card_file {
-                        UserDefaults.standard.set(metadata!.updated, forKey: DefaultString.CardMetaUpdated)
-                    }else{
-                        UserDefaults.standard.set(metadata!.updated, forKey: DefaultString.WordMetaUpdated)
-                    }
-                }
-            }
-            
-        }
-        print("DEBUG_PRINT: ImportDataViewController storageUpload end")
-    }
-
-    func storageDownload(fileType: String, key: String){
-        print("DEBUG_PRINT: ImportDataViewController storageDownload start")
-        
-        if let dir = FileManager.default.urls( for: .libraryDirectory,in: .userDomainMask ).first {
-            // File located on disk
-            let path_file_name = dir.appendingPathComponent(fileType)
-            let fileName = fileType.components(separatedBy: ".")
-            
-             // Create a reference to the file you want to download
-            let islandRef = StorageRef.getRiversRef(fileType: fileName.first!, key: key)
-            
-            // Download to the local filesystem
-            _ = islandRef.write(toFile: path_file_name) { url, error in
-                if let error = error {
-                    print("DEBUG_PRINT: ImportDataViewController storageDownload: \(error.localizedDescription)")
-                } else {
-                    // Local file URL for "images/island.jpg" is returned
-                }
-            }
-        }
-
-        print("DEBUG_PRINT: ImportDataViewController storageDownload end")
-    }
-
     @IBAction func jumpToHowtousePage() {
         print("DEBUG_PRINT: ImportDataViewController jumpToHowtousePage start")
         
