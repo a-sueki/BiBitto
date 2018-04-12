@@ -184,9 +184,8 @@ class AddViewController: FormViewController {
         // 成功ポップアップ
         SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
 
-        // 一覧へのデータ渡し
-        let nav = self.navigationController!
         //呼び出し元のView Controllerを遷移履歴から取得しパラメータを渡す
+        let nav = self.navigationController!
         let listViewController = nav.viewControllers[nav.viewControllers.count-2] as! ListViewController
         listViewController.cardDataArray = sortedCardDataArray
         // 前画面に戻る

@@ -9,6 +9,8 @@
 import Foundation
 import SVProgressHUD
 import Presentr
+import Firebase
+import FirebaseStorage
 
 struct Paths {
     static let UserPath = "user"
@@ -19,12 +21,26 @@ struct URLs {
     static let HowToUseLink = "https://www.apple.co.jp"
 }
 
+struct StorageRef{
+    static let storage = Storage.storage()
+    static let storageRef = storage.reference(forURL: "gs://bibitto-37cdc.appspot.com/")
+//    static let placeholderImage = UIImage(named: "loading")
+    
+    static func getRiversRef(fileType: String,key: String) -> StorageReference {
+        let riversRef = storageRef.child("\(fileType)/\(key).txt")
+        return riversRef
+    }
+}
+
 struct DefaultString {
     static let NoticeFlag = "noticeFlag"
     
     static let Uid = "uid"              // FBアカウント（uid）
     static let Mail = "mail"            // FBアカウント（メール）
     static let Password = "password"    // FBアカウント（パスワード）
+    static let CardMetaUpdated = "cardMetaUpdated"
+    static let WordMetaUpdated = "wordMetaUpdated"
+
 }
 struct ErrorMsgString {
     static let RulePassword = "パスワードは6~12文字で設定して下さい"

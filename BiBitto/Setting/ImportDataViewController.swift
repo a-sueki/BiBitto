@@ -66,15 +66,7 @@ class ImportDataViewController: FormViewController {
                         }
                     })
                 }.onCellSelection { [weak self] (cell, row) in
-                    if let error = row.section?.form?.validate(), error.count != 0 {
-                        print("DEBUG_PRINT: ImportDataViewController. restore \(error)のため処理は行いません")
-                    }else{
-                        if Auth.auth().currentUser == nil {
-                            SVProgressHUD.showError(withStatus: Alert.loginAlartTitle)
-                        }else{
-                            self?.restore()
-                        }
-                    }
+                    self?.restore()
             }
             
         +++ Section(header:"ファイルから一括取込", footer:"取込対象のファイル（.txt形式）はご使用のiOSデバイスの「ファイル > BiBitto」内に格納してください")
@@ -149,27 +141,21 @@ class ImportDataViewController: FormViewController {
     @IBAction func restore() {
         print("DEBUG_PRINT: ImportDataViewController restore start")
         
-        var cardDataArray: [CardData] = []
-        // Firebaseからデータを取得し、UserDefaultにセット
+        // ログインしている場合、firebaseStorageからdownload
         if let uid = Auth.auth().currentUser?.uid {
-            let ref = Database.database().reference().child(Paths.CardPath).child(uid)
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                print("DEBUG_PRINT: ImportDataViewController restore .observeSingleEventイベントが発生しました。")
-                if let _ = snapshot.value as? NSDictionary {
-                    let cardData = CardData(snapshot: snapshot)
-                    cardDataArray.append(cardData)
-                }
-                
-            }) { (error) in
-                print(error.localizedDescription)
-            }
+            // ストレージから取得
+            storageDownload(fileType: Files.card_file, key: uid)
+            storageDownload(fileType: Files.word_file, key: uid)
+            print("DEBUG_PRINT: ImportDataViewController FB Storage uploaded!")
         }
-        
         // 全てのモーダルを閉じる
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+        // Home画面に戻る（選択済みにする）
+        let nav = self.navigationController!
+        nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
         // 成功ポップアップ
         SVProgressHUD.showSuccess(withStatus: Alert.successRestoreTitle)
-        
+
         print("DEBUG_PRINT: ImportDataViewController restore end")
     }
 
@@ -260,10 +246,21 @@ class ImportDataViewController: FormViewController {
         Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
         Files.writeDocument(dataArrayList: wordArrayList ,fileName: Files.word_file)
 
+        // ログインしている場合、firebaseStorageにupdate
+        if let uid = Auth.auth().currentUser?.uid {
+            // ストレージに保存
+            storageUpload(fileType: Files.card_file, key: uid)
+            storageUpload(fileType: Files.word_file, key: uid)
+            print("DEBUG_PRINT: ImportDataViewController FB Storage uploaded!")
+        }
+        
+        // 全てのモーダルを閉じる
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+        // Home画面に戻る（選択済みにする）
+        let nav = self.navigationController!
+        nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
         // 成功ポップアップ
-        SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
-        // 前画面に戻る
-        self.navigationController?.popViewController(animated: false)
+        SVProgressHUD.showSuccess(withStatus: Alert.successRestoreTitle)
         
         print("DEBUG_PRINT: ImportDataViewController importFile end")
     }
@@ -305,6 +302,63 @@ class ImportDataViewController: FormViewController {
         let strArray2 = orderedSet.array as! [String]
 
         return strArray2
+    }
+    
+    func storageUpload(fileType: String, key: String){
+        print("DEBUG_PRINT: ImportDataViewController storageUpload start")
+
+        if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
+            // File located on disk
+            let path_file_name = dir.appendingPathComponent(fileType)
+            let fileName = fileType.components(separatedBy: ".")
+            
+            // Create a reference to the file you want to upload
+            let riversRef = StorageRef.getRiversRef(fileType: fileName.first!, key: key)
+
+            // Create file metadata including the content type
+            let metadata = StorageMetadata()
+            metadata.contentType = "text/plain"
+            
+            // Upload file and metadata
+            _ = riversRef.putFile(from: path_file_name, metadata: nil) { metadata, error in
+                if let error = error {
+                    print("DEBUG_PRINT: ImportDataViewController storageUpload: \(error.localizedDescription)")
+                } else {
+                    // Metadata contains file metadata such as size, content-type, and download URL.
+                    if fileType == Files.card_file {
+                        UserDefaults.standard.set(metadata!.updated, forKey: DefaultString.CardMetaUpdated)
+                    }else{
+                        UserDefaults.standard.set(metadata!.updated, forKey: DefaultString.WordMetaUpdated)
+                    }
+                }
+            }
+            
+        }
+        print("DEBUG_PRINT: ImportDataViewController storageUpload end")
+    }
+
+    func storageDownload(fileType: String, key: String){
+        print("DEBUG_PRINT: ImportDataViewController storageDownload start")
+        
+        if let dir = FileManager.default.urls( for: .libraryDirectory,in: .userDomainMask ).first {
+            // File located on disk
+            let path_file_name = dir.appendingPathComponent(fileType)
+            let fileName = fileType.components(separatedBy: ".")
+            
+             // Create a reference to the file you want to download
+            let islandRef = StorageRef.getRiversRef(fileType: fileName.first!, key: key)
+            
+            // Download to the local filesystem
+            _ = islandRef.write(toFile: path_file_name) { url, error in
+                if let error = error {
+                    print("DEBUG_PRINT: ImportDataViewController storageDownload: \(error.localizedDescription)")
+                } else {
+                    // Local file URL for "images/island.jpg" is returned
+                }
+            }
+        }
+
+        print("DEBUG_PRINT: ImportDataViewController storageDownload end")
     }
 
     @IBAction func jumpToHowtousePage() {
