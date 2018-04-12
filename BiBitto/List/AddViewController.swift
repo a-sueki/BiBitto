@@ -144,35 +144,19 @@ class AddViewController: FormViewController {
         let time = NSDate.timeIntervalSinceReferenceDate
         inputData["updateAt"] = String(time)
         inputData["createAt"] = String(time)
-        // ログインしている場合、firebaseにinsert
-        if let uid = Auth.auth().currentUser?.uid {
-            // 辞書を作成
-            let ref = Database.database().reference()
-            let key = ref.child(Paths.CardPath).childByAutoId().key
-            inputData["id"] = key
-            ref.child(Paths.CardPath).child(uid).child(key).setValue(inputData)
-            print("DEBUG_PRINT: AddViewController FB inserted!")
-        }else{
-            inputData["id"] = DummyString.Key
-        }
         // No付与
-        inputData["no"] = cardDataArray.count + 1 //String(format: "%03d", cardDataArray.count + 1)
-
+        inputData["no"] = cardDataArray.count + 1
         // カード追加
         let cardData = CardData(valueDictionary: inputData as [String : AnyObject])
         cardDataArray.append(cardData)
-        // 作成日で並び替え
-        let sortedCardDataArray = cardDataArray.sorted(by: {
-            $1.createAt.compare($0.createAt as Date) == ComparisonResult.orderedDescending
-        })
         // No洗い替え
         var counter = 1
-        for card in sortedCardDataArray {
+        for card in cardDataArray {
             card.no = counter 
             counter = counter + 1
         }
         // ファイル書き込み用カード配列作成
-        outputDataArray = CardUtils.cardToDictionary(cardDataArray: sortedCardDataArray)
+        outputDataArray = CardUtils.cardToDictionary(cardDataArray: cardDataArray)
         // ファイル内テキスト全件クリア
         Files.refreshDocument(fileName: Files.card_file)
         // ファイル書き込み（全件洗い替え）
@@ -184,14 +168,20 @@ class AddViewController: FormViewController {
         Files.refreshDocument(fileName: Files.word_file)
         // ファイル書き込み
         Files.writeDocument(dataArray: strArray2,fileName: Files.word_file)
-        
+        // ログインしている場合、firebaseStorageにupdate
+        if let uid = Auth.auth().currentUser?.uid {
+            // ストレージに保存
+            StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
+            StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
+            print("DEBUG_PRINT: AddViewController FB Storage uploaded!")
+        }
         // 成功ポップアップ
         SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
 
         //呼び出し元のView Controllerを遷移履歴から取得しパラメータを渡す
         let nav = self.navigationController!
         let listViewController = nav.viewControllers[nav.viewControllers.count-2] as! ListViewController
-        listViewController.cardDataArray = sortedCardDataArray
+        listViewController.cardDataArray = cardDataArray
         // 前画面に戻る
         self.navigationController?.popViewController(animated: false)
         

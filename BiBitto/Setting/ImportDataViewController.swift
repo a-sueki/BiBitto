@@ -206,45 +206,30 @@ class ImportDataViewController: FormViewController {
             importData["createAt"] = String(time)
             importData["text"] = data
             importData["category"] = Category.continents.first
-            
-            // ログインしている場合、firebaseにinsert
-            if let uid = Auth.auth().currentUser?.uid {
-                // 辞書を作成
-                let ref = Database.database().reference()
-                let key = ref.child(Paths.CardPath).childByAutoId().key
-                importData["id"] = key
-                ref.child(Paths.CardPath).child(uid).child(key).setValue(importData)
-                print("DEBUG_PRINT: ImportDataViewController FB inserted!")
-            }else{
-                importData["id"] = DummyString.Key
-            }
             // No付与
-            importData["no"] = cardDataArray.count + 1
+            importData["no"] = self.cardDataArray.count + 1
             // カード追加
             let cardData = CardData(valueDictionary: importData as [String : AnyObject])
-            cardDataArray.append(cardData)
+            self.cardDataArray.append(cardData)
             
             // 検索用ワードをファイル書き込み（追記）
             let wordArray = Files.morphologicalAnalysis(inputData: importData)
-            wordArrayList.append(wordArray)
+            self.wordArrayList.append(wordArray)
         }
-        
-        // 作成日で並び替え
-        let sortedCardDataArray = cardDataArray.sorted(by: {
-            $1.createAt.compare($0.createAt as Date) == ComparisonResult.orderedDescending
-        })
+        // Noで並び替え
+        self.cardDataArray = self.cardDataArray.sorted(by: {$0.no > $1.no})
         // No洗い替え
         var counter = 1
-        for card in sortedCardDataArray {
+        for card in self.cardDataArray {
             card.no = counter
             counter = counter + 1
         }
 
         // ファイル書き込み用カード配列作成
-        outputDataArray = CardUtils.cardToDictionary(cardDataArray: sortedCardDataArray)
+        self.outputDataArray = CardUtils.cardToDictionary(cardDataArray: self.cardDataArray)
         // ファイル書き込み
-        Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
-        Files.writeDocument(dataArrayList: wordArrayList ,fileName: Files.word_file)
+        Files.writeCardDocument(cardDataArray: self.outputDataArray ,fileName: Files.card_file)
+        Files.writeDocument(dataArrayList: self.wordArrayList ,fileName: Files.word_file)
 
         // ログインしている場合、firebaseStorageにupdate
         if let uid = Auth.auth().currentUser?.uid {

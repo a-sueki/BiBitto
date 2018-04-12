@@ -42,13 +42,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.contentInset = edgeInsets
         tableView.scrollIndicatorInsets = edgeInsets
         
-        // カード一覧をローカルファイルから取得
-        let originCardDataArray = Files.readCardDocument(fileName: Files.card_file)
-        // 作成日で並び替え
-        self.cardDataArray = originCardDataArray.sorted(by: {
-            $0.createAt.compare($1.createAt as Date) == ComparisonResult.orderedDescending
-        })
-        
         print("DEBUG_PRINT: ListViewController viewDidLoad end")
     }
     
@@ -56,10 +49,10 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: ListViewController viewWillAppear start")
         
-        // 作成日で並び替え
-        self.cardDataArray = self.cardDataArray.sorted(by: {
-            $0.createAt.compare($1.createAt as Date) == ComparisonResult.orderedDescending
-        })
+        // カード一覧をローカルファイルから取得
+        let originCardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        // Noで並び替え
+        self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
 
         // tableViewを再表示する
         DispatchQueue.main.async {
@@ -82,11 +75,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         /* Searchでの絞り込みリセット */
         // カード一覧をローカルファイルから取得
         let originCardDataArray = Files.readCardDocument(fileName: Files.card_file)
-        // 作成日で並び替え
-        self.cardDataArray = originCardDataArray.sorted(by: {
-            $0.createAt.compare($1.createAt as Date) == ComparisonResult.orderedDescending
-        })
-        
+        // Noで並び替え
+        self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
+
         print("DEBUG_PRINT: ListViewController viewWillDisappear end")
     }
     
@@ -168,36 +159,23 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         print("DEBUG_PRINT: ListViewController commit editingStyle start")
 
         if editingStyle == .delete {
-            // firebase同期
-            if let uid = Auth.auth().currentUser?.uid, !(cardDataArray[indexPath.row].id.isEmpty) {
-                let ref = Database.database().reference().child(Paths.CardPath).child(uid)
-                ref.child(cardDataArray[indexPath.row].id).removeValue()
-            }
-
             //リストから削除
             cardDataArray.remove(at: indexPath.row)
-            
-            // 作成日で並び替え
-            let sortedCardDataArray = cardDataArray.sorted(by: {
-                $0.createAt.compare($1.createAt as Date) == ComparisonResult.orderedDescending
-            })
+            // Noで並び替え
+            self.cardDataArray = self.cardDataArray.sorted(by: {$0.no > $1.no})
             // No洗い替え
             var counter = 1
-            for card in sortedCardDataArray {
+            for card in self.cardDataArray {
                 card.no = counter
                 counter = counter + 1
             }
-
-            var outputDataArray = Array<[String : Any]>()
             // ファイル書き込み用カード配列作成
-            outputDataArray = CardUtils.cardToDictionary(cardDataArray: sortedCardDataArray)
+            var outputDataArray = Array<[String : Any]>()
+            outputDataArray = CardUtils.cardToDictionary(cardDataArray: self.cardDataArray)
             // ファイル内テキスト全件クリア
             Files.refreshDocument(fileName: Files.card_file)
             // ファイル書き込み（全件洗い替え）
             Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
-
-            //TODO: 検索ワードtxtも洗い替え？
-            
         }
 
         // 一覧画面から削除

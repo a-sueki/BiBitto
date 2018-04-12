@@ -11,7 +11,6 @@ import FirebaseDatabase
 
 class CardData: NSObject {
     
-    var id: String
     var no: Int
     var text: String
     var author: String?
@@ -21,7 +20,6 @@ class CardData: NSObject {
     
     init(valueDictionary: [String: AnyObject]) {
         
-        self.id = valueDictionary["id"] as! String
         self.no = valueDictionary["no"] as! Int
         self.text = valueDictionary["text"] as! String
         self.author = valueDictionary["author"] as? String
@@ -38,14 +36,6 @@ class CardData: NSObject {
         }else{
             self.updateAt = NSDate(timeIntervalSinceReferenceDate: TimeInterval(updateAt!)!)
         }
-    }
-    
-    convenience init(snapshot: DataSnapshot) {
-        
-        let valueDictionary = snapshot.value as! [String: AnyObject]
-        self.init(valueDictionary: valueDictionary)
-        self.id = snapshot.key
-        
     }
 }
 
@@ -78,7 +68,6 @@ class CardUtils {
             outputData["createAt"] = DateUtils.stringFromDate(date: $0.createAt, format: "yyyy-MM-dd HH:mm:ss Z")
             outputData["author"] = $0.author ?? ""
             outputData["category"] = $0.category
-            outputData["id"] = $0.id
             outputData["updateAt"] = DateUtils.stringFromDate(date: $0.updateAt, format: "yyyy-MM-dd HH:mm:ss Z")
             outputDataArray.append(outputData)
         }
