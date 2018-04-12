@@ -189,6 +189,10 @@ class ImportDataViewController: FormViewController {
             // cardファイルからデータ取得
             self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
             totalCardCount = self.cardDataArray.count
+        }else{
+            // ファイル内テキスト全件クリア
+            Files.refreshDocument(fileName: Files.card_file)
+            Files.refreshDocument(fileName: Files.word_file)
         }
         
         // ファイル読み込み
@@ -249,15 +253,11 @@ class ImportDataViewController: FormViewController {
             card.no = counter
             counter = counter + 1
         }
-        // ファイル内テキスト全件クリア
-        Files.refreshDocument(fileName: Files.card_file)
-        Files.refreshDocument(fileName: Files.word_file)
 
         // ファイル書き込み用カード配列作成
         outputDataArray = CardUtils.cardToDictionary(cardDataArray: sortedCardDataArray)
-        // ファイル書き込み（card）
+        // ファイル書き込み
         Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
-        // ファイル書き込み（word）
         Files.writeDocument(dataArrayList: wordArrayList ,fileName: Files.word_file)
 
         // 成功ポップアップ
@@ -272,12 +272,12 @@ class ImportDataViewController: FormViewController {
     func morphologicalAnalysis(inputData: [String : Any]) -> [String]{
         print("DEBUG_PRINT: ImportDataViewController morphologicalAnalysis start")
         
-        var orgStr = inputData["text"] as! String
-        if inputData["author"] as? String != nil {
+        let orgStr = inputData["text"] as! String
+/*        if inputData["author"] as? String != nil {
             let orgStr2 = inputData["author"] as! String
             orgStr = orgStr + "\n" + orgStr2
         }
-        
+*/
         var dataArray = Files.readDocument(fileName: Files.word_file)
         
         let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "ja"), options: 0)
