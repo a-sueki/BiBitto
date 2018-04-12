@@ -272,12 +272,12 @@ class ImportDataViewController: FormViewController {
     func morphologicalAnalysis(inputData: [String : Any]) -> [String]{
         print("DEBUG_PRINT: ImportDataViewController morphologicalAnalysis start")
         
-        let orgStr = inputData["text"] as! String
-/*        if inputData["author"] as? String != nil {
+        var orgStr = inputData["text"] as! String
+        if inputData["author"] as? String != nil {
             let orgStr2 = inputData["author"] as! String
             orgStr = orgStr + "\n" + orgStr2
         }
-*/
+
         var dataArray = Files.readDocument(fileName: Files.word_file)
         
         let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "ja"), options: 0)

@@ -45,6 +45,9 @@ class SearchViewController: UIViewController , UICollectionViewDelegate{
                 if card.text.lowercased().contains($0) || card.text.localizedCaseInsensitiveContains($0){
                     refinedCardDataArray.append(card)
                 }
+                if card.author != nil , card.author!.lowercased().contains($0) || card.author!.localizedCaseInsensitiveContains($0){
+                    refinedCardDataArray.append(card)
+                }
             }
             // 一覧へのデータ渡し
             let nav = self.navigationController!
