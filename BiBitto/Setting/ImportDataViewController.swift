@@ -22,7 +22,6 @@ class ImportDataViewController: FormViewController {
     var outputDataArray = Array<[String : Any]>()
     var wordArrayList = Array<[String]>()
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         print("DEBUG_PRINT: ImportDataViewController viewDidLoad start")
@@ -54,22 +53,7 @@ class ImportDataViewController: FormViewController {
         
         // フォーム
         form +++
-            Section(header:"復元（最終保存日時:\(UserDefaults.standard.object(forKey: DefaultString.CardMetaUpdated)!)）", footer:"オンラインバックアップの利用にはアカウント作成が必要です。" )
-            <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "オンラインバックアップから復元"
-                // ログインしてない場合、非活性にして表示
-                row.disabled = .function([""], { form -> Bool in
-                        if Auth.auth().currentUser != nil {
-                            return false
-                        }else{
-                            return true
-                        }
-                    })
-                }.onCellSelection { [weak self] (cell, row) in
-                    self?.restore()
-            }
-            
-        +++ Section(header:"ファイルから一括取込", footer:"取込対象のファイル（.txt形式）はご使用のiOSデバイスの「ファイル > BiBitto」内に格納してください")
+            Section(header:"ファイルから一括取込", footer:"取込対象のファイル（.txt形式）はご使用のiOSデバイスの「ファイル > BiBitto」内に格納してください")
             // importデータのファイル名を取得
             <<< NameRow("FileName") {
                 $0.title = "ファイル名"
@@ -116,12 +100,8 @@ class ImportDataViewController: FormViewController {
                     vc.enableDeselection = false
                     vc.dismissOnSelection = false
                 })
-
+            
             <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "ファイル取込方法を確認する"
-                }.onCellSelection { [weak self] (cell, row) in
-                    self?.jumpToHowtousePage()
-            }           <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "一括取込の実行"
                 }.onCellSelection { [weak self] (cell, row) in
                     if let error = row.section?.form?.validate() , error.count != 0 {
@@ -131,32 +111,18 @@ class ImportDataViewController: FormViewController {
                     }
             }
 
+            +++ Section("チュートリアル")
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.title = "ファイル取込方法を確認する"
+                }.onCellSelection { [weak self] (cell, row) in
+                    self?.jumpToHowtousePage()
+            }
+
         print("DEBUG_PRINT: ImportDataViewController initializeForm end")
     }
     
     @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
-    }
-    
-    @IBAction func restore() {
-        print("DEBUG_PRINT: ImportDataViewController restore start")
-        
-        // ログインしている場合、firebaseStorageからdownload
-        if let uid = Auth.auth().currentUser?.uid {
-            // ストレージから取得
-            StorageProcessing.storageDownload(fileType: Files.card_file, key: uid)
-            StorageProcessing.storageDownload(fileType: Files.word_file, key: uid)
-            print("DEBUG_PRINT: ImportDataViewController FB Storage uploaded!")
-        }
-        // 全てのモーダルを閉じる
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
-        // Home画面に戻る（選択済みにする）
-        let nav = self.navigationController!
-        nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
-        // 成功ポップアップ
-        SVProgressHUD.showSuccess(withStatus: Alert.successRestoreTitle)
-
-        print("DEBUG_PRINT: ImportDataViewController restore end")
     }
 
     @IBAction func importFile(){

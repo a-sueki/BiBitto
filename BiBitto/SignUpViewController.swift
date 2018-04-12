@@ -65,7 +65,7 @@ class SignUpViewController: UIViewController {
             return
         }
         if password != nil {
-            if password!.count < 6 || password!.characters.count > 12{
+            if password!.count < 6 || password!.count > 12{
                 SVProgressHUD.showError(withStatus: Alert.validationPassword)
                 return
             }

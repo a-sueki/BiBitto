@@ -359,6 +359,8 @@
                         <outlet property="tableView" destination="9iF-T6-hc4" id="1Ot-30-VVv"/>
                         <segue destination="0q0-ks-WhQ" kind="push" identifier="AccountControllerSegue" id="elL-py-Oil"/>
                         <segue destination="hRR-lW-VSD" kind="push" identifier="ImportDataViewControllerSegue" id="i3z-0H-chA"/>
+                        <segue destination="UW3-H3-Mom" kind="push" identifier="BackupViewControllerSegue" id="jEd-oU-zEG"/>
+                        <segue destination="tg6-wq-PbL" kind="push" identifier="NotificationViewControllerSegue" id="kPT-XA-Why"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C3m-Tl-IQG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -397,7 +399,7 @@
             </objects>
             <point key="canvasLocation" x="1438" y="1099"/>
         </scene>
-        <!--復元／一括取込-->
+        <!--一括取込-->
         <scene sceneID="JP4-R2-Tse">
             <objects>
                 <viewController storyboardIdentifier="ImportDataViewController" id="hRR-lW-VSD" customClass="ImportDataViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -419,14 +421,73 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rEU-Z0-QdT"/>
                     </view>
-                    <navigationItem key="navigationItem" title="復元／一括取込" id="iA0-iV-dqw"/>
+                    <navigationItem key="navigationItem" title="一括取込" id="iA0-iV-dqw"/>
                     <connections>
                         <outlet property="tableView" destination="ioV-x6-KOg" id="mFK-YI-1eL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YWC-rd-Yuo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1436" y="1838"/>
+            <point key="canvasLocation" x="1433" y="1812"/>
+        </scene>
+        <!--バックアップ-->
+        <scene sceneID="j7N-V6-0Sl">
+            <objects>
+                <viewController storyboardIdentifier="BackupViewController" id="UW3-H3-Mom" customClass="BackupViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="whA-8t-KUb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ozf-CA-HDG">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ozf-CA-HDG" firstAttribute="top" secondItem="whA-8t-KUb" secondAttribute="top" id="3h4-7d-Ozi"/>
+                            <constraint firstItem="ozf-CA-HDG" firstAttribute="trailing" secondItem="wPP-kF-Iwf" secondAttribute="trailing" id="LLI-Cq-Egp"/>
+                            <constraint firstItem="ozf-CA-HDG" firstAttribute="bottom" secondItem="wPP-kF-Iwf" secondAttribute="bottom" id="TZX-aU-dSF"/>
+                            <constraint firstItem="ozf-CA-HDG" firstAttribute="leading" secondItem="wPP-kF-Iwf" secondAttribute="leading" id="eMo-lk-RBf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wPP-kF-Iwf"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="バックアップ" id="s4K-dq-H82"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vmB-Wh-5y2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1432.5" y="2482.394366197183"/>
+        </scene>
+        <!--通知-->
+        <scene sceneID="T4q-sZ-PrY">
+            <objects>
+                <viewController storyboardIdentifier="NotificationViewController" id="tg6-wq-PbL" customClass="NotificationViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lhp-ME-JyB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="btZ-bR-gEJ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="btZ-bR-gEJ" firstAttribute="top" secondItem="lhp-ME-JyB" secondAttribute="top" id="TOW-UY-FIr"/>
+                            <constraint firstItem="btZ-bR-gEJ" firstAttribute="leading" secondItem="bHz-wF-g6N" secondAttribute="leading" id="gAY-m3-1Zz"/>
+                            <constraint firstItem="btZ-bR-gEJ" firstAttribute="trailing" secondItem="bHz-wF-g6N" secondAttribute="trailing" id="w7j-EE-Pws"/>
+                            <constraint firstItem="btZ-bR-gEJ" firstAttribute="bottom" secondItem="bHz-wF-g6N" secondAttribute="bottom" id="z5D-1g-M5x"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bHz-wF-g6N"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="通知" id="LDc-s8-1cW"/>
+                    <connections>
+                        <outlet property="tableView" destination="btZ-bR-gEJ" id="87S-US-CLO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3qH-5I-RfV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1432.5" y="3159.5070422535214"/>
         </scene>
         <!--パスワードリセット-->
         <scene sceneID="FgY-0w-BYT">
