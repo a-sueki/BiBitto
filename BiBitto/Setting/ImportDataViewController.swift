@@ -27,7 +27,7 @@ class ImportDataViewController: FormViewController {
         super.viewDidLoad()
         print("DEBUG_PRINT: ImportDataViewController viewDidLoad start")
         
-        initializeForm(lastSavingDateTime: "2018-04-04 13:47")
+        initializeForm()
         
         navigationItem.leftBarButtonItem?.target = self
         navigationItem.leftBarButtonItem?.action = #selector(SettingViewController.cancelTapped(_:))
@@ -41,7 +41,7 @@ class ImportDataViewController: FormViewController {
     }
     
 
-    func initializeForm(lastSavingDateTime: String){
+    func initializeForm(){
         print("DEBUG_PRINT: ImportDataViewController initializeForm start")
         
         // 必須入力チェック
@@ -54,7 +54,7 @@ class ImportDataViewController: FormViewController {
         
         // フォーム
         form +++
-            Section(header:"復元（最終保存日時:\(lastSavingDateTime)）", footer:"オンラインバックアップの利用にはアカウント作成が必要です。" )
+            Section(header:"復元（最終保存日時:\(UserDefaults.standard.object(forKey: DefaultString.CardMetaUpdated)!)）", footer:"オンラインバックアップの利用にはアカウント作成が必要です。" )
             <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "オンラインバックアップから復元"
                 // ログインしてない場合、非活性にして表示
