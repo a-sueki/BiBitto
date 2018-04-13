@@ -142,11 +142,7 @@ class AccountViewController: FormViewController {
             <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "ログアウト"
                 }.onCellSelection { [weak self] (cell, row) in
-                    if let error = row.section?.form?.validate() , error.count != 0 {
-                        print("DEBUG_PRINT: ログアウト \(error)のため処理は行いません")
-                    }else{
-                        self?.logout()
-                    }
+                    self?.logout()
             }
             
             +++ Section()
@@ -179,7 +175,7 @@ class AccountViewController: FormViewController {
             SVProgressHUD.showError(withStatus: Alert.validationEmail)
             return
         }
-        if password.count < 6 || password.characters.count > 12{
+        if password.count < 6 || password.count > 12{
             SVProgressHUD.showError(withStatus: Alert.validationEmail)
             return
         }

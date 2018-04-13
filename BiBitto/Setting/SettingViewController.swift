@@ -28,10 +28,31 @@ class SettingViewController: FormViewController {
         print("DEBUG_PRINT: SettingViewController viewDidLoad end")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("DEBUG_PRINT: SettingViewController viewWillAppear start")
+        
+        // バックアップの利用はログイン時のみに制限
+        let backupButton: ButtonRow = form.rowBy(tag: "Backup")!
+        if Auth.auth().currentUser == nil {
+            backupButton.disabled = true
+            backupButton.cell.backgroundColor = .lightGray
+            backupButton.reload()
+        }else{
+            backupButton.disabled = false
+            backupButton.cell.backgroundColor = .white
+            backupButton.presentationMode = .segueName(segueName: "BackupViewControllerSegue", onDismiss: nil)
+            backupButton.reload()
+        }
+
+        print("DEBUG_PRINT: SettingViewController viewWillAppear end")
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     func initializeForm(){
         print("DEBUG_PRINT: SettingViewController initializeForm start")
         
@@ -56,17 +77,16 @@ class SettingViewController: FormViewController {
                 row.title = "アカウント"
                 row.presentationMode = .segueName(segueName: "AccountControllerSegue", onDismiss: nil)
             }
-
+        
             +++ Section(header:"データ管理", footer:"オンラインバックアップの利用にはログインしている必要があります。" )
-            <<< ButtonRow() { (row: ButtonRow) -> Void in
+            <<< ButtonRow("ImportData") { (row: ButtonRow) -> Void in
                 row.title = "ファイルから一括取込"
                 row.presentationMode = .segueName(segueName: "ImportDataViewControllerSegue", onDismiss: nil)
             }
-            <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "オンラインバックアップ"
-                row.presentationMode = .segueName(segueName: "BackupViewControllerSegue", onDismiss: nil)
+            <<< ButtonRow("Backup") { (row: ButtonRow) -> Void in
+                row.title = "バックアップ"
         }
-
+        
         print("DEBUG_PRINT: SettingViewController initializeForm end")
     }
     

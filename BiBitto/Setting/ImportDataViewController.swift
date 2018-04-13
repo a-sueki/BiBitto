@@ -33,6 +33,26 @@ class ImportDataViewController: FormViewController {
         
         print("DEBUG_PRINT: ImportDataViewController viewDidLoad end")
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("DEBUG_PRINT: ImportDataViewController viewWillAppear start")
+        
+        // バックアップの利用はログイン時のみに制限
+        let autoSaveSwitch: SwitchRow = form.rowBy(tag: "autoSave")!
+        if Auth.auth().currentUser == nil {
+            autoSaveSwitch.value = false
+            autoSaveSwitch.disabled = true
+            autoSaveSwitch.cell.backgroundColor = .lightGray
+            autoSaveSwitch.reload()
+        }else{
+            autoSaveSwitch.disabled = false
+            autoSaveSwitch.cell.backgroundColor = .white
+            autoSaveSwitch.reload()
+        }
+        
+        print("DEBUG_PRINT: ImportDataViewController viewWillAppear end")
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -101,6 +121,11 @@ class ImportDataViewController: FormViewController {
                     vc.dismissOnSelection = false
                 })
             
+            <<< SwitchRow("autoSave"){
+                $0.title = "バックアップも更新する"
+                $0.value = UserDefaults.standard.bool(forKey: DefaultString.AutoBackup)
+            }
+            
             <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "一括取込の実行"
                 }.onCellSelection { [weak self] (cell, row) in
@@ -134,6 +159,10 @@ class ImportDataViewController: FormViewController {
             }
         }
         
+        if Auth.auth().currentUser == nil, inputData["autoSave"] as! Bool == true {
+            SVProgressHUD.showError(withStatus: Alert.pleaseloginAlartTitle)
+            return
+        }
         var totalCardCount = 0
         
         // 追加の場合
@@ -198,7 +227,7 @@ class ImportDataViewController: FormViewController {
         Files.writeDocument(dataArrayList: self.wordArrayList ,fileName: Files.word_file)
 
         // ログインしている場合、firebaseStorageにupdate
-        if let uid = Auth.auth().currentUser?.uid {
+        if let uid = Auth.auth().currentUser?.uid, inputData["autoSave"] as! Bool == true {
             // ストレージに保存
             StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
             StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
@@ -211,7 +240,7 @@ class ImportDataViewController: FormViewController {
         let nav = self.navigationController!
         nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
         // 成功ポップアップ
-        SVProgressHUD.showSuccess(withStatus: Alert.successRestoreTitle)
+        SVProgressHUD.showSuccess(withStatus: Alert.successImportTitle)
         
         print("DEBUG_PRINT: ImportDataViewController importFile end")
     }
@@ -233,7 +262,7 @@ class ImportDataViewController: FormViewController {
     
     enum LoadingType : String, CustomStringConvertible {
         case Add = "追加"
-        case Update = "更新（全件削除→ファイルデータを取込）"
+        case Update = "更新（全件削除→取込）"
         
         var description : String { return rawValue }
         

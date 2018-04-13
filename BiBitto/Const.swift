@@ -48,6 +48,7 @@ struct StorageProcessing{
             _ = riversRef.putFile(from: path_file_name, metadata: nil) { metadata, error in
                 if let error = error {
                     print("DEBUG_PRINT: ImportDataViewController storageUpload: \(error.localizedDescription)")
+                    SVProgressHUD.showError(withStatus: Alert.errorUploadTitle)
                 } else {
                     // Metadata contains file metadata such as size, content-type, and download URL.
                     if fileType == Files.card_file {
@@ -74,6 +75,7 @@ struct StorageProcessing{
             _ = islandRef.write(toFile: path_file_name) { url, error in
                 if let error = error {
                     print("DEBUG_PRINT: ImportDataViewController storageDownload: \(error.localizedDescription)")
+                    SVProgressHUD.showError(withStatus: Alert.errorDownloadTitle)
                 } else {
                     // Local file URL for "images/island.jpg" is returned
                 }
@@ -90,7 +92,7 @@ struct DefaultString {
     static let Password = "password"    // FBアカウント（パスワード）
     static let CardMetaUpdated = "cardMetaUpdated"
     static let WordMetaUpdated = "wordMetaUpdated"
-
+    static let AutoBackup = "autoBackup"
 }
 struct ErrorMsgString {
     static let RulePassword = "パスワードは6~12文字で設定して下さい"
@@ -139,13 +141,20 @@ struct Alert {
     static let validationExistingEmail = "そのメールアドレスは既に登録されています"
     static let validationPassword = "パスワードは6~12文字で設定してください"
     static let loginAlartTitle = "ログインしていません"
+    static let pleaseloginAlartTitle = "バックアップの利用にはログインが必要です"
+    static let errorSaveTitle = "保存に失敗しました"
+    static let errorRestoreTitle = "復元に失敗しました"
+    static let errorImportTitle = "ファイル取込に失敗しました"
+    static let errorUploadTitle = "バックアップの保存に失敗しました"
+    static let errorDownloadTitle = "復元に失敗しました"
     static let successSaveTitle = "保存しました"
-    static let successRestoreTitle = "データの復元に成功しました"
+    static let successRestoreTitle = "復元に成功しました"
+    static let successImportTitle = "ファイル取込に成功しました"
     static let successSendTitle = "送信しました"
     static let successLoginTitle = "ログインしました"
     static let successLogoutTitle = "ログアウトしました"
     static let waiting = "Now Loading..."
-    static let limited = "999件以上はアカウント登録が必要です"
+    static let limited = "99件以上はアカウント登録が必要です"
 }
 struct Category {
     static let continents = ["MINDE", "LEADERSHIP", "VISION", "WISDOM", "FELLOW"]
