@@ -65,17 +65,17 @@ class BackupViewController: FormViewController {
         
         // フォーム
         form +++
-            Section("自動バックアップ")
+            Section("自動")
             <<< SwitchRow("autoBackup"){
-                $0.title = "自動バックアップON"
+                $0.title = "自動保存"
                 $0.value = UserDefaults.standard.bool(forKey: DefaultString.AutoBackup)
                 }.onChange { row in
                     self.autoBackupSetting()
             }
             
-        +++ Section("手動バックアップ")
+        +++ Section("手動")
             <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "現在の内容をバックアップに保存"
+                row.title = "現在の内容を保存"
                 }.onCellSelection { [weak self] (cell, row) in
                     if Auth.auth().currentUser == nil {
                         SVProgressHUD.showError(withStatus: Alert.pleaseloginAlartTitle)
@@ -87,7 +87,7 @@ class BackupViewController: FormViewController {
                 $0.tag = "restoreButton"
             }
             <<< ButtonRow() { (row: ButtonRow) -> Void in
-                row.title = "オンラインバックアップから復元"
+                row.title = "バックアップから復元"
                 }.onCellSelection { [weak self] (cell, row) in
                     if Auth.auth().currentUser == nil {
                         SVProgressHUD.showError(withStatus: Alert.pleaseloginAlartTitle)
@@ -118,22 +118,28 @@ class BackupViewController: FormViewController {
     @IBAction func save() {
         print("DEBUG_PRINT: BackupViewController save start")
         
-        // ログインしている場合、firebaseStorageにupdate
-        if let uid = Auth.auth().currentUser?.uid {
-            // ストレージに保存
-            StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
-            StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
-            print("DEBUG_PRINT: BackupViewController FB Storage uploaded!")
+        SVProgressHUD.show(withStatus: Alert.waiting)
+        // 遅延実行
+        let dispatchTime = DispatchTime.now() + 0.1
+        DispatchQueue.main.asyncAfter( deadline: dispatchTime) {
+            
+            // ログインしている場合、firebaseStorageにupdate
+            if let uid = Auth.auth().currentUser?.uid {
+                // ストレージに保存
+                StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
+                StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
+                print("DEBUG_PRINT: BackupViewController FB Storage uploaded!")
+            }
+            
+            // 全てのモーダルを閉じる
+            SVProgressHUD.dismiss()
+            UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+            // Home画面に戻る（選択済みにする）
+            let nav = self.navigationController!
+            nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
+            // 成功ポップアップ
+            SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
         }
-        
-        // 全てのモーダルを閉じる
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
-        // Home画面に戻る（選択済みにする）
-        let nav = self.navigationController!
-        nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
-        // 成功ポップアップ
-        SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
-        
         
         print("DEBUG_PRINT: BackupViewController save end")
     }
@@ -141,20 +147,26 @@ class BackupViewController: FormViewController {
     @IBAction func restore() {
         print("DEBUG_PRINT: BackupViewController restore start")
         
-        // ログインしている場合、firebaseStorageからdownload
-        if let uid = Auth.auth().currentUser?.uid {
-            // ストレージから取得
-            StorageProcessing.storageDownload(fileType: Files.card_file, key: uid)
-            StorageProcessing.storageDownload(fileType: Files.word_file, key: uid)
-            print("DEBUG_PRINT: BackupViewController FB Storage uploaded!")
+        SVProgressHUD.show(withStatus: Alert.waiting)
+        // 遅延実行
+        let dispatchTime = DispatchTime.now() + 0.1
+        DispatchQueue.main.asyncAfter( deadline: dispatchTime) {
+            // ログインしている場合、firebaseStorageからdownload
+            if let uid = Auth.auth().currentUser?.uid {
+                // ストレージから取得
+                StorageProcessing.storageDownload(fileType: Files.card_file, key: uid)
+                StorageProcessing.storageDownload(fileType: Files.word_file, key: uid)
+                print("DEBUG_PRINT: BackupViewController FB Storage uploaded!")
+            }
+            // 全てのモーダルを閉じる
+            SVProgressHUD.dismiss()
+            UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+            // Home画面に戻る（選択済みにする）
+            let nav = self.navigationController!
+            nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
+            // 成功ポップアップ
+            SVProgressHUD.showSuccess(withStatus: Alert.successRestoreTitle)
         }
-        // 全てのモーダルを閉じる
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
-        // Home画面に戻る（選択済みにする）
-        let nav = self.navigationController!
-        nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
-        // 成功ポップアップ
-        SVProgressHUD.showSuccess(withStatus: Alert.successRestoreTitle)
         
         print("DEBUG_PRINT: BackupViewController restore end")
     }

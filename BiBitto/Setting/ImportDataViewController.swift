@@ -21,7 +21,7 @@ class ImportDataViewController: FormViewController {
     var cardData: CardData?
     var outputDataArray = Array<[String : Any]>()
     var wordArrayList = Array<[String]>()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("DEBUG_PRINT: ImportDataViewController viewDidLoad start")
@@ -53,13 +53,13 @@ class ImportDataViewController: FormViewController {
         
         print("DEBUG_PRINT: ImportDataViewController viewWillAppear end")
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     func initializeForm(){
         print("DEBUG_PRINT: ImportDataViewController initializeForm start")
         
@@ -100,7 +100,7 @@ class ImportDataViewController: FormViewController {
                         }
                     }
             }
-
+            
             // 追加か、全件洗い替えか
             <<< PushRow<LoadingType>("LoadingType") {
                 $0.title = "追加/更新"
@@ -135,38 +135,38 @@ class ImportDataViewController: FormViewController {
                         self?.importFile()
                     }
             }
-
+            
             +++ Section("チュートリアル")
             <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "ファイル取込方法を確認する"
                 }.onCellSelection { [weak self] (cell, row) in
                     self?.jumpToHowtousePage()
-            }
-
+        }
+        
         print("DEBUG_PRINT: ImportDataViewController initializeForm end")
     }
     
     @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
     }
-
+    
     @IBAction func importFile(){
         print("DEBUG_PRINT: ImportDataViewController importFile start")
-
+        
         for (key,value) in form.values() {
             if value != nil {
-                inputData["\(key)"] = value
+                self.inputData["\(key)"] = value
             }
         }
         
-        if Auth.auth().currentUser == nil, inputData["autoSave"] as! Bool == true {
+        if Auth.auth().currentUser == nil, self.inputData["autoSave"] as! Bool == true {
             SVProgressHUD.showError(withStatus: Alert.pleaseloginAlartTitle)
             return
         }
         var totalCardCount = 0
         
         // 追加の場合
-        if inputData["LoadingType"] as! LoadingType == LoadingType.Add {
+        if self.inputData["LoadingType"] as! LoadingType == LoadingType.Add {
             // cardファイルからデータ取得
             self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
             totalCardCount = self.cardDataArray.count
@@ -178,69 +178,73 @@ class ImportDataViewController: FormViewController {
         
         // ファイル読み込み
         if inputData["Delimiter"] as! Delimiter == Delimiter.Indention {
-            importDataArray = Files.readImportDocument(fileName: inputData["FileName"] as! String, separator: "\n")
-            totalCardCount = totalCardCount + importDataArray.count
+            self.importDataArray = Files.readImportDocument(fileName: self.inputData["FileName"] as! String, separator: "\n")
+            totalCardCount = totalCardCount + self.importDataArray.count
         } else {
             //TODO: 区切り文字（任意）
         }
-        print("カード合計件数：\(totalCardCount)、一括登録件数：\(importDataArray.count)")
-
+        print("カード合計件数：\(totalCardCount)、一括登録件数：\(self.importDataArray.count)")
+        
         if totalCardCount > 99 {
             if (Auth.auth().currentUser?.uid) != nil {
-                SVProgressHUD.show(withStatus: "\(importDataArray)件のデータを登録中...")
+                SVProgressHUD.show(withStatus: "\(self.importDataArray.count)件のデータを登録中...")
             }else{
                 SVProgressHUD.showError(withStatus: Alert.limited)
                 return
             }
         }
         
-        // Card形式に生成
-        for data in importDataArray {
-            let time = NSDate.timeIntervalSinceReferenceDate
-            importData["updateAt"] = String(time)
-            importData["createAt"] = String(time)
-            importData["text"] = data
-            importData["category"] = Category.continents.first
-            // No付与
-            importData["no"] = self.cardDataArray.count + 1
-            // カード追加
-            let cardData = CardData(valueDictionary: importData as [String : AnyObject])
-            self.cardDataArray.append(cardData)
+        // 遅延実行
+        let dispatchTime = DispatchTime.now() + 0.1
+        DispatchQueue.main.asyncAfter( deadline: dispatchTime) {
+            // Card形式に生成
+            for data in self.importDataArray {
+                let time = NSDate.timeIntervalSinceReferenceDate
+                self.importData["updateAt"] = String(time)
+                self.importData["createAt"] = String(time)
+                self.importData["text"] = data
+                self.importData["category"] = Category.continents.first
+                // No付与
+                self.importData["no"] = self.cardDataArray.count + 1
+                // カード追加
+                let cardData = CardData(valueDictionary: self.importData as [String : AnyObject])
+                self.cardDataArray.append(cardData)
+                
+                // 検索用ワードをファイル書き込み（追記）
+                let wordArray = Files.morphologicalAnalysis(inputData: self.importData)
+                self.wordArrayList.append(wordArray)
+            }
+            // Noで並び替え
+            self.cardDataArray = self.cardDataArray.sorted(by: {$0.no > $1.no})
+            // No洗い替え
+            var counter = 1
+            for card in self.cardDataArray {
+                card.no = counter
+                counter = counter + 1
+            }
             
-            // 検索用ワードをファイル書き込み（追記）
-            let wordArray = Files.morphologicalAnalysis(inputData: importData)
-            self.wordArrayList.append(wordArray)
+            // ファイル書き込み用カード配列作成
+            self.outputDataArray = CardUtils.cardToDictionary(cardDataArray: self.cardDataArray)
+            // ファイル書き込み
+            Files.writeCardDocument(cardDataArray: self.outputDataArray ,fileName: Files.card_file)
+            Files.writeDocument(dataArrayList: self.wordArrayList ,fileName: Files.word_file)
+            
+            // ログインしている場合、firebaseStorageにupdate
+            if let uid = Auth.auth().currentUser?.uid, self.inputData["autoSave"] as! Bool == true {
+                // ストレージに保存
+                StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
+                StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
+                print("DEBUG_PRINT: ImportDataViewController FB Storage uploaded!")
+            }
+            // 全てのモーダルを閉じる
+            SVProgressHUD.dismiss()
+            UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+            // Home画面に戻る（選択済みにする）
+            let nav = self.navigationController!
+            nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
+            // 成功ポップアップ
+            SVProgressHUD.showSuccess(withStatus: Alert.successImportTitle)
         }
-        // Noで並び替え
-        self.cardDataArray = self.cardDataArray.sorted(by: {$0.no > $1.no})
-        // No洗い替え
-        var counter = 1
-        for card in self.cardDataArray {
-            card.no = counter
-            counter = counter + 1
-        }
-
-        // ファイル書き込み用カード配列作成
-        self.outputDataArray = CardUtils.cardToDictionary(cardDataArray: self.cardDataArray)
-        // ファイル書き込み
-        Files.writeCardDocument(cardDataArray: self.outputDataArray ,fileName: Files.card_file)
-        Files.writeDocument(dataArrayList: self.wordArrayList ,fileName: Files.word_file)
-
-        // ログインしている場合、firebaseStorageにupdate
-        if let uid = Auth.auth().currentUser?.uid, inputData["autoSave"] as! Bool == true {
-            // ストレージに保存
-            StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
-            StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
-            print("DEBUG_PRINT: ImportDataViewController FB Storage uploaded!")
-        }
-        
-        // 全てのモーダルを閉じる
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
-        // Home画面に戻る（選択済みにする）
-        let nav = self.navigationController!
-        nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
-        // 成功ポップアップ
-        SVProgressHUD.showSuccess(withStatus: Alert.successImportTitle)
         
         print("DEBUG_PRINT: ImportDataViewController importFile end")
     }
@@ -268,16 +272,16 @@ class ImportDataViewController: FormViewController {
         
         static let allValues = [Add, Update]
     }
-/*
-    enum LoadingFileFormat : String, CustomStringConvertible {
-        case Csv = ".csvファイル"
-        case Txt = ".txtファイル" // 文字コードを指定させる必要あり
-        
-        var description : String { return rawValue }
-        
-        static let allValues = [Csv, Txt]
-    }
-    */
+    /*
+     enum LoadingFileFormat : String, CustomStringConvertible {
+     case Csv = ".csvファイル"
+     case Txt = ".txtファイル" // 文字コードを指定させる必要あり
+     
+     var description : String { return rawValue }
+     
+     static let allValues = [Csv, Txt]
+     }
+     */
     enum Delimiter : String, CustomStringConvertible {
         case Indention = "改行"
         case Comma = "コンマ"
@@ -286,5 +290,5 @@ class ImportDataViewController: FormViewController {
         
         static let allValues = [Indention, Comma]
     }
-
+    
 }
