@@ -26,6 +26,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let tabvc = self.window!.rootViewController as? UITabBarController  {
             tabvc.selectedIndex = 1 // 0 が一番左のタブ
         }
+        
+        // ナビゲーションバーのフォントを変更
+        if #available(iOS 11.0, *) {
+            UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue):UIFont(name: "Gill Sans", size: 20)!]
+        } else {
+            UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue):UIFont(name: "Gill Sans", size: 20)!]
+        }
+        
+        
         // Register APNs
         if #available(iOS 10.0, *) {
             
