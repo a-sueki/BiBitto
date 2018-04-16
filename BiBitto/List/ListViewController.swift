@@ -35,14 +35,22 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         // add button
         let leftSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(addButtonTapped))
         self.navigationItem.setLeftBarButtonItems([leftSearchBarButtonItem], animated: true)
-
+        
+        self.setScrollPosition()
+        
+        print("DEBUG_PRINT: ListViewController viewDidLoad end")
+    }
+    
+    func setScrollPosition() {
+        print("DEBUG_PRINT: ListViewController setScrollPosition start")
+        
         // 潜り込み防止策
         tableView.contentInsetAdjustmentBehavior = .automatic
         let edgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         tableView.contentInset = edgeInsets
         tableView.scrollIndicatorInsets = edgeInsets
-        
-        print("DEBUG_PRINT: ListViewController viewDidLoad end")
+
+        print("DEBUG_PRINT: ListViewController setScrollPosition end")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +68,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             print("DEBUG_PRINT: ListViewController [DispatchQueue.main.async]")
             self.tableView.reloadData()
         }
+        
+        self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentInset.top)
         
         print("DEBUG_PRINT: ListViewController viewWillAppear end")
     }
