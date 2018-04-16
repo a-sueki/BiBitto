@@ -24,11 +24,12 @@ class CardData: NSObject {
         self.text = valueDictionary["text"] as! String
         self.author = valueDictionary["author"] as? String
         self.category = valueDictionary["category"] as! String
-        let createAt = valueDictionary["createAt"] as? String
-        if createAt?.count == 25 {
-            self.createAt = DateUtils.dateFromString(string:createAt!, format: "yyyy-MM-dd HH:mm:ss Z")
+        // システム項目
+        let createAt = valueDictionary["createAt"]!
+        if createAt is String , (createAt as! String).count == 25 {
+            self.createAt = DateUtils.dateFromString(string:createAt as! String, format: "yyyy-MM-dd HH:mm:ss Z")
         }else{
-            self.createAt = NSDate(timeIntervalSinceReferenceDate: TimeInterval(createAt!)!)
+            self.createAt = NSDate(timeIntervalSinceReferenceDate: TimeInterval(createAt as! String)!)
         }
         let updateAt = valueDictionary["updateAt"] as? String
         if updateAt?.count == 25 {

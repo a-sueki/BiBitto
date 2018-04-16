@@ -28,6 +28,7 @@
 		84A4C6841FA2F53A002366FD /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4C6831FA2F53A002366FD /* SearchViewController.swift */; };
 		84B70DC6207F533600319FA5 /* BackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B70DC5207F533600319FA5 /* BackupViewController.swift */; };
 		84B70DC8207F55A200319FA5 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B70DC7207F55A200319FA5 /* NotificationViewController.swift */; };
+		84B70DCA2080678100319FA5 /* TabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B70DC92080678100319FA5 /* TabBarDelegate.swift */; };
 		84C2613E1FA19A31004B3520 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */; };
 		84C261441FA1AEDE004B3520 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C261431FA1AEDE004B3520 /* SignUpViewController.swift */; };
 		84C4485D1FA3600200C0678C /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C4485C1FA3600200C0678C /* AddViewController.swift */; };
@@ -60,6 +61,7 @@
 		84A4C6831FA2F53A002366FD /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		84B70DC5207F533600319FA5 /* BackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupViewController.swift; sourceTree = "<group>"; };
 		84B70DC7207F55A200319FA5 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		84B70DC92080678100319FA5 /* TabBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDelegate.swift; sourceTree = "<group>"; };
 		84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		84C261431FA1AEDE004B3520 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		84C4485C1FA3600200C0678C /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				84F4D26D1F9EF80D001A614A /* CardData.swift */,
 				84F4D26F1F9EFD6F001A614A /* UserData.swift */,
 				845851CD1F9C6A86002F9AA0 /* TabBarController.swift */,
+				84B70DC92080678100319FA5 /* TabBarDelegate.swift */,
 				84C261431FA1AEDE004B3520 /* SignUpViewController.swift */,
 				845851BF1F9C686E002F9AA0 /* Main.storyboard */,
 				845851C21F9C686E002F9AA0 /* Assets.xcassets */,
@@ -312,6 +315,7 @@
 				84B70DC8207F55A200319FA5 /* NotificationViewController.swift in Sources */,
 				84A0A61A2074868000D940BD /* ImportDataViewController.swift in Sources */,
 				840272BE1FA22ABC001C0BFB /* PasswordResetViewController.swift in Sources */,
+				84B70DCA2080678100319FA5 /* TabBarDelegate.swift in Sources */,
 				845851D21F9C8259002F9AA0 /* Const.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

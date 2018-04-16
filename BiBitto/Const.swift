@@ -30,6 +30,26 @@ struct StorageRef{
     }
 }
 
+struct CardFileIntermediary{
+    static var _cardDataArray:[CardData]?
+    static func getList() -> [CardData] {
+        return self._cardDataArray!
+    }
+    static func setList(list: [CardData]) {
+        self._cardDataArray = list
+    }
+/*    static var cardDataArray: [CardData] {
+        get {
+            return self._cardDataArray
+        }
+        set {
+            self._cardDataArray = newValue
+        }
+    }
+ */
+
+}
+
 struct StorageProcessing{
     static func storageUpload(fileType: String, key: String){
         if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {

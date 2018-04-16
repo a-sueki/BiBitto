@@ -50,7 +50,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         print("DEBUG_PRINT: ListViewController viewWillAppear start")
         
         // カード一覧をローカルファイルから取得
-        let originCardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        let originCardDataArray = CardFileIntermediary.getList()
+
         // Noで並び替え
         self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
 
@@ -74,10 +75,10 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         /* Searchでの絞り込みリセット */
         // カード一覧をローカルファイルから取得
-        let originCardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        let originCardDataArray = CardFileIntermediary.getList()
         // Noで並び替え
         self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
-
+        
         print("DEBUG_PRINT: ListViewController viewWillDisappear end")
     }
     
@@ -123,8 +124,16 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("DEBUG_PRINT: ListViewController didSelectRowAt start")
         
-        // セルをタップされたら何もせずに選択状態を解除する
-        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+        // 配列からタップされたインデックスのデータを取り出す
+        let selectedCardData = self.cardDataArray[indexPath.row]
+        
+        let addViewController = self.storyboard?.instantiateViewController(withIdentifier: "AddViewController") as! AddViewController
+        addViewController.cardDataArray = self.cardDataArray
+        addViewController.cardData = selectedCardData
+        self.navigationController?.pushViewController(addViewController, animated: true)
+        
+        // 選択解除（ハイライトを消す）
+        tableView.deselectRow(at: indexPath, animated: true)
         
         print("DEBUG_PRINT: ListViewController didSelectRowAt end")
     }
@@ -176,6 +185,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             Files.refreshDocument(fileName: Files.card_file)
             // ファイル書き込み（全件洗い替え）
             Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
+            // 他画面での参照用配列をアップデート
+            CardFileIntermediary.setList(list: self.cardDataArray)
+
         }
 
         // 一覧画面から削除

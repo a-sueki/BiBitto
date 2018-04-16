@@ -168,7 +168,7 @@ class ImportDataViewController: FormViewController {
         // 追加の場合
         if self.inputData["LoadingType"] as! LoadingType == LoadingType.Add {
             // cardファイルからデータ取得
-            self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
+            self.cardDataArray = CardFileIntermediary.getList()
             totalCardCount = self.cardDataArray.count
         }else{
             // ファイル内テキスト全件クリア
@@ -228,6 +228,8 @@ class ImportDataViewController: FormViewController {
             // ファイル書き込み
             Files.writeCardDocument(cardDataArray: self.outputDataArray ,fileName: Files.card_file)
             Files.writeDocument(dataArrayList: self.wordArrayList ,fileName: Files.word_file)
+            // 他画面での参照用配列をアップデート
+            CardFileIntermediary.setList(list: self.cardDataArray)
             
             // ログインしている場合、firebaseStorageにupdate
             if let uid = Auth.auth().currentUser?.uid, self.inputData["autoSave"] as! Bool == true {

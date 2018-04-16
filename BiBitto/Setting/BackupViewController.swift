@@ -17,7 +17,8 @@ class BackupViewController: FormViewController {
 
     var inputData = [String : Any]()
     var lastUpdated = UserDefaults.standard.object(forKey: DefaultString.CardMetaUpdated) ?? "なし"
-    
+    var cardDataArray: [CardData] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("DEBUG_PRINT: BackupViewController viewDidLoad start")
@@ -157,6 +158,10 @@ class BackupViewController: FormViewController {
                 StorageProcessing.storageDownload(fileType: Files.card_file, key: uid)
                 StorageProcessing.storageDownload(fileType: Files.word_file, key: uid)
                 print("DEBUG_PRINT: BackupViewController FB Storage uploaded!")
+ 
+                self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
+                // 他画面での参照用配列をアップデート
+                CardFileIntermediary.setList(list: self.cardDataArray)
             }
             // 全てのモーダルを閉じる
             SVProgressHUD.dismiss()

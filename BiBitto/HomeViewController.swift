@@ -13,7 +13,7 @@ import TTTAttributedLabel
 import SVProgressHUD
 import Presentr
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController , TabBarDelegate{
     
     var cardDataArray: [CardData] = []
     var cardData: CardData?
@@ -44,26 +44,18 @@ class HomeViewController: UIViewController {
             fm.createFile(atPath: filePath, contents: nil, attributes: [:])
         }
         
+        self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
+        CardFileIntermediary.setList(list: self.cardDataArray)
+        
         print("DEBUG_PRINT: HomeViewController viewDidLoad end")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: HomeViewController viewWillAppear start")
-        
-        self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
-        if self.cardDataArray.count != 0 {
-            SVProgressHUD.show()
-            self.nextButton.isHidden = false
-            self.cardData = self.cardDataArray.shuffled.first
-            self.showWord()
-            SVProgressHUD.dismiss()
-        }else{
-            self.nextButton.isHidden = true
-            self.noLabel.text = String(format: "%03d",0)
-            SVProgressHUD.showInfo(withStatus: "カードがありません")
-        }
-        
+
+        self.reloadView()
+
         print("DEBUG_PRINT: HomeViewController viewWillAppear end")
     }
         
@@ -105,6 +97,30 @@ class HomeViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    func didSelectTab(tabBarController: TabBarController) {
+        print("DEBUG_PRINT: HomeViewController didSelectTab start")
+        
+        self.reloadView()
+        
+        print("DEBUG_PRINT: HomeViewController didSelectTab end")
+    }
+    func reloadView() {
+        print("DEBUG_PRINT: HomeViewController reloadView start")
+        
+        self.cardDataArray = CardFileIntermediary.getList()
+
+        if self.cardDataArray.count != 0 {
+            self.nextButton.isHidden = false
+            self.cardData = self.cardDataArray.shuffled.first
+            self.showWord()
+        }else{
+            self.nextButton.isHidden = true
+            self.noLabel.text = String(format: "%03d",0)
+            SVProgressHUD.showInfo(withStatus: "カードがありません")
+        }
+        
+        print("DEBUG_PRINT: HomeViewController reloadView end")
+    }
     func removeSubviews(parentView: UIView){
         print("DEBUG_PRINT: HomeViewController removeAllSubviews start")
 
@@ -184,7 +200,7 @@ class HomeViewController: UIViewController {
         label.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
         
         if let text = data {
-            label.setText(text) { (mutableAttributedString) -> NSMutableAttributedString! in
+            label.setText(text) { (mutableAttributedString) -> NSMutableAttributedString? in
                 mutableAttributedString?.addAttribute(NSAttributedStringKey(rawValue: kCTVerticalFormsAttributeName as String as String), value: true, range: NSMakeRange(0,(mutableAttributedString?.length)!))
                 return mutableAttributedString
             }

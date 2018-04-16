@@ -91,7 +91,7 @@
             </objects>
             <point key="canvasLocation" x="2243" y="-1004"/>
         </scene>
-        <!--ホーム-->
+        <!--HOME-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
                 <viewController storyboardIdentifier="HomeViewController" id="8rJ-Kc-sve" customClass="HomeViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -193,7 +193,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="ホーム" image="star" selectedImage="star" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="HOME" image="star" selectedImage="star" id="cPa-gy-q4n"/>
                     <connections>
                         <outlet property="authorNameLabel" destination="XTf-1c-xY3" id="Qgc-pU-vPX"/>
                         <outlet property="backgroundView" destination="koM-Jv-e5a" id="rec-hD-185"/>
@@ -332,7 +332,7 @@
             </objects>
             <point key="canvasLocation" x="1463.2" y="359.37031484257875"/>
         </scene>
-        <!--設定-->
+        <!--SETTING-->
         <scene sceneID="6VQ-uk-l0N">
             <objects>
                 <viewController storyboardIdentifier="SettingViewController" id="sOD-DG-nV1" customClass="SettingViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -354,7 +354,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="l3g-y6-AnP"/>
                     </view>
-                    <navigationItem key="navigationItem" title="設定" id="Tm6-Aa-5Fn"/>
+                    <navigationItem key="navigationItem" title="SETTING" id="Tm6-Aa-5Fn"/>
                     <connections>
                         <outlet property="tableView" destination="9iF-T6-hc4" id="1Ot-30-VVv"/>
                         <segue destination="0q0-ks-WhQ" kind="push" identifier="AccountControllerSegue" id="elL-py-Oil"/>
@@ -367,7 +367,7 @@
             </objects>
             <point key="canvasLocation" x="752" y="1099"/>
         </scene>
-        <!--アカウント-->
+        <!--ACCOUNT-->
         <scene sceneID="PTS-ot-elE">
             <objects>
                 <viewController storyboardIdentifier="AccountViewController" id="0q0-ks-WhQ" customClass="AccountViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -389,7 +389,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="lrH-JP-6Nd"/>
                     </view>
-                    <navigationItem key="navigationItem" title="アカウント" id="APZ-bH-zUt"/>
+                    <navigationItem key="navigationItem" title="ACCOUNT" id="APZ-bH-zUt"/>
                     <connections>
                         <outlet property="tableView" destination="Vyj-Jw-h1Q" id="Rxo-8w-jzx"/>
                         <segue destination="DsM-MV-7u9" kind="push" identifier="PasswordResetControllerSegue" id="lQe-M2-PtG"/>
@@ -399,7 +399,7 @@
             </objects>
             <point key="canvasLocation" x="1438" y="1099"/>
         </scene>
-        <!--一括取込-->
+        <!--IMPORT FILE-->
         <scene sceneID="JP4-R2-Tse">
             <objects>
                 <viewController storyboardIdentifier="ImportDataViewController" id="hRR-lW-VSD" customClass="ImportDataViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -421,7 +421,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rEU-Z0-QdT"/>
                     </view>
-                    <navigationItem key="navigationItem" title="一括取込" id="iA0-iV-dqw"/>
+                    <navigationItem key="navigationItem" title="IMPORT FILE" id="iA0-iV-dqw"/>
                     <connections>
                         <outlet property="tableView" destination="ioV-x6-KOg" id="mFK-YI-1eL"/>
                     </connections>
@@ -430,7 +430,7 @@
             </objects>
             <point key="canvasLocation" x="1433" y="1812"/>
         </scene>
-        <!--バックアップ-->
+        <!--ONLINE BACKUP-->
         <scene sceneID="j7N-V6-0Sl">
             <objects>
                 <viewController storyboardIdentifier="BackupViewController" id="UW3-H3-Mom" customClass="BackupViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -452,13 +452,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wPP-kF-Iwf"/>
                     </view>
-                    <navigationItem key="navigationItem" title="バックアップ" id="s4K-dq-H82"/>
+                    <navigationItem key="navigationItem" title="ONLINE BACKUP" id="s4K-dq-H82"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vmB-Wh-5y2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1432.5" y="2482.394366197183"/>
         </scene>
-        <!--通知-->
+        <!--NOTIFICATION-->
         <scene sceneID="T4q-sZ-PrY">
             <objects>
                 <viewController storyboardIdentifier="NotificationViewController" id="tg6-wq-PbL" customClass="NotificationViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -480,7 +480,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bHz-wF-g6N"/>
                     </view>
-                    <navigationItem key="navigationItem" title="通知" id="LDc-s8-1cW"/>
+                    <navigationItem key="navigationItem" title="NOTIFICATION" id="LDc-s8-1cW"/>
                     <connections>
                         <outlet property="tableView" destination="btZ-bR-gEJ" id="87S-US-CLO"/>
                     </connections>
@@ -489,7 +489,7 @@
             </objects>
             <point key="canvasLocation" x="1432.5" y="3159.5070422535214"/>
         </scene>
-        <!--パスワードリセット-->
+        <!--PASSWORD RESET-->
         <scene sceneID="FgY-0w-BYT">
             <objects>
                 <viewController storyboardIdentifier="PasswordResetViewController" id="DsM-MV-7u9" customClass="PasswordResetViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -511,7 +511,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="E9d-jD-Tac"/>
                     </view>
-                    <navigationItem key="navigationItem" title="パスワードリセット" id="A6L-N9-gW3"/>
+                    <navigationItem key="navigationItem" title="PASSWORD RESET" id="A6L-N9-gW3"/>
                     <connections>
                         <outlet property="tableView" destination="yOM-a4-8Ie" id="9Fn-WE-Uua"/>
                     </connections>
@@ -539,11 +539,11 @@
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
-        <!--設定-->
+        <!--SETTING-->
         <scene sceneID="iBX-OF-QfJ">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xhQ-eR-qr5" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="設定" image="setting" selectedImage="setting" id="wfO-xI-CRS"/>
+                    <tabBarItem key="tabBarItem" title="SETTING" image="setting" selectedImage="setting" id="wfO-xI-CRS"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="YAt-Am-kx6">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -558,11 +558,11 @@
             </objects>
             <point key="canvasLocation" x="0.0" y="1100"/>
         </scene>
-        <!--一覧-->
+        <!--LIST-->
         <scene sceneID="t8a-dY-9x4">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6xD-n9-c1g" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="一覧" image="list" selectedImage="list" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="LIST" image="list" selectedImage="list" id="acW-dT-cKf"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="V1r-y7-c09">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
