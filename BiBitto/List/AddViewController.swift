@@ -95,14 +95,13 @@ class AddViewController: FormViewController {
                 lrow.title = option
                 lrow.selectableValue = option
                 lrow.baseValue = self.cardData?.category ?? nil
-                if option == Category.continents.first {
+                if option == self.cardData?.category {
                     lrow.value = option
                 }else{
                     lrow.value = nil
                 }
             }
         }
-        
         
         form  +++ Section()
             <<< ButtonRow() { (row: ButtonRow) -> Void in
