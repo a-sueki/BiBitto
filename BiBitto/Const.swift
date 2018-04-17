@@ -49,7 +49,27 @@ struct CardFileIntermediary{
  */
 
 }
+struct DateConversion {
+    
+    static let formatter: DateFormatter = DateFormatter()
+    static func convertFormat(updateDate: Date ,before: String ,after: String) -> String {
+        formatter.dateFormat =  DateFormatter.dateFormat(fromTemplate: after, options: 0, locale: .current)
+        let strDate = formatter.string(from: updateDate)
+        return strDate
+/*
+        // 日本語にしか対応できてないのでコメントアウト
+        formatter.dateFormat = before
+        print("result1....\(strDate)")
+        if let date = formatter.date(from: String(strDate)) {
+            print("result2....\(date)")
+            formatter.dateFormat = after
+            return formatter.string(from :date)
+        }
+        return ""
+         */
+    }
 
+}
 struct StorageProcessing{
     static func storageUpload(fileType: String, key: String){
         if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
@@ -71,10 +91,15 @@ struct StorageProcessing{
                     SVProgressHUD.showError(withStatus: Alert.errorUploadTitle)
                 } else {
                     // Metadata contains file metadata such as size, content-type, and download URL.
-                    if fileType == Files.card_file {
-                        UserDefaults.standard.set(metadata!.updated, forKey: DefaultString.CardMetaUpdated)
-                    }else{
-                        UserDefaults.standard.set(metadata!.updated, forKey: DefaultString.WordMetaUpdated)
+                    if let updateDate = metadata?.updated {
+                        let resultStr = DateConversion.convertFormat(updateDate: updateDate ,before: "yyyy/MM/dd HH時mm分ss秒 Z", after: "yyyy-MM-dd HH:mm:ss Z")
+                        print("result....\(resultStr)")
+                        UserDefaults.standard.set(resultStr, forKey: DefaultString.CardMetaUpdated)
+                        if fileType == Files.card_file {
+                            UserDefaults.standard.set(resultStr, forKey: DefaultString.CardMetaUpdated)
+                        }else{
+                            UserDefaults.standard.set(resultStr, forKey: DefaultString.WordMetaUpdated)
+                        }
                     }
                 }
             }

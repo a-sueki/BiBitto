@@ -69,8 +69,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.tableView.reloadData()
         }
         
-        self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentInset.top)
-        
         print("DEBUG_PRINT: ListViewController viewWillAppear end")
     }
     
@@ -181,7 +179,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             //リストから削除
             cardDataArray.remove(at: indexPath.row)
             // Noで並び替え
-            self.cardDataArray = self.cardDataArray.sorted(by: {$0.no > $1.no})
+            self.cardDataArray = self.cardDataArray.sorted(by: {$0.no < $1.no})
             // No洗い替え
             var counter = 1
             for card in self.cardDataArray {
