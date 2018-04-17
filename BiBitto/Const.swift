@@ -93,7 +93,6 @@ struct StorageProcessing{
                     // Metadata contains file metadata such as size, content-type, and download URL.
                     if let updateDate = metadata?.updated {
                         let resultStr = DateConversion.convertFormat(updateDate: updateDate ,before: "yyyy/MM/dd HH時mm分ss秒 Z", after: "yyyy-MM-dd HH:mm:ss Z")
-                        print("result....\(resultStr)")
                         UserDefaults.standard.set(resultStr, forKey: DefaultString.CardMetaUpdated)
                         if fileType == Files.card_file {
                             UserDefaults.standard.set(resultStr, forKey: DefaultString.CardMetaUpdated)
@@ -199,6 +198,7 @@ struct Alert {
     static let successLoginTitle = "ログインしました"
     static let successLogoutTitle = "ログアウトしました"
     static let waiting = "Now Loading..."
+    static let saving = "Now Saving..."
     static let limited = "99件以上はアカウント登録が必要です"
 }
 struct Category {

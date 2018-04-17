@@ -166,37 +166,9 @@ class AddViewController: FormViewController {
             card.no = counter 
             counter = counter + 1
         }
-        // ファイル書き込み用カード配列作成
-        outputDataArray = CardUtils.cardToDictionary(cardDataArray: self.cardDataArray)
-        // ファイル内テキスト全件クリア
-        Files.refreshDocument(fileName: Files.card_file)
-        // ファイル書き込み（全件洗い替え）
-        Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
-        // 他画面での参照用配列をアップデート
-        CardFileIntermediary.setList(list: self.cardDataArray)
-
-        // 検索用ワードをファイル書き込み（追記）
-        let strArray2 = Files.morphologicalAnalysis(inputData: inputData)
-        // ファイル内テキスト全件クリア
-        Files.refreshDocument(fileName: Files.word_file)
-        // ファイル書き込み
-        Files.writeDocument(dataArray: strArray2,fileName: Files.word_file)
-        // ログインしている場合、firebaseStorageにupdate
-        if let uid = Auth.auth().currentUser?.uid {
-            // ストレージに保存
-            StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
-            StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
-            print("DEBUG_PRINT: AddViewController FB Storage uploaded!")
-        }
-        // 成功ポップアップ
-        SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
-
-        //呼び出し元のView Controllerを遷移履歴から取得しパラメータを渡す
-        let nav = self.navigationController!
-        let listViewController = nav.viewControllers[nav.viewControllers.count-2] as! ListViewController
-        listViewController.cardDataArray = self.cardDataArray
-        // 前画面に戻る
-        self.navigationController?.popViewController(animated: false)
+        SVProgressHUD.show(withStatus: Alert.saving)
+        // 遅延実行
+        self.writeFile()
         
         print("DEBUG_PRINT: AddViewController addCard end")
     }
@@ -225,7 +197,7 @@ class AddViewController: FormViewController {
         inputData["no"] = self.cardData?.no
         // カード更新
         let updatedCardData = CardData(valueDictionary: inputData as [String : AnyObject])
-
+        
         var index = 0
         for card in self.cardDataArray {
             if updatedCardData.no == card.no {
@@ -234,42 +206,54 @@ class AddViewController: FormViewController {
             }
             index = index + 1
         }
-
-        // ファイル書き込み用カード配列作成
-        outputDataArray = CardUtils.cardToDictionary(cardDataArray: self.cardDataArray)
-        // ファイル内テキスト全件クリア
-        Files.refreshDocument(fileName: Files.card_file)
-        // ファイル書き込み（全件洗い替え）
-        Files.writeCardDocument(cardDataArray: outputDataArray ,fileName: Files.card_file)
-        // 他画面での参照用配列をアップデート
-        CardFileIntermediary.setList(list: self.cardDataArray)
-
-        // 検索用ワードをファイル書き込み（追記）
-        let strArray2 = Files.morphologicalAnalysis(inputData: inputData)
-        // ファイル内テキスト全件クリア
-        Files.refreshDocument(fileName: Files.word_file)
-        // ファイル書き込み
-        Files.writeDocument(dataArray: strArray2,fileName: Files.word_file)
-        // ログインしている場合、firebaseStorageにupdate
-        if let uid = Auth.auth().currentUser?.uid {
-            // ストレージに保存
-            StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
-            StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
-            print("DEBUG_PRINT: AddViewController FB Storage uploaded!")
-        }
-        // 成功ポップアップ
-        SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
-        
-        //呼び出し元のView Controllerを遷移履歴から取得しパラメータを渡す
-        let nav = self.navigationController!
-        let listViewController = nav.viewControllers[nav.viewControllers.count-2] as! ListViewController
-        listViewController.cardDataArray = self.cardDataArray
-        // 前画面に戻る
-        self.navigationController?.popViewController(animated: false)
+        SVProgressHUD.show(withStatus: Alert.saving)
+        // 遅延実行
+        self.writeFile()
         
         print("DEBUG_PRINT: AddViewController updateCard end")
     }
+    
+    func writeFile() {
+        print("DEBUG_PRINT: AddViewController writeFile start")
 
+        let dispatchTime = DispatchTime.now() + 0.1
+        DispatchQueue.main.asyncAfter( deadline: dispatchTime) {
+            
+            // ファイル書き込み用カード配列作成
+            self.outputDataArray = CardUtils.cardToDictionary(cardDataArray: self.cardDataArray)
+            // ファイル内テキスト全件クリア
+            Files.refreshDocument(fileName: Files.card_file)
+            // ファイル書き込み（全件洗い替え）
+            Files.writeCardDocument(cardDataArray: self.outputDataArray ,fileName: Files.card_file)
+            // 他画面での参照用配列をアップデート
+            CardFileIntermediary.setList(list: self.cardDataArray)
+            
+            // 検索用ワードをファイル書き込み（追記）
+            let strArray2 = Files.morphologicalAnalysis(inputData: self.inputData)
+            // ファイル内テキスト全件クリア
+            Files.refreshDocument(fileName: Files.word_file)
+            // ファイル書き込み
+            Files.writeDocument(dataArray: strArray2,fileName: Files.word_file)
+            // ログインしている場合、firebaseStorageにupdate
+            if let uid = Auth.auth().currentUser?.uid {
+                // ストレージに保存
+                StorageProcessing.storageUpload(fileType: Files.card_file, key: uid)
+                StorageProcessing.storageUpload(fileType: Files.word_file, key: uid)
+                print("DEBUG_PRINT: AddViewController FB Storage uploaded!")
+            }
+            // 成功ポップアップ
+            SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
+            
+            //呼び出し元のView Controllerを遷移履歴から取得しパラメータを渡す
+            let nav = self.navigationController!
+            let listViewController = nav.viewControllers[nav.viewControllers.count-2] as! ListViewController
+            listViewController.cardDataArray = self.cardDataArray
+            // 前画面に戻る
+            self.navigationController?.popViewController(animated: false)
+        }
+        
+        print("DEBUG_PRINT: AddViewController writeFile start")
+    }
     override func valueHasBeenChanged(for row: BaseRow, oldValue: Any?, newValue: Any?) {
         if row.section === form[3] {
             print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue ?? "No row selected")")
