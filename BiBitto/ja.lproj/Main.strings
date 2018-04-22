@@ -1,0 +1,69 @@
+
+/* Class = "UINavigationItem"; title = "LIST"; ObjectID = "697-zJ-0HZ"; */
+"697-zJ-0HZ.title" = "LIST";
+
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "6NZ-kD-G6Z"; */
+"6NZ-kD-G6Z.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "6ul-rz-vtG"; */
+"6ul-rz-vtG.normalTitle" = "Button";
+
+/* Class = "UINavigationItem"; title = "ADD"; ObjectID = "77o-zF-4Zk"; */
+"77o-zF-4Zk.title" = "ADD";
+
+/* Class = "UINavigationItem"; title = "PASSWORD RESET"; ObjectID = "A6L-N9-gW3"; */
+"A6L-N9-gW3.title" = "PASSWORD RESET";
+
+/* Class = "UINavigationItem"; title = "ACCOUNT"; ObjectID = "APZ-bH-zUt"; */
+"APZ-bH-zUt.title" = "ACCOUNT";
+
+/* Class = "UIButton"; normalTitle = "Skip>>>"; ObjectID = "E9e-nS-DBu"; */
+"E9e-nS-DBu.normalTitle" = "Skip>>>";
+
+/* Class = "UINavigationItem"; title = "NOTIFICATION"; ObjectID = "LDc-s8-1cW"; */
+"LDc-s8-1cW.title" = "NOTIFICATION";
+
+/* Class = "UINavigationItem"; title = "CATEGORY"; ObjectID = "Oi6-J2-E3z"; */
+"Oi6-J2-E3z.title" = "CATEGORY";
+
+/* Class = "UINavigationItem"; title = "SETTING"; ObjectID = "Tm6-Aa-5Fn"; */
+"Tm6-Aa-5Fn.title" = "SETTING";
+
+/* Class = "UILabel"; text = "Author name"; ObjectID = "XTf-1c-xY3"; */
+"XTf-1c-xY3.text" = "Author name";
+
+/* Class = "UITabBarItem"; title = "LIST"; ObjectID = "acW-dT-cKf"; */
+"acW-dT-cKf.title" = "LIST";
+
+/* Class = "UITabBarItem"; title = "NEXT"; ObjectID = "cPa-gy-q4n"; */
+"cPa-gy-q4n.title" = "NEXT";
+
+/* Class = "UILabel"; text = "000"; ObjectID = "fbt-Yd-O71"; */
+"fbt-Yd-O71.text" = "000";
+
+/* Class = "UINavigationItem"; title = "IMPORT FILE"; ObjectID = "iA0-iV-dqw"; */
+"iA0-iV-dqw.title" = "IMPORT FILE";
+
+/* Class = "UILabel"; text = "バックアップを保存しましょう"; ObjectID = "iBt-Yx-pK9"; */
+"iBt-Yx-pK9.text" = "バックアップを保存しましょう";
+
+/* Class = "UIButton"; normalTitle = "アカウント作成"; ObjectID = "oMU-hs-U3e"; */
+"oMU-hs-U3e.normalTitle" = "アカウント作成";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "ruB-L5-DKC"; */
+"ruB-L5-DKC.placeholder" = "Password";
+
+/* Class = "UINavigationItem"; title = "ONLINE BACKUP"; ObjectID = "s4K-dq-H82"; */
+"s4K-dq-H82.title" = "ONLINE BACKUP";
+
+/* Class = "UITabBarItem"; title = "SETTING"; ObjectID = "wfO-xI-CRS"; */
+"wfO-xI-CRS.title" = "SETTING";
+
+/* Class = "UINavigationItem"; title = "SEARCH"; ObjectID = "ygR-bA-eil"; */
+"ygR-bA-eil.title" = "SEARCH";
+
+/* Class = "UILabel"; text = "Category"; ObjectID = "zEq-FU-wV5"; */
+"zEq-FU-wV5.text" = "Category";
+
+/* Class = "UITextField"; placeholder = "Email"; ObjectID = "zlK-UP-VDM"; */
+"zlK-UP-VDM.placeholder" = "Email";

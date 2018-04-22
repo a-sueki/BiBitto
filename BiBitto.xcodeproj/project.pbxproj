@@ -33,6 +33,8 @@
 		84C261441FA1AEDE004B3520 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C261431FA1AEDE004B3520 /* SignUpViewController.swift */; };
 		84C4485D1FA3600200C0678C /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C4485C1FA3600200C0678C /* AddViewController.swift */; };
 		84C448601FA36C7C00C0678C /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C4485F1FA36C7C00C0678C /* CategoryViewController.swift */; };
+		84D315752085DE5B005CA494 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84D315772085DE5B005CA494 /* InfoPlist.strings */; };
+		84D31579208C644C005CA494 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D31578208C644C005CA494 /* CoreLocation.framework */; };
 		84F4D26E1F9EF80D001A614A /* CardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F4D26D1F9EF80D001A614A /* CardData.swift */; };
 		84F4D2701F9EFD6F001A614A /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F4D26F1F9EFD6F001A614A /* UserData.swift */; };
 /* End PBXBuildFile section */
@@ -66,6 +68,10 @@
 		84C261431FA1AEDE004B3520 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		84C4485C1FA3600200C0678C /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		84C4485F1FA36C7C00C0678C /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		84D315712085DD97005CA494 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
+		84D315722085DD97005CA494 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		84D315762085DE5B005CA494 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		84D31578208C644C005CA494 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		84F4D26D1F9EF80D001A614A /* CardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardData.swift; sourceTree = "<group>"; };
 		84F4D26F1F9EFD6F001A614A /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		A3C178CB041547734C17373E /* Pods-BiBitto.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiBitto.release.xcconfig"; path = "Pods/Target Support Files/Pods-BiBitto/Pods-BiBitto.release.xcconfig"; sourceTree = "<group>"; };
@@ -77,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84D31579208C644C005CA494 /* CoreLocation.framework in Frameworks */,
 				5EA8BECB95022CDA6088B4BD /* Pods_BiBitto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,6 +94,7 @@
 		2B2B25355C269F1DEA60A4AC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84D31578208C644C005CA494 /* CoreLocation.framework */,
 				E80B0C69EB339563A95ACCD2 /* Pods_BiBitto.framework */,
 			);
 			name = Frameworks;
@@ -130,6 +138,7 @@
 				84C2613D1FA19A25004B3520 /* GoogleService-Info.plist */,
 				841BD9BC1FD605D00058B1A4 /* data.txt */,
 				845851C71F9C686E002F9AA0 /* Info.plist */,
+				84D315772085DE5B005CA494 /* InfoPlist.strings */,
 				840272BF1FA2313A001C0BFB /* Policy.txt */,
 			);
 			path = BiBitto;
@@ -206,6 +215,11 @@
 					845851B51F9C686E002F9AA0 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -239,6 +253,7 @@
 				84C2613E1FA19A31004B3520 /* GoogleService-Info.plist in Resources */,
 				845851C61F9C686E002F9AA0 /* LaunchScreen.storyboard in Resources */,
 				845851C31F9C686E002F9AA0 /* Assets.xcassets in Resources */,
+				84D315752085DE5B005CA494 /* InfoPlist.strings in Resources */,
 				845851C11F9C686E002F9AA0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,6 +342,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				845851C01F9C686E002F9AA0 /* Base */,
+				84D315712085DD97005CA494 /* ja */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -335,8 +351,17 @@
 			isa = PBXVariantGroup;
 			children = (
 				845851C51F9C686E002F9AA0 /* Base */,
+				84D315722085DD97005CA494 /* ja */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		84D315772085DE5B005CA494 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84D315762085DE5B005CA494 /* ja */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -346,6 +371,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -404,6 +430,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

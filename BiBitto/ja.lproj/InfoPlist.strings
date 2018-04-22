@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  BiBitto
+
+  Created by admin on 2018/04/17.
+  Copyright © 2018年 aoi.sueki. All rights reserved.
+*/
+NSLocationAlwaysUsageDescription = "位置情報を常に使うんだって！だからなの！";
+NSLocationWhenInUseUsageDescription = "位置情報の特定に使うだけです。悪用しないんで、まじで。";
+CFBundleDisplayName = "ビビッとくる俺の名言コレクション";

@@ -24,6 +24,16 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>このアプリは、＊＊のため、位置情報を取得します</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>このアプリは、＊＊のため、常に位置情報を取得します</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>このアプリは、＊＊のため、アプリ起動中に位置情報を取得します</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
