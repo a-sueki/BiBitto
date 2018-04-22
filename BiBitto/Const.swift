@@ -129,7 +129,8 @@ struct StorageProcessing{
 }
 
 struct DefaultString {
-    static let NoticeFlag = "noticeFlag"
+    static let NoticeTimeFlag = "noticeTimeFlag"
+    static let NoticeLocationFlag = "noticeLocationFlag"
     
     static let Uid = "uid"              // FBアカウント（uid）
     static let Mail = "mail"            // FBアカウント（メール）

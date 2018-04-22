@@ -479,11 +479,42 @@
                     <navigationItem key="navigationItem" title="NOTIFICATION" id="LDc-s8-1cW"/>
                     <connections>
                         <outlet property="tableView" destination="btZ-bR-gEJ" id="87S-US-CLO"/>
+                        <segue destination="0fS-Vm-82J" kind="push" identifier="MapViewControllerSegue" id="Nvc-8C-2eQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3qH-5I-RfV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1432.5" y="3159.5070422535214"/>
+        </scene>
+        <!--Location-->
+        <scene sceneID="KFO-m4-fry">
+            <objects>
+                <viewController storyboardIdentifier="MapViewController" id="0fS-Vm-82J" customClass="MapViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gTk-xI-3lq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="LY8-Ca-DWX">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="LY8-Ca-DWX" firstAttribute="leading" secondItem="Pi7-s0-BmQ" secondAttribute="leading" id="A61-gx-slG"/>
+                            <constraint firstItem="LY8-Ca-DWX" firstAttribute="bottom" secondItem="Pi7-s0-BmQ" secondAttribute="bottom" id="Dkl-q9-nfe"/>
+                            <constraint firstItem="LY8-Ca-DWX" firstAttribute="trailing" secondItem="Pi7-s0-BmQ" secondAttribute="trailing" id="FWV-4v-rmX"/>
+                            <constraint firstItem="LY8-Ca-DWX" firstAttribute="top" secondItem="gTk-xI-3lq" secondAttribute="top" id="u4h-m3-4r9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Pi7-s0-BmQ"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Location" id="1Tu-Og-HK0"/>
+                    <connections>
+                        <outlet property="mapView" destination="LY8-Ca-DWX" id="nrB-Yp-bxa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ANy-CJ-CZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2122.5" y="3159.5070422535214"/>
         </scene>
         <!--PASSWORD RESET-->
         <scene sceneID="FgY-0w-BYT">
