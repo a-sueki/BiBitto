@@ -15,7 +15,9 @@ import CoreLocation
 class NotificationViewController: FormViewController {
     
     var inputData = [String : Any]()
-    var location: String?
+    var selectedLocationName: String?
+    var selectedLatitude: String?
+    var selectedLongitude: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,10 +35,15 @@ class NotificationViewController: FormViewController {
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: NotificationViewController viewWillAppear start")
         
-        if let selectedLocation = UserDefaults.standard.object(forKey: DefaultString.SelectedLocation) {
-            self.location =  selectedLocation as? String
+        // 選択済みの座標を取得
+        self.selectedLatitude = UserDefaults.standard.string(forKey: DefaultString.SelectedLatitude)
+        self.selectedLongitude = UserDefaults.standard.string(forKey: DefaultString.SelectedLongitude)
+        
+        // 選択済みの地名を取得
+        if let locationName = UserDefaults.standard.string(forKey: DefaultString.SelectedLocation) , locationName != "" {
+            self.selectedLocationName =  locationName
         }else{
-            self.location = ""
+            self.selectedLocationName = "ピン留めした場所"
         }
 
         let locationSection: Section = form.allSections[1]
@@ -119,7 +126,7 @@ class NotificationViewController: FormViewController {
                 row.title = "場所"
                 row.presentationMode = .segueName(segueName: "MapViewControllerSegue", onDismiss: nil)
                 }.cellUpdate({ (cell, row) in
-                    cell.detailTextLabel?.text = self.location
+                    cell.detailTextLabel?.text = self.selectedLocationName
                 })
 /*            <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "場所通知を保存"
@@ -232,9 +239,9 @@ class NotificationViewController: FormViewController {
         content.sound = UNNotificationSound.default()
         
         // UNLocationNotificationTrigger 作成
-        //「中心座標 (35.697275, 139.774728)」「半径 1000m」の円に入った時の例
+        //「中心座標 (35.697275, 139.774728)」「半径 100m」の円に入った時の例
         //let coordinate = CLLocationCoordinate2DMake(35.697275, 139.774728)
-        //let region = CLCircularRegion.init(center: coordinate, radius: 1000.0, identifier: "Headquarter")
+        //let region = CLCircularRegion.init(center: coordinate, radius: 100.0, identifier: "Headquarter")
 
         let coordinate = CLLocationCoordinate2DMake(35.605879,139.481293)
         let region = CLCircularRegion.init(center: coordinate, radius: 100, identifier: "Kurihira")

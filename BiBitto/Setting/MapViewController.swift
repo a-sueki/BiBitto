@@ -70,9 +70,14 @@ class MapViewController: UIViewController , UISearchBarDelegate , MKMapViewDeleg
         super.viewWillDisappear(animated)
         print("DEBUG_PRINT: MapViewController viewWillDisappear start")
 
-        // 選択した地名を保存
-        if mapView.annotations.count > 0, mapView.annotations[0].title != nil {
-            UserDefaults.standard.set(mapView.annotations[0].title ?? "", forKey: DefaultString.SelectedLocation)
+        // 選択した座標、地名を保存
+        if mapView.annotations.count > 0 {
+            if let locationName = mapView.annotations[0].title{
+                UserDefaults.standard.set(locationName, forKey: DefaultString.SelectedLocation)
+            }
+            let coordinate = mapView.annotations[0].coordinate
+            UserDefaults.standard.set(coordinate.latitude.description, forKey: DefaultString.SelectedLatitude)
+            UserDefaults.standard.set(coordinate.longitude.description, forKey: DefaultString.SelectedLongitude)
         }
         
         print("DEBUG_PRINT: MapViewController viewWillDisappear end")
