@@ -114,7 +114,7 @@ class MapViewController: UIViewController , UISearchBarDelegate , MKMapViewDeleg
             mapView.addAnnotation(annotation)
 
             // 円を描く
-            let circle = MKCircle(center: mapPoint, radius: 100)
+            let circle = MKCircle(center: mapPoint, radius: 50)
             mapView.add(circle)
             
         }
@@ -127,7 +127,7 @@ class MapViewController: UIViewController , UISearchBarDelegate , MKMapViewDeleg
 
         let circleRenderer : MKCircleRenderer = MKCircleRenderer(overlay: overlay);
         circleRenderer.strokeColor = UIColor.red
-        circleRenderer.fillColor = UIColor(red: 0.0, green: 0.0, blue: 0.7, alpha: 0.5)
+        circleRenderer.fillColor = UIColor(red: 0.7, green: 0.0, blue: 0.0, alpha: 0.5)
         circleRenderer.lineWidth = 1.0
         return circleRenderer
     }
@@ -143,7 +143,7 @@ extension MapViewController: CLLocationManagerDelegate {
         case .notDetermined:
             print("ユーザーはこのアプリケーションに関してまだ選択を行っていません")
             // アプリケーションに関してまだ選択されていない
-            //locationManager.requestWhenInUseAuthorization() // 起動中のみの取得許可を求める
+            locationManager.requestWhenInUseAuthorization() // 起動中のみの取得許可を求める
             locationManager.requestAlwaysAuthorization() // 常時取得の許可を求める
             
             break
@@ -184,22 +184,30 @@ extension MapViewController: CLLocationManagerDelegate {
         guard let newLocation = locations.last else {
             return
         }
-        
-        let location:CLLocationCoordinate2D
-            = CLLocationCoordinate2DMake(newLocation.coordinate.latitude, newLocation.coordinate.longitude)
-        _ = "".appendingFormat("%.4f", location.latitude)
-        _ = "".appendingFormat("%.4f", location.longitude)
-        
+
+        var location:CLLocationCoordinate2D?
+        // 選択済みの場所がある場合はそっちを初期表示にする
+        if let la = UserDefaults.standard.string(forKey: DefaultString.SelectedLatitude),
+            let lo = UserDefaults.standard.string(forKey: DefaultString.SelectedLongitude),
+            la != "" && lo != "" {
+            location = CLLocationCoordinate2DMake(Double(la)!,Double(lo)!)
+        }else{
+            location = CLLocationCoordinate2DMake(newLocation.coordinate.latitude, newLocation.coordinate.longitude)
+        }
         // update annotation
         mapView.removeAnnotations(mapView.annotations)
         
         let annotation = MKPointAnnotation()
-        annotation.coordinate = newLocation.coordinate
+        annotation.coordinate = location!
         mapView.addAnnotation(annotation)
         mapView.selectAnnotation(annotation, animated: true)
         
         // Showing annotation zooms the map automatically.
         mapView.showAnnotations(mapView.annotations, animated: true)
+        
+        // 円を描く
+        let circle = MKCircle(center: annotation.coordinate, radius: 50)
+        mapView.add(circle)
         
         print("DEBUG_PRINT: MapViewController didUpdateLocations end")
     }
@@ -219,12 +227,12 @@ extension MapViewController: HandleMapSearch {
             annotation.subtitle = "\(city) \(state)"
         }
         mapView.addAnnotation(annotation)
-        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let span = MKCoordinateSpanMake(0.01, 0.01)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
         
         // 円を描く
-        let circle = MKCircle(center: placemark.coordinate, radius: 100)
+        let circle = MKCircle(center: placemark.coordinate, radius: 50)
         mapView.add(circle)
     }
 }
