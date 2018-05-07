@@ -15,6 +15,7 @@ import CoreLocation
 class NotificationViewController: FormViewController {
     
     var inputData = [String : Any]()
+    var location: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,22 @@ class NotificationViewController: FormViewController {
         navigationItem.leftBarButtonItem?.action = #selector(SettingViewController.cancelTapped(_:))
 
         print("DEBUG_PRINT: NotificationViewController viewDidLoad end")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("DEBUG_PRINT: NotificationViewController viewWillAppear start")
+        
+        if let selectedLocation = UserDefaults.standard.object(forKey: DefaultString.SelectedLocation) {
+            self.location =  selectedLocation as? String
+        }else{
+            self.location = ""
+        }
+
+        let locationSection: Section = form.allSections[1]
+        locationSection.reload()
+        
+        print("DEBUG_PRINT: NotificationViewController viewWillAppear end")
     }
 
     override func didReceiveMemoryWarning() {
@@ -94,14 +111,16 @@ class NotificationViewController: FormViewController {
                     $0.value = false
                 }
             }
-            <<< ButtonRow("SelectLocation") { (row: ButtonRow) -> Void in
+            <<< DetailedButtonRow("SelectLocation") { row in
                 row.hidden = .function(["LocationNotification"], { form -> Bool in
                     let row: RowOf<Bool>! = form.rowBy(tag: "LocationNotification")
                     return row.value ?? false == false
                 })
                 row.title = "場所"
                 row.presentationMode = .segueName(segueName: "MapViewControllerSegue", onDismiss: nil)
-        }
+                }.cellUpdate({ (cell, row) in
+                    cell.detailTextLabel?.text = self.location
+                })
 /*            <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "場所通知を保存"
                 }.onCellSelection { [weak self] (cell, row) in
@@ -117,7 +136,9 @@ class NotificationViewController: FormViewController {
     }
     
     @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
+        print("cancel tapped")
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
+        
     }
     
     enum RepeatInterval : String, CustomStringConvertible {
@@ -232,3 +253,11 @@ class NotificationViewController: FormViewController {
     }
 
 }
+
+public final class DetailedButtonRowOf<T: Equatable> : _ButtonRowOf<T>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        cellStyle = .value1
+    }
+}
+public typealias DetailedButtonRow = DetailedButtonRowOf<String>

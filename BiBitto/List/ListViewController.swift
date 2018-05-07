@@ -38,6 +38,11 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.setScrollPosition()
         
+        // カード一覧をローカルファイルから取得
+        let originCardDataArray = CardFileIntermediary.getList()
+        // Noで並び替え
+        self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
+        
         print("DEBUG_PRINT: ListViewController viewDidLoad end")
     }
     
@@ -56,12 +61,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: ListViewController viewWillAppear start")
-        
-        // カード一覧をローカルファイルから取得
-        let originCardDataArray = CardFileIntermediary.getList()
-
-        // Noで並び替え
-        self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
 
         // tableViewを再表示する
         DispatchQueue.main.async {

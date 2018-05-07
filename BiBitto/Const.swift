@@ -138,6 +138,7 @@ struct DefaultString {
     static let CardMetaUpdated = "cardMetaUpdated"
     static let WordMetaUpdated = "wordMetaUpdated"
     static let AutoBackup = "autoBackup"
+    static let SelectedLocation = "selectedLocation"
 }
 struct ErrorMsgString {
     static let RulePassword = "パスワードは6~12文字で設定して下さい"

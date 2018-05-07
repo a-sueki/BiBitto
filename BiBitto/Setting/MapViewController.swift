@@ -10,52 +10,129 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class MapViewController: UIViewController {
+protocol HandleMapSearch {
+    func dropPinZoomIn(placemark:MKPlacemark)
+}
+
+class MapViewController: UIViewController , UISearchBarDelegate , MKMapViewDelegate{
     
     var locationManager: CLLocationManager!
+    var resultSearchController:UISearchController? = nil
+    var selectedPin:MKPlacemark? = nil
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("DEBUG_PRINT: MapViewController viewDidLoad start")
+ 
+        mapView.delegate = self
+        
+        // Set up the search results table
+        let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
+        resultSearchController = UISearchController(searchResultsController: locationSearchTable)
+        resultSearchController?.searchResultsUpdater = locationSearchTable
+        
+        // Set up the search bar
+        let searchBar = resultSearchController!.searchBar
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Search for places"
+        navigationItem.titleView = resultSearchController?.searchBar
+        
+        // Configure the UISearchController appearance
+        resultSearchController?.hidesNavigationBarDuringPresentation = false
+        resultSearchController?.dimsBackgroundDuringPresentation = true
+        definesPresentationContext = true
 
-        navigationItem.leftBarButtonItem?.target = self
-        navigationItem.leftBarButtonItem?.action = #selector(SettingViewController.cancelTapped(_:))
+        locationSearchTable.mapView = mapView
+        
+        locationSearchTable.handleMapSearchDelegate = self
 
+        
         // 位置情報取得サービスセットアップ
-        locationManager = CLLocationManager() // インスタンスの生成
-        locationManager.delegate = self // CLLocationManagerDelegateプロトコルを実装するクラスを指定する
+        self.locationManager = CLLocationManager() // インスタンスの生成
+        self.locationManager.delegate = self // CLLocationManagerDelegateプロトコルを実装するクラスを指定する
         
         // tracking user location
-        mapView.userTrackingMode = MKUserTrackingMode.followWithHeading
-        mapView.showsUserLocation = true
-
+        self.mapView.userTrackingMode = MKUserTrackingMode.followWithHeading
+        self.mapView.showsUserLocation = true
+        
+        // ジェスチャーの生成
+        let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self,action: #selector(MapViewController.tapped(_:)))
+        self.mapView.addGestureRecognizer(tapGesture)
+        
         print("DEBUG_PRINT: MapViewController viewDidLoad end")
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("DEBUG_PRINT: MapViewController viewWillDisappear start")
 
+        // 選択した地名を保存
+        if mapView.annotations.count > 0, mapView.annotations[0].title != nil {
+            UserDefaults.standard.set(mapView.annotations[0].title ?? "", forKey: DefaultString.SelectedLocation)
+        }
+        
+        print("DEBUG_PRINT: MapViewController viewWillDisappear end")
+    }
+ 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    // ジェスチャーイベント処理
+    @objc func tapped(_ sender: UITapGestureRecognizer){
+        print("DEBUG_PRINT: MapViewController tapped start")
 
-    /*
-    // MARK: - Navigation
+        //マップビュー内のタップした位置を取得する。
+        let location:CGPoint = sender.location(in: mapView)
+        if (sender.state == UIGestureRecognizerState.ended){
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+            // clear existing pins
+            mapView.removeAnnotations(mapView.annotations)
+            for overlay in mapView.overlays {
+                mapView.remove(overlay)
+            }
+
+            //タップした位置を緯度、経度の座標に変換する。
+            let mapPoint:CLLocationCoordinate2D = mapView.convert(location, toCoordinateFrom: mapView)
+            
+            //ピンを作成してマップビューに登録する。
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2DMake(mapPoint.latitude, mapPoint.longitude)
+            annotation.title = ""
+            annotation.subtitle = ""
+            mapView.addAnnotation(annotation)
+
+            // 円を描く
+            let circle = MKCircle(center: mapPoint, radius: 100)
+            mapView.add(circle)
+            
+        }
+        print("DEBUG_PRINT: MapViewController tapped end")
     }
-    */
+    
+    // 円の色などを設定
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        print("DEBUG_PRINT: MapViewController rendererFor")
 
+        let circleRenderer : MKCircleRenderer = MKCircleRenderer(overlay: overlay);
+        circleRenderer.strokeColor = UIColor.red
+        circleRenderer.fillColor = UIColor(red: 0.0, green: 0.0, blue: 0.7, alpha: 0.5)
+        circleRenderer.lineWidth = 1.0
+        return circleRenderer
+    }
 }
 
 extension MapViewController: CLLocationManagerDelegate {
     
     // MARK: - CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        print("DEBUG_PRINT: SettingViewController didChangeAuthorization start")
+        print("DEBUG_PRINT: MapViewController didChangeAuthorization start")
         
         switch status {
         case .notDetermined:
@@ -93,11 +170,11 @@ extension MapViewController: CLLocationManagerDelegate {
             break
         }
         
-        print("DEBUG_PRINT: SettingViewController didChangeAuthorization end")
+        print("DEBUG_PRINT: MapViewController didChangeAuthorization end")
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("DEBUG_PRINT: SettingViewController didUpdateLocations start")
+        print("DEBUG_PRINT: MapViewController didUpdateLocations start")
         
         guard let newLocation = locations.last else {
             return
@@ -105,13 +182,8 @@ extension MapViewController: CLLocationManagerDelegate {
         
         let location:CLLocationCoordinate2D
             = CLLocationCoordinate2DMake(newLocation.coordinate.latitude, newLocation.coordinate.longitude)
-        let latitude = "".appendingFormat("%.4f", location.latitude)
-        let longitude = "".appendingFormat("%.4f", location.longitude)
-        
-        print("latitude:\(latitude)")
-        print("longitude:\(longitude)")
-        //        latLabel.text = "latitude: " + latitude
-        //        lngLabel.text = "longitude: " + longitude
+        _ = "".appendingFormat("%.4f", location.latitude)
+        _ = "".appendingFormat("%.4f", location.longitude)
         
         // update annotation
         mapView.removeAnnotations(mapView.annotations)
@@ -124,7 +196,30 @@ extension MapViewController: CLLocationManagerDelegate {
         // Showing annotation zooms the map automatically.
         mapView.showAnnotations(mapView.annotations, animated: true)
         
-        print("DEBUG_PRINT: SettingViewController didUpdateLocations end")
+        print("DEBUG_PRINT: MapViewController didUpdateLocations end")
     }
 }
 
+extension MapViewController: HandleMapSearch {
+    func dropPinZoomIn(placemark:MKPlacemark){
+        // cache the pin
+        selectedPin = placemark
+        // clear existing pins
+        mapView.removeAnnotations(mapView.annotations)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        if let city = placemark.locality,
+            let state = placemark.administrativeArea {
+            annotation.subtitle = "\(city) \(state)"
+        }
+        mapView.addAnnotation(annotation)
+        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let region = MKCoordinateRegionMake(placemark.coordinate, span)
+        mapView.setRegion(region, animated: true)
+        
+        // 円を描く
+        let circle = MKCircle(center: placemark.coordinate, radius: 100)
+        mapView.add(circle)
+    }
+}
