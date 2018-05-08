@@ -19,6 +19,7 @@ class MapViewController: UIViewController , UISearchBarDelegate , MKMapViewDeleg
     var locationManager: CLLocationManager!
     var resultSearchController:UISearchController? = nil
     var selectedPin:MKPlacemark? = nil
+    var firstFlg = true
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
@@ -71,13 +72,15 @@ class MapViewController: UIViewController , UISearchBarDelegate , MKMapViewDeleg
         print("DEBUG_PRINT: MapViewController viewWillDisappear start")
 
         // 選択した座標、地名を保存
-        if mapView.annotations.count > 0 {
-            if let locationName = mapView.annotations[0].title{
-                UserDefaults.standard.set(locationName, forKey: DefaultString.SelectedLocation)
+        for annotation in mapView.annotations {
+            if annotation.title != "現在地" {
+                if let locationName = annotation.title {
+                    UserDefaults.standard.set(locationName, forKey: DefaultString.SelectedLocation)
+                }
+                let coordinate = annotation.coordinate
+                UserDefaults.standard.set(coordinate.latitude.description, forKey: DefaultString.SelectedLatitude)
+                UserDefaults.standard.set(coordinate.longitude.description, forKey: DefaultString.SelectedLongitude)
             }
-            let coordinate = mapView.annotations[0].coordinate
-            UserDefaults.standard.set(coordinate.latitude.description, forKey: DefaultString.SelectedLatitude)
-            UserDefaults.standard.set(coordinate.longitude.description, forKey: DefaultString.SelectedLongitude)
         }
         
         print("DEBUG_PRINT: MapViewController viewWillDisappear end")
@@ -184,30 +187,63 @@ extension MapViewController: CLLocationManagerDelegate {
         guard let newLocation = locations.last else {
             return
         }
-
+        guard self.firstFlg == true else {
+            return
+        }
+        
         var location:CLLocationCoordinate2D?
         // 選択済みの場所がある場合はそっちを初期表示にする
-        if let la = UserDefaults.standard.string(forKey: DefaultString.SelectedLatitude),
-            let lo = UserDefaults.standard.string(forKey: DefaultString.SelectedLongitude),
-            la != "" && lo != "" {
-            location = CLLocationCoordinate2DMake(Double(la)!,Double(lo)!)
+        if UserDefaults.standard.string(forKey: DefaultString.SelectedLongitude) != nil &&
+            UserDefaults.standard.string(forKey: DefaultString.SelectedLongitude) != "" &&
+            UserDefaults.standard.string(forKey: DefaultString.SelectedLatitude) != nil &&
+            UserDefaults.standard.string(forKey: DefaultString.SelectedLatitude) != "" {
+
+            print("DEBUG_PRINT: MapViewController didUpdateLocations selected...")
+
+            location = CLLocationCoordinate2DMake(Double(UserDefaults.standard.string(forKey: DefaultString.SelectedLatitude)!)!,Double(UserDefaults.standard.string(forKey: DefaultString.SelectedLongitude)!)!)
+            
+            // clear existing pins
+            mapView.removeAnnotations(mapView.annotations)
+            for overlay in mapView.overlays {
+                mapView.remove(overlay)
+            }
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = location!
+            mapView.addAnnotation(annotation)
+            mapView.selectAnnotation(annotation, animated: true)
+            
+            // Showing annotation zooms the map automatically.
+            mapView.showAnnotations(mapView.annotations, animated: true)
+            
+            // 円を描く
+            let circle = MKCircle(center: annotation.coordinate, radius: 50)
+            mapView.add(circle)
+            
+            // mapにセット
+            let span = MKCoordinateSpanMake(0.007, 0.007)
+            let region = MKCoordinateRegionMake(location!, span)
+            mapView.setRegion(region, animated: true)
+            firstFlg = false
+            
         }else{
+            print("DEBUG_PRINT: MapViewController didUpdateLocations not selected...")
+
+            // 現在地を表示
             location = CLLocationCoordinate2DMake(newLocation.coordinate.latitude, newLocation.coordinate.longitude)
+            // update annotation
+            mapView.removeAnnotations(mapView.annotations)
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = location!
+            mapView.addAnnotation(annotation)
+            mapView.selectAnnotation(annotation, animated: true)
+            
+            // Showing annotation zooms the map automatically.
+            mapView.showAnnotations(mapView.annotations, animated: true)
+            
+            firstFlg = false
         }
-        // update annotation
-        mapView.removeAnnotations(mapView.annotations)
-        
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = location!
-        mapView.addAnnotation(annotation)
-        mapView.selectAnnotation(annotation, animated: true)
-        
-        // Showing annotation zooms the map automatically.
-        mapView.showAnnotations(mapView.annotations, animated: true)
-        
-        // 円を描く
-        let circle = MKCircle(center: annotation.coordinate, radius: 50)
-        mapView.add(circle)
         
         print("DEBUG_PRINT: MapViewController didUpdateLocations end")
     }
@@ -227,7 +263,7 @@ extension MapViewController: HandleMapSearch {
             annotation.subtitle = "\(city) \(state)"
         }
         mapView.addAnnotation(annotation)
-        let span = MKCoordinateSpanMake(0.01, 0.01)
+        let span = MKCoordinateSpanMake(0.007, 0.007)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
         

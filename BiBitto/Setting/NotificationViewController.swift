@@ -99,7 +99,7 @@ class NotificationViewController: FormViewController {
                     vc.enableDeselection = false
                     vc.dismissOnSelection = false
                 })
-/*            <<< ButtonRow() { (row: ButtonRow) -> Void in
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "日時通知を保存"
                 }.onCellSelection { [weak self] (cell, row) in
                     if let error = row.section?.form?.validate(), error.count != 0 {
@@ -108,7 +108,7 @@ class NotificationViewController: FormViewController {
                         self?.save()
                     }
             }
- */
+ 
             +++ Section("場所")
             <<< SwitchRow("LocationNotification") {
                 $0.title = "指定場所で通知"
@@ -128,7 +128,7 @@ class NotificationViewController: FormViewController {
                 }.cellUpdate({ (cell, row) in
                     cell.detailTextLabel?.text = self.selectedLocationName
                 })
-/*            <<< ButtonRow() { (row: ButtonRow) -> Void in
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.title = "場所通知を保存"
                 }.onCellSelection { [weak self] (cell, row) in
                     if let error = row.section?.form?.validate(), error.count != 0 {
@@ -137,7 +137,7 @@ class NotificationViewController: FormViewController {
                         self?.saveLocation()
                     }
             }
- */
+ 
 
         print("DEBUG_PRINT: SettingViewController initializeForm end")
     }
@@ -201,7 +201,7 @@ class NotificationViewController: FormViewController {
         content.title = "ビビッとくる！俺の名言コレクション"
         content.body = "今日のビビッとくる言葉は？"
         content.sound = UNNotificationSound.default()
-        content.badge = 0
+        content.badge = 1
         
         // 通知スタイルを指定
         let request = UNNotificationRequest(identifier: "BiBittoTimeNotification", content: content, trigger: trigger)
@@ -237,14 +237,12 @@ class NotificationViewController: FormViewController {
         content.title = "Hello!"
         content.body = "Enter Headquarter"
         content.sound = UNNotificationSound.default()
+        content.badge = 1
         
         // UNLocationNotificationTrigger 作成
         //「中心座標 (35.697275, 139.774728)」「半径 100m」の円に入った時の例
-        //let coordinate = CLLocationCoordinate2DMake(35.697275, 139.774728)
-        //let region = CLCircularRegion.init(center: coordinate, radius: 100.0, identifier: "Headquarter")
-
-        let coordinate = CLLocationCoordinate2DMake(35.605879,139.481293)
-        let region = CLCircularRegion.init(center: coordinate, radius: 100, identifier: "Kurihira")
+        let coordinate = CLLocationCoordinate2DMake(Double(self.selectedLatitude!)!,Double(self.selectedLongitude!)!)
+        let region = CLCircularRegion.init(center: coordinate, radius: 50, identifier: self.selectedLocationName!)
 //        region.notifyOnEntry = true
 //        region.notifyOnExit = false
         let trigger = UNLocationNotificationTrigger.init(region: region, repeats: false)
@@ -255,7 +253,6 @@ class NotificationViewController: FormViewController {
         // 通知をセット
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
 
-        
         print("DEBUG_PRINT: SettingViewController registerLocationLocalNotification end")
     }
 
