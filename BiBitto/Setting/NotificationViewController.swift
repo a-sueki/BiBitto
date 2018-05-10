@@ -207,19 +207,15 @@ class NotificationViewController: FormViewController {
         let request = UNNotificationRequest(identifier: "BiBittoTimeNotification", content: content, trigger: trigger)
         // 通知をセット
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        UserDefaults.standard.set(true ,forKey: DefaultString.NoticeTimeFlag)
         
         print("DEBUG_PRINT: SettingViewController registerLocalNotification end")
     }
     
     @IBAction func saveLocation() {
         print("DEBUG_PRINT: SettingViewController saveLocation start")
-        
-        for (key,value) in form.values() {
-            if value != nil {
-                inputData["\(key)"] = value
-            }
-        }
-        registerLocationLocalNotification(inputData: inputData)
+
+        registerLocationLocalNotification()
         
         // 全てのモーダルを閉じる
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
@@ -229,7 +225,7 @@ class NotificationViewController: FormViewController {
         print("DEBUG_PRINT: SettingViewController saveLocation end")
     }
     
-    func registerLocationLocalNotification(inputData: [String : Any]) {
+    func registerLocationLocalNotification() {
         print("DEBUG_PRINT: SettingViewController registerLocationLocalNotification start")
         
         // UNMutableNotificationContent 作成
@@ -252,6 +248,7 @@ class NotificationViewController: FormViewController {
         
         // 通知をセット
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        UserDefaults.standard.set(true ,forKey: DefaultString.NoticeLocationFlag)
 
         print("DEBUG_PRINT: SettingViewController registerLocationLocalNotification end")
     }
