@@ -56,7 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             application.registerUserNotificationSettings(settings)
         }
         application.registerForRemoteNotifications()
-        
+        //バッジの数を０にする.
+        UIApplication.shared.applicationIconBadgeNumber = 0
+
         return true
     }
     
@@ -84,6 +86,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // バックグラウンドで来た通知をタップしてアプリ起動したら呼ばれる
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("DEBUG_PRINT: AppDelegate.userNotificationCenter.didReceive start")
+        
+        //バッジの数を０にする.
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        
         print("DEBUG_PRINT: AppDelegate.userNotificationCenter.didReceive end")
     }
     // アプリがフォアグラウンドの時に通知が来たら呼ばれる
