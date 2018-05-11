@@ -121,6 +121,17 @@ class ImportDataViewController: FormViewController {
                     vc.dismissOnSelection = false
                 })
             
+            // カテゴリーを選択させる
+            <<< PushRow<String>("Category") {
+                $0.title = "カテゴリー"
+                $0.options = Category.continents
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
+                }.onPresent({ (_, vc) in
+                    vc.enableDeselection = false
+                    vc.dismissOnSelection = false
+                })
+
+            
             <<< SwitchRow("autoSave"){
                 $0.title = "バックアップも更新する"
                 $0.value = UserDefaults.standard.bool(forKey: DefaultString.AutoBackup)
@@ -176,16 +187,17 @@ class ImportDataViewController: FormViewController {
             Files.refreshDocument(fileName: Files.word_file)
         }
         
-        // ファイル読み込み
+        // 区切り文字
         if inputData["Delimiter"] as! Delimiter == Delimiter.Indention {
-            // 区切り文字（改行）
+            // 改行
             self.importDataArray = Files.readImportDocument(fileName: self.inputData["FileName"] as! String, separator: "\n")
             totalCardCount = totalCardCount + self.importDataArray.count
         } else {
-            // 区切り文字（コンマ）
+            // コンマ
             self.importDataArray = Files.readImportDocument(fileName: self.inputData["FileName"] as! String, separator: ",")
             totalCardCount = totalCardCount + self.importDataArray.count
         }
+
         print("カード合計件数：\(totalCardCount)、一括登録件数：\(self.importDataArray.count)")
         
         if totalCardCount > 99 {
@@ -206,7 +218,7 @@ class ImportDataViewController: FormViewController {
                 self.importData["updateAt"] = String(time)
                 self.importData["createAt"] = String(time)
                 self.importData["text"] = data
-                self.importData["category"] = Category.continents.first
+                self.importData["category"] = self.inputData["Category"] as! String
                 // No付与
                 self.importData["no"] = self.cardDataArray.count + 1
                 // カード追加
