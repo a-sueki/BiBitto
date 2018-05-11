@@ -178,10 +178,13 @@ class ImportDataViewController: FormViewController {
         
         // ファイル読み込み
         if inputData["Delimiter"] as! Delimiter == Delimiter.Indention {
+            // 区切り文字（改行）
             self.importDataArray = Files.readImportDocument(fileName: self.inputData["FileName"] as! String, separator: "\n")
             totalCardCount = totalCardCount + self.importDataArray.count
         } else {
-            //TODO: 区切り文字（任意）
+            // 区切り文字（コンマ）
+            self.importDataArray = Files.readImportDocument(fileName: self.inputData["FileName"] as! String, separator: ",")
+            totalCardCount = totalCardCount + self.importDataArray.count
         }
         print("カード合計件数：\(totalCardCount)、一括登録件数：\(self.importDataArray.count)")
         

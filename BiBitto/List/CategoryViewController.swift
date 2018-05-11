@@ -44,27 +44,27 @@ class CategoryViewController: FormViewController {
             MultivaluedSection(multivaluedOptions: .Reorder,
                            header: "Reordering Field Rows",
                            footer: "")
-            <<< NameRow {
+            <<< NameRow("category1") {
                 $0.value = Category.continents[0]
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "orange")
             }
-            <<< NameRow {
+            <<< NameRow("category2") {
                 $0.value = Category.continents[1]
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "pink")
             }
-            <<< NameRow {
+            <<< NameRow("category3") {
                 $0.value = Category.continents[2]
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "green")
             }
-            <<< NameRow {
+            <<< NameRow("category4") {
                 $0.value = Category.continents[3]
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "blue")
             }
-            <<< NameRow {
+            <<< NameRow("category5") {
                 $0.value = Category.continents[4]
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "purple")
@@ -100,7 +100,14 @@ class CategoryViewController: FormViewController {
             if case let itemValue as String = value {
                 self.inputData["\(key)"] = itemValue
             }
-        }        
+        }
+        
+        UserDefaults.standard.set(self.inputData["category1"] ,forKey: DefaultString.Category1)
+        UserDefaults.standard.set(self.inputData["category2"] ,forKey: DefaultString.Category2)
+        UserDefaults.standard.set(self.inputData["category3"] ,forKey: DefaultString.Category3)
+        UserDefaults.standard.set(self.inputData["category4"] ,forKey: DefaultString.Category4)
+        UserDefaults.standard.set(self.inputData["category5"] ,forKey: DefaultString.Category5)
+
         // 成功ポップアップ
         SVProgressHUD.showError(withStatus: Alert.successSendTitle)
         // 前画面に戻る

@@ -138,9 +138,17 @@ struct DefaultString {
     static let CardMetaUpdated = "cardMetaUpdated"
     static let WordMetaUpdated = "wordMetaUpdated"
     static let AutoBackup = "autoBackup"
+    // 場所で通知
     static let SelectedLocation = "selectedLocation"
     static let SelectedLatitude = "selectedLatitude"
     static let SelectedLongitude = "selectedLongitude"
+    // categorys
+    static let Category1 = "category1"
+    static let Category2 = "category2"
+    static let Category3 = "category3"
+    static let Category4 = "category4"
+    static let Category5 = "category5"
+
 }
 struct ErrorMsgString {
     static let RulePassword = "パスワードは6~12文字で設定して下さい"
@@ -206,7 +214,12 @@ struct Alert {
     static let limited = "99件以上はアカウント登録が必要です"
 }
 struct Category {
-    static let continents = ["MINDE", "LEADERSHIP", "VISION", "WISDOM", "FELLOW"]
+    static var continent1 = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
+    static var continent2 = UserDefaults.standard.string(forKey: DefaultString.Category2) ?? "LEADERSHIP"
+    static var continent3 = UserDefaults.standard.string(forKey: DefaultString.Category3) ?? "VISION"
+    static var continent4 = UserDefaults.standard.string(forKey: DefaultString.Category4) ?? "WISDOM"
+    static var continent5 = UserDefaults.standard.string(forKey: DefaultString.Category5) ?? "FELLOW"
+    static let continents = [continent1,continent2,continent3,continent4,continent5]
 }
 
 struct ShareString {

@@ -31,7 +31,7 @@ class ListTableViewCell: UITableViewCell {
 
         if cardData.category == Category.continents[0] {
             categoryImageView.image = UIImage(named: "orange")
-       }else if cardData.category == Category.continents[1] {
+        }else if cardData.category == Category.continents[1] {
             categoryImageView.image = UIImage(named: "pink")
         }else if cardData.category == Category.continents[2] {
             categoryImageView.image = UIImage(named: "green")

@@ -489,15 +489,6 @@
         <!--Location-->
         <scene sceneID="KFO-m4-fry">
             <objects>
-                <searchDisplayController id="DAk-Vq-kBe">
-                    <connections>
-                        <outlet property="delegate" destination="0fS-Vm-82J" id="TEV-Jc-pXs"/>
-                        <outlet property="searchContentsController" destination="0fS-Vm-82J" id="fNl-wP-uUt"/>
-                        <outlet property="searchResultsDataSource" destination="0fS-Vm-82J" id="ABy-Ln-lyL"/>
-                        <outlet property="searchResultsDelegate" destination="0fS-Vm-82J" id="3LR-ZJ-aY1"/>
-                    </connections>
-                </searchDisplayController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ANy-CJ-CZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="MapViewController" id="0fS-Vm-82J" customClass="MapViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gTk-xI-3lq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -523,6 +514,15 @@
                         <segue destination="u9u-3X-JKs" kind="show" id="GCC-9z-qzm"/>
                     </connections>
                 </viewController>
+                <searchDisplayController id="DAk-Vq-kBe">
+                    <connections>
+                        <outlet property="delegate" destination="0fS-Vm-82J" id="TEV-Jc-pXs"/>
+                        <outlet property="searchContentsController" destination="0fS-Vm-82J" id="fNl-wP-uUt"/>
+                        <outlet property="searchResultsDataSource" destination="0fS-Vm-82J" id="ABy-Ln-lyL"/>
+                        <outlet property="searchResultsDelegate" destination="0fS-Vm-82J" id="3LR-ZJ-aY1"/>
+                    </connections>
+                </searchDisplayController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ANy-CJ-CZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2123" y="3160"/>
         </scene>
