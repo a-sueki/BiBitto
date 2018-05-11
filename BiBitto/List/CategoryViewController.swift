@@ -47,27 +47,27 @@ class CategoryViewController: FormViewController {
             <<< NameRow {
                 $0.value = Category.continents[0]
                 }.cellSetup { cell, row in
-                    cell.imageView?.image = UIImage(named: "blue")
+                    cell.imageView?.image = UIImage(named: "orange")
             }
             <<< NameRow {
                 $0.value = Category.continents[1]
                 }.cellSetup { cell, row in
-                    cell.imageView?.image = UIImage(named: "red")
+                    cell.imageView?.image = UIImage(named: "pink")
             }
             <<< NameRow {
                 $0.value = Category.continents[2]
                 }.cellSetup { cell, row in
-                    cell.imageView?.image = UIImage(named: "yellow")
+                    cell.imageView?.image = UIImage(named: "green")
             }
             <<< NameRow {
                 $0.value = Category.continents[3]
                 }.cellSetup { cell, row in
-                    cell.imageView?.image = UIImage(named: "black")
+                    cell.imageView?.image = UIImage(named: "blue")
             }
             <<< NameRow {
                 $0.value = Category.continents[4]
                 }.cellSetup { cell, row in
-                    cell.imageView?.image = UIImage(named: "orange")
+                    cell.imageView?.image = UIImage(named: "purple")
             }
 
             +++ Section()

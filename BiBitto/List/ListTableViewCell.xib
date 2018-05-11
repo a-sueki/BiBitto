@@ -11,36 +11,36 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" restorationIdentifier="ListTableViewCell" selectionStyle="default" indentationWidth="10" rowHeight="97" id="KGk-i7-Jjw" customClass="ListTableViewCell" customModule="BiBitto" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="405" height="97"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="ListTableViewCell" selectionStyle="default" indentationWidth="10" rowHeight="93" id="KGk-i7-Jjw" customClass="ListTableViewCell" customModule="BiBitto" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="93"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="405" height="96.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="393" height="92.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="spK-iF-MQa">
-                        <rect key="frame" x="4" y="2" width="397" height="92.5"/>
+                        <rect key="frame" x="4" y="2" width="385" height="88.5"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v7F-iL-8eV">
-                                <rect key="frame" x="64" y="0.0" width="8" height="93"/>
-                                <color key="backgroundColor" red="0.27450980392156865" green="0.28235294117647058" blue="0.72156862745098038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v7F-iL-8eV">
+                                <rect key="frame" x="0.0" y="24" width="64" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="8" id="4sR-UX-9KV"/>
+                                    <constraint firstAttribute="width" constant="64" id="C4X-kt-Icz"/>
+                                    <constraint firstAttribute="height" constant="40" id="ZZZ-AI-QHT"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QwA-Ng-okf">
-                                <rect key="frame" x="76" y="10" width="321" height="72"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KY7-el-kth">
-                                <rect key="frame" x="0.0" y="33" width="64" height="26.5"/>
+                                <rect key="frame" x="0.0" y="30" width="64" height="26.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="64" id="QEZ-HA-NxI"/>
                                     <constraint firstAttribute="height" constant="26" id="mPs-sb-mWJ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <fontDescription key="fontDescription" name="GillSans-SemiBold" family="Gill Sans" pointSize="18"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QwA-Ng-okf">
+                                <rect key="frame" x="69" y="10" width="316" height="68"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -49,14 +49,13 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="QwA-Ng-okf" secondAttribute="bottom" constant="10" id="18m-fH-aoO"/>
                             <constraint firstItem="QwA-Ng-okf" firstAttribute="top" secondItem="spK-iF-MQa" secondAttribute="top" constant="10" id="36s-p3-qOo"/>
-                            <constraint firstItem="KY7-el-kth" firstAttribute="centerY" secondItem="v7F-iL-8eV" secondAttribute="centerY" id="6Gp-GF-Xqa"/>
+                            <constraint firstItem="v7F-iL-8eV" firstAttribute="leading" secondItem="spK-iF-MQa" secondAttribute="leading" id="AxO-tM-HT3"/>
                             <constraint firstAttribute="trailing" secondItem="QwA-Ng-okf" secondAttribute="trailing" id="Jsm-r1-CKA"/>
+                            <constraint firstItem="QwA-Ng-okf" firstAttribute="leading" secondItem="v7F-iL-8eV" secondAttribute="trailing" constant="5" id="LdG-1y-0tk"/>
                             <constraint firstItem="QwA-Ng-okf" firstAttribute="centerY" secondItem="KY7-el-kth" secondAttribute="centerY" id="Ohu-Me-YeS"/>
-                            <constraint firstItem="v7F-iL-8eV" firstAttribute="leading" secondItem="KY7-el-kth" secondAttribute="trailing" id="baS-BI-qz3"/>
-                            <constraint firstAttribute="bottom" secondItem="v7F-iL-8eV" secondAttribute="bottom" id="dXr-J2-J3r"/>
+                            <constraint firstItem="KY7-el-kth" firstAttribute="centerY" secondItem="v7F-iL-8eV" secondAttribute="centerY" id="aYk-B9-w6I"/>
                             <constraint firstItem="KY7-el-kth" firstAttribute="leading" secondItem="spK-iF-MQa" secondAttribute="leading" id="fOd-tU-C2P"/>
-                            <constraint firstItem="QwA-Ng-okf" firstAttribute="leading" secondItem="v7F-iL-8eV" secondAttribute="trailing" constant="4" id="l8O-6w-YLa"/>
-                            <constraint firstItem="v7F-iL-8eV" firstAttribute="top" secondItem="spK-iF-MQa" secondAttribute="top" id="pVA-s5-1IY"/>
+                            <constraint firstItem="QwA-Ng-okf" firstAttribute="centerY" secondItem="v7F-iL-8eV" secondAttribute="centerY" id="zrf-lR-8i1"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -81,7 +80,7 @@
                 <outlet property="noLabel" destination="KY7-el-kth" id="eGa-Bz-2ck"/>
                 <outlet property="wordLabel" destination="QwA-Ng-okf" id="4IB-1k-AvS"/>
             </connections>
-            <point key="canvasLocation" x="-106.5" y="71.5"/>
+            <point key="canvasLocation" x="-375.5" y="70.5"/>
         </tableViewCell>
     </objects>
 </document>
