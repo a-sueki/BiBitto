@@ -121,13 +121,7 @@ class AddViewController: FormViewController {
                         }
                     }
             }
-            
-            +++ Section("編集")
-            <<< ButtonRow("category") { (row: ButtonRow) -> Void in
-                row.title = "カテゴリーを編集する"
-                row.presentationMode = .segueName(segueName: "CategoryControllerSegue", onDismiss: nil)
-        }
-        
+                    
         print("DEBUG_PRINT: AddViewController initializeForm end")
     }
     @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
@@ -252,11 +246,6 @@ class AddViewController: FormViewController {
         }
         
         print("DEBUG_PRINT: AddViewController writeFile start")
-    }
-    override func valueHasBeenChanged(for row: BaseRow, oldValue: Any?, newValue: Any?) {
-        if row.section === form[3] {
-            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue ?? "No row selected")")
-        }
     }
 }
 

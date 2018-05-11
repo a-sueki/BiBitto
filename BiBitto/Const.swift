@@ -214,12 +214,13 @@ struct Alert {
     static let limited = "99件以上はアカウント登録が必要です"
 }
 struct Category {
-    static var continent1 = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
+/*    static var continent1 = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
     static var continent2 = UserDefaults.standard.string(forKey: DefaultString.Category2) ?? "LEADERSHIP"
     static var continent3 = UserDefaults.standard.string(forKey: DefaultString.Category3) ?? "VISION"
     static var continent4 = UserDefaults.standard.string(forKey: DefaultString.Category4) ?? "WISDOM"
     static var continent5 = UserDefaults.standard.string(forKey: DefaultString.Category5) ?? "FELLOW"
-    static let continents = [continent1,continent2,continent3,continent4,continent5]
+*/
+    static let continents = [UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND",UserDefaults.standard.string(forKey: DefaultString.Category2) ?? "LEADERSHIP",UserDefaults.standard.string(forKey: DefaultString.Category3) ?? "VISION",UserDefaults.standard.string(forKey: DefaultString.Category4) ?? "WISDOM",UserDefaults.standard.string(forKey: DefaultString.Category5) ?? "FELLOW"]
 }
 
 struct ShareString {

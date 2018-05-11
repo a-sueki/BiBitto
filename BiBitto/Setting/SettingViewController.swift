@@ -85,8 +85,12 @@ class SettingViewController: FormViewController {
             }
             <<< ButtonRow("Backup") { (row: ButtonRow) -> Void in
                 row.title = "バックアップ"
+            }
+            <<< ButtonRow("category") { (row: ButtonRow) -> Void in
+                row.title = "カテゴリーを編集する"
+                row.presentationMode = .segueName(segueName: "CategoryControllerSegue", onDismiss: nil)
         }
-        
+
         print("DEBUG_PRINT: SettingViewController initializeForm end")
     }
     

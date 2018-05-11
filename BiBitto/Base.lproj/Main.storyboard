@@ -68,7 +68,6 @@
                     <navigationItem key="navigationItem" title="ADD" id="77o-zF-4Zk"/>
                     <connections>
                         <outlet property="tableView" destination="TQy-K4-LkG" id="jHS-Oq-ssB"/>
-                        <segue destination="jJR-J5-FZc" kind="push" identifier="CategoryControllerSegue" id="MkH-XI-xOa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xBd-8F-Tof" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -357,6 +356,7 @@
                         <segue destination="hRR-lW-VSD" kind="push" identifier="ImportDataViewControllerSegue" id="i3z-0H-chA"/>
                         <segue destination="UW3-H3-Mom" kind="push" identifier="BackupViewControllerSegue" id="jEd-oU-zEG"/>
                         <segue destination="tg6-wq-PbL" kind="push" identifier="NotificationViewControllerSegue" id="kPT-XA-Why"/>
+                        <segue destination="jJR-J5-FZc" kind="push" identifier="CategoryControllerSegue" id="RhZ-Ap-A7T"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C3m-Tl-IQG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -687,7 +687,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OJe-uO-Gl2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2976" y="-320"/>
+            <point key="canvasLocation" x="1433" y="3857"/>
         </scene>
     </scenes>
     <resources>

@@ -163,6 +163,7 @@
 				840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */,
 				84A0A6192074868000D940BD /* ImportDataViewController.swift */,
 				84B70DC5207F533600319FA5 /* BackupViewController.swift */,
+				84C4485F1FA36C7C00C0678C /* CategoryViewController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -172,7 +173,6 @@
 			children = (
 				84A4C6831FA2F53A002366FD /* SearchViewController.swift */,
 				84C4485C1FA3600200C0678C /* AddViewController.swift */,
-				84C4485F1FA36C7C00C0678C /* CategoryViewController.swift */,
 				845851BB1F9C686E002F9AA0 /* ListViewController.swift */,
 				84937CC61FA2E1D8003F5D1E /* ListTableViewCell.swift */,
 				84937CC71FA2E1D8003F5D1E /* ListTableViewCell.xib */,

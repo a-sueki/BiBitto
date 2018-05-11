@@ -29,6 +29,18 @@ class CategoryViewController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("DEBUG_PRINT: CategoryViewController viewWillAppear start")
+        
+        let categorySection: Section = form.allSections[0]
+        categorySection.reload()
+        
+        print("DEBUG_PRINT: CategoryViewController viewWillAppear end")
+    }
+
+    
+    
     func initializeForm(){
         print("DEBUG_PRINT: CategoryViewController initializeForm start")
         
@@ -45,29 +57,34 @@ class CategoryViewController: FormViewController {
                            header: "Reordering Field Rows",
                            footer: "")
             <<< NameRow("category1") {
-                $0.value = Category.continents[0]
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "orange")
+                    cell.imageView?.alpha = 0.6
             }
             <<< NameRow("category2") {
-                $0.value = Category.continents[1]
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category2) ?? "LEADERSHIP"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "pink")
+                    cell.imageView?.alpha = 0.6
             }
             <<< NameRow("category3") {
-                $0.value = Category.continents[2]
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category3) ?? "VISION"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "green")
+                    cell.imageView?.alpha = 0.6
             }
             <<< NameRow("category4") {
-                $0.value = Category.continents[3]
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category4) ?? "WISDOM"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "blue")
+                    cell.imageView?.alpha = 0.6
             }
             <<< NameRow("category5") {
-                $0.value = Category.continents[4]
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category5) ?? "FELLOW"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "purple")
+                    cell.imageView?.alpha = 0.6
             }
 
             +++ Section()
@@ -87,11 +104,12 @@ class CategoryViewController: FormViewController {
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
     }
     
-    override func valueHasBeenChanged(for row: BaseRow, oldValue: Any?, newValue: Any?) {
+/*    override func valueHasBeenChanged(for row: BaseRow, oldValue: Any?, newValue: Any?) {
         if row.section === form[0] {
             print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue ?? "No row selected")")
         }
     }
+ */
     
     @IBAction func editCategory(){
         print("DEBUG_PRINT: CategoryViewController editCategory start")
@@ -108,10 +126,14 @@ class CategoryViewController: FormViewController {
         UserDefaults.standard.set(self.inputData["category4"] ,forKey: DefaultString.Category4)
         UserDefaults.standard.set(self.inputData["category5"] ,forKey: DefaultString.Category5)
 
+        // 全てのモーダルを閉じる
+        SVProgressHUD.dismiss()
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+        // Home画面に戻る（選択済みにする）
+        let nav = self.navigationController!
+        nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
         // 成功ポップアップ
-        SVProgressHUD.showError(withStatus: Alert.successSendTitle)
-        // 前画面に戻る
-        self.navigationController?.popViewController(animated: false)
+        SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
         
         print("DEBUG_PRINT: CategoryViewController editCategory end")
     }
