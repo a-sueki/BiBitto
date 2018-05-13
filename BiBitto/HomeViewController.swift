@@ -316,6 +316,9 @@ extension Array {
 extension UIView {
     func addFitConstraints(to: UIView) {
         to.translatesAutoresizingMaskIntoConstraints = false
+        // もし広告非表示なら50でなく0
+        let bottomConstant = 50
+        
         self.addConstraint(NSLayoutConstraint(item: to,
                                               attribute: .top,
                                               relatedBy: .equal,
@@ -336,7 +339,7 @@ extension UIView {
                                               toItem: to,
                                               attribute: .bottom,
                                               multiplier: 1.0,
-                                              constant: 50))
+                                              constant: CGFloat(bottomConstant)))
         self.addConstraint(NSLayoutConstraint(item: self,
                                               attribute: .trailing,
                                               relatedBy: .equal,

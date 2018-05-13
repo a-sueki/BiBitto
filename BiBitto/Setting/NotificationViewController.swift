@@ -78,7 +78,15 @@ class NotificationViewController: FormViewController {
                 }else{
                     $0.value = false
                 }
+                }.onChange { row in
+                    if row.value! == false {
+                        // 通知OFF
+                        let identifiers = ["BiBittoTimeNotification"]
+                        UNUserNotificationCenter.current().removeNotificationsCompletely(withIdentifiers: identifiers)
+                        UserDefaults.standard.set(false ,forKey: DefaultString.NoticeTimeFlag)
+                     }
             }
+            
             <<< TimeInlineRow("Time") {
                 $0.hidden = .function(["TimeNotification"], { form -> Bool in
                     let row: RowOf<Bool>! = form.rowBy(tag: "TimeNotification")
@@ -100,6 +108,10 @@ class NotificationViewController: FormViewController {
                     vc.dismissOnSelection = false
                 })
             <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.hidden = .function(["TimeNotification"], { form -> Bool in
+                    let row: RowOf<Bool>! = form.rowBy(tag: "TimeNotification")
+                    return row.value ?? false == false
+                })
                 row.title = "日時通知を保存"
                 }.onCellSelection { [weak self] (cell, row) in
                     if let error = row.section?.form?.validate(), error.count != 0 {
@@ -117,6 +129,14 @@ class NotificationViewController: FormViewController {
                 }else{
                     $0.value = false
                 }
+                }.onChange { row in
+                    if row.value! == false {
+                        // 通知OFF
+                        let identifiers = ["BiBittoLocationNotification"]
+                        UNUserNotificationCenter.current().removeNotificationsCompletely(withIdentifiers: identifiers)
+                        UserDefaults.standard.set(false ,forKey: DefaultString.NoticeLocationFlag)
+                    }
+
             }
             <<< DetailedButtonRow("SelectLocation") { row in
                 row.hidden = .function(["LocationNotification"], { form -> Bool in
@@ -129,6 +149,10 @@ class NotificationViewController: FormViewController {
                     cell.detailTextLabel?.text = self.selectedLocationName
                 })
             <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.hidden = .function(["LocationNotification"], { form -> Bool in
+                    let row: RowOf<Bool>! = form.rowBy(tag: "LocationNotification")
+                    return row.value ?? false == false
+                })
                 row.title = "場所通知を保存"
                 }.onCellSelection { [weak self] (cell, row) in
                     if let error = row.section?.form?.validate(), error.count != 0 {
@@ -199,7 +223,13 @@ class NotificationViewController: FormViewController {
         
         // 通知内容の設定
         content.title = "ビビッとくる！俺の名言コレクション"
-        content.body = "今日のビビッとくる言葉は？"
+        // カード一覧をローカルファイルから取得
+        let cardDataArray = CardFileIntermediary.getList()
+        if cardDataArray.count > 0 ,!cardDataArray.isEmpty, let text = cardDataArray.shuffled.first?.text {
+            content.body = text
+        }else{
+            content.body = "今日のビビッとくる名言は？"
+        }
         content.sound = UNNotificationSound.default()
         content.badge = 1
         
@@ -230,8 +260,14 @@ class NotificationViewController: FormViewController {
         
         // UNMutableNotificationContent 作成
         let content = UNMutableNotificationContent()
-        content.title = "Hello!"
-        content.body = "Enter Headquarter"
+        content.title = "ビビッとくる！俺の名言コレクション"
+        // カード一覧をローカルファイルから取得
+        let cardDataArray = CardFileIntermediary.getList()
+        if cardDataArray.count > 0 ,!cardDataArray.isEmpty, let text = cardDataArray.shuffled.first?.text {
+            content.body = text
+        }else{
+            content.body = "今日のビビッとくる名言は？"
+        }
         content.sound = UNNotificationSound.default()
         content.badge = 1
         
@@ -262,3 +298,10 @@ public final class DetailedButtonRowOf<T: Equatable> : _ButtonRowOf<T>, RowType 
     }
 }
 public typealias DetailedButtonRow = DetailedButtonRowOf<String>
+
+extension UNUserNotificationCenter {
+    func removeNotificationsCompletely(withIdentifiers identifiers: [String]) {
+        self.removePendingNotificationRequests(withIdentifiers: identifiers)
+        self.removeDeliveredNotifications(withIdentifiers: identifiers)
+    }
+}

@@ -38,16 +38,6 @@ struct CardFileIntermediary{
     static func setList(list: [CardData]) {
         self._cardDataArray = list
     }
-/*    static var cardDataArray: [CardData] {
-        get {
-            return self._cardDataArray
-        }
-        set {
-            self._cardDataArray = newValue
-        }
-    }
- */
-
 }
 struct DateConversion {
     
