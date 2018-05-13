@@ -8,6 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		5EA8BECB95022CDA6088B4BD /* Pods_BiBitto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80B0C69EB339563A95ACCD2 /* Pods_BiBitto.framework */; };
+		84010D6420A7A074003285C4 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D6320A7A074003285C4 /* AdSupport.framework */; };
+		84010D6620A7A086003285C4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D6520A7A086003285C4 /* AudioToolbox.framework */; };
+		84010D6820A7A091003285C4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D6720A7A091003285C4 /* AVFoundation.framework */; };
+		84010D6A20A7A09E003285C4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D6920A7A09E003285C4 /* CoreGraphics.framework */; };
+		84010D6C20A7A0AC003285C4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D6B20A7A0AC003285C4 /* CoreMedia.framework */; };
+		84010D6E20A7A0BD003285C4 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D6D20A7A0BD003285C4 /* EventKit.framework */; };
+		84010D7020A7A0C5003285C4 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D6F20A7A0C5003285C4 /* EventKitUI.framework */; };
+		84010D7220A7A0D2003285C4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7120A7A0D2003285C4 /* MessageUI.framework */; };
+		84010D7420A7A0DA003285C4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7320A7A0DA003285C4 /* StoreKit.framework */; };
+		84010D7620A7A0E7003285C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7520A7A0E7003285C4 /* SystemConfiguration.framework */; };
+		84010D7820A7B8E9003285C4 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7720A7B8E8003285C4 /* iAd.framework */; };
+		84010D7A20A7B90A003285C4 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7920A7B90A003285C4 /* CoreTelephony.framework */; };
+		84010D7C20A7B938003285C4 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7B20A7B938003285C4 /* GoogleMobileAds.framework */; };
 		840272BB1FA2189B001C0BFB /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840272BA1FA2189B001C0BFB /* AccountViewController.swift */; };
 		840272BE1FA22ABC001C0BFB /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */; };
 		840272C01FA236E8001C0BFB /* Policy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 840272BF1FA2313A001C0BFB /* Policy.txt */; };
@@ -44,6 +57,19 @@
 
 /* Begin PBXFileReference section */
 		50B619A4C894BC1B5D5B0D6F /* Pods-BiBitto.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiBitto.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BiBitto/Pods-BiBitto.debug.xcconfig"; sourceTree = "<group>"; };
+		84010D6320A7A074003285C4 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		84010D6520A7A086003285C4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		84010D6720A7A091003285C4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		84010D6920A7A09E003285C4 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		84010D6B20A7A0AC003285C4 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		84010D6D20A7A0BD003285C4 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		84010D6F20A7A0C5003285C4 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
+		84010D7120A7A0D2003285C4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		84010D7320A7A0DA003285C4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		84010D7520A7A0E7003285C4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		84010D7720A7B8E8003285C4 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		84010D7920A7B90A003285C4 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		84010D7B20A7B938003285C4 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "../../../Downloads/GoogleMobileAdsSdkiOS-7.30.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		840272BA1FA2189B001C0BFB /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		840272BD1FA22ABC001C0BFB /* PasswordResetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
 		840272BF1FA2313A001C0BFB /* Policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Policy.txt; sourceTree = "<group>"; };
@@ -89,9 +115,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84010D7A20A7B90A003285C4 /* CoreTelephony.framework in Frameworks */,
+				84010D7820A7B8E9003285C4 /* iAd.framework in Frameworks */,
+				84010D7620A7A0E7003285C4 /* SystemConfiguration.framework in Frameworks */,
+				84010D7420A7A0DA003285C4 /* StoreKit.framework in Frameworks */,
+				84010D7220A7A0D2003285C4 /* MessageUI.framework in Frameworks */,
+				84010D7020A7A0C5003285C4 /* EventKitUI.framework in Frameworks */,
+				84010D6E20A7A0BD003285C4 /* EventKit.framework in Frameworks */,
+				84010D6C20A7A0AC003285C4 /* CoreMedia.framework in Frameworks */,
+				84010D6A20A7A09E003285C4 /* CoreGraphics.framework in Frameworks */,
+				84010D6820A7A091003285C4 /* AVFoundation.framework in Frameworks */,
+				84010D6620A7A086003285C4 /* AudioToolbox.framework in Frameworks */,
+				84010D6420A7A074003285C4 /* AdSupport.framework in Frameworks */,
 				84D3157B208C815C005CA494 /* MapKit.framework in Frameworks */,
 				84D31579208C644C005CA494 /* CoreLocation.framework in Frameworks */,
 				5EA8BECB95022CDA6088B4BD /* Pods_BiBitto.framework in Frameworks */,
+				84010D7C20A7B938003285C4 /* GoogleMobileAds.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +140,19 @@
 		2B2B25355C269F1DEA60A4AC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84010D7B20A7B938003285C4 /* GoogleMobileAds.framework */,
+				84010D7920A7B90A003285C4 /* CoreTelephony.framework */,
+				84010D7720A7B8E8003285C4 /* iAd.framework */,
+				84010D7520A7A0E7003285C4 /* SystemConfiguration.framework */,
+				84010D7320A7A0DA003285C4 /* StoreKit.framework */,
+				84010D7120A7A0D2003285C4 /* MessageUI.framework */,
+				84010D6F20A7A0C5003285C4 /* EventKitUI.framework */,
+				84010D6D20A7A0BD003285C4 /* EventKit.framework */,
+				84010D6B20A7A0AC003285C4 /* CoreMedia.framework */,
+				84010D6920A7A09E003285C4 /* CoreGraphics.framework */,
+				84010D6720A7A091003285C4 /* AVFoundation.framework */,
+				84010D6520A7A086003285C4 /* AudioToolbox.framework */,
+				84010D6320A7A074003285C4 /* AdSupport.framework */,
 				84D3157A208C815C005CA494 /* MapKit.framework */,
 				84D31578208C644C005CA494 /* CoreLocation.framework */,
 				E80B0C69EB339563A95ACCD2 /* Pods_BiBitto.framework */,

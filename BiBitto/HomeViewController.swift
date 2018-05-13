@@ -12,8 +12,9 @@ import FirebaseAuth
 import TTTAttributedLabel
 import SVProgressHUD
 import Presentr
+import GoogleMobileAds
 
-class HomeViewController: UIViewController , TabBarDelegate{
+class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelegate {
     
     var cardDataArray: [CardData] = []
     var cardData: CardData?
@@ -26,6 +27,8 @@ class HomeViewController: UIViewController , TabBarDelegate{
     @IBOutlet weak var noLabel: UILabel!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var baseView: UIView!
+    
+    var bannerView: GADBannerView!
     
     lazy var signUpViewController: SignUpViewController = {
         let signUpViewController = self.storyboard?.instantiateViewController(withIdentifier: "SignUpViewController")
@@ -47,6 +50,30 @@ class HomeViewController: UIViewController , TabBarDelegate{
         self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
         CardFileIntermediary.setList(list: self.cardDataArray)
         
+        
+        // iAd広告設定
+        //self.canDisplayBannerAds = true
+        // In this case, we instantiate the banner with desired ad size.
+        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        
+        bannerView.frame.origin = CGPoint(x:0, y:self.view.frame.size.height - bannerView.frame.height - (self.tabBarController?.tabBar.frame.size.height)!)
+        bannerView.frame.size = CGSize(width:self.view.frame.width, height:bannerView.frame.height)
+        // AdMobで発行された広告ユニットIDを設定
+        bannerView.adUnitID = "ca-app-pub-5249520015075390/2816639411"
+        
+        // テスト用ID
+        //bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        
+        bannerView.delegate = self
+        bannerView.rootViewController = self
+        let gadRequest:GADRequest = GADRequest()
+        // テスト用の広告を表示する時のみ使用（申請時に削除）
+        //gadRequest.testDevices = ["26a658cbdbafefa0529a98321fa5a5b1"]
+        
+        bannerView.load(gadRequest)
+        self.view.addSubview(bannerView)
+        
+
         print("DEBUG_PRINT: HomeViewController viewDidLoad end")
     }
     
@@ -266,7 +293,7 @@ class HomeViewController: UIViewController , TabBarDelegate{
 
         print("DEBUG_PRINT: HomeViewController showAlert end")
     }
-    
+
 }
 extension Array {
     
@@ -309,7 +336,7 @@ extension UIView {
                                               toItem: to,
                                               attribute: .bottom,
                                               multiplier: 1.0,
-                                              constant: 0))
+                                              constant: 50))
         self.addConstraint(NSLayoutConstraint(item: self,
                                               attribute: .trailing,
                                               relatedBy: .equal,
