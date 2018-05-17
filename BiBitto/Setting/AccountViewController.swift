@@ -119,7 +119,15 @@ class AccountViewController: FormViewController {
                         self?.login()
                     }
             }
-
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.title = "上記の内容でアカウント作成"
+                }.onCellSelection { [weak self] (cell, row) in
+                    if let error = row.section?.form?.validate() , error.count != 0 {
+                        print("DEBUG_PRINT: アカウント作成 \(error)のため処理は行いません")
+                    }else{
+                        self?.signUp()
+                    }
+            }
             +++ Section(){
                 $0.hidden = .function([""], { form -> Bool in
                     if Auth.auth().currentUser != nil {
@@ -270,4 +278,72 @@ class AccountViewController: FormViewController {
 
         print("DEBUG_PRINT: AccountViewController logout end")
     }
+    
+    func signUp() {
+        print("DEBUG_PRINT: AccountViewController signUp start")
+        
+        for (key,value) in form.values() {
+            if case let itemValue as String = value {
+                self.inputData["\(key)"] = itemValue
+            }
+        }
+        
+        let email = self.inputData["mail"] as! String
+        let password = self.inputData["password"] as! String
+        
+        // 入力チェック
+        if email.isEmpty || ValidEmailAddress.isValidEmailAddress(emailAddressString: email) == false {
+            SVProgressHUD.showError(withStatus: Alert.validationEmail)
+            return
+        }
+        if password.count < 6 || password.count > 12{
+            SVProgressHUD.showError(withStatus: Alert.validationPassword)
+            return
+        }
+        
+        // アドレスとパスワードでユーザー作成。ユーザー作成に成功すると、自動的にログインする
+        Auth.auth().createUser(withEmail: email, password: password) { user, error in
+            if let error = error {
+                // エラーがあったら原因をprintして、returnすることで以降の処理を実行せずに処理を終了する
+                print("DEBUG_PRINT: AccountViewController createUser " + error.localizedDescription)
+                if error.localizedDescription.contains("already in use") {
+                    SVProgressHUD.showError(withStatus: Alert.validationExistingEmail)
+                } else {
+                    SVProgressHUD.showError(withStatus: Alert.validationEmail)
+                }
+                return
+            }
+            
+            let user = Auth.auth().currentUser
+            if let user = user {
+                // 表示名を設定する
+                let changeRequest = user.createProfileChangeRequest()
+                let displayName = email.components(separatedBy:"@")
+                print(displayName)
+                changeRequest.displayName = displayName[0]
+                changeRequest.commitChanges { error in
+                    if let error = error {
+                        print("DEBUG_PRINT: AccountViewController createUser " + error.localizedDescription)
+                    }
+                }
+                
+                // UserDefaultにアカウント情報を保存
+                UserDefaults.standard.set(user.uid, forKey: DefaultString.Uid)
+                UserDefaults.standard.set(email, forKey: DefaultString.Mail)
+                UserDefaults.standard.set(password, forKey: DefaultString.Password)
+                
+                // 確認メール送信
+                if !user.isEmailVerified {
+                    print("DEBUG_PRINT: AccountViewController sendEmailVerification ")
+                    // 成功ポップアップ
+                    SVProgressHUD.showSuccess(withStatus: Alert.successSendMail)
+                    user.sendEmailVerification(completion: nil)
+                    
+                }
+            }
+        }
+        
+        print("DEBUG_PRINT: AccountViewController signUp end")
+    }
+    
 }

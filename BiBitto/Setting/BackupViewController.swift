@@ -70,6 +70,9 @@ class BackupViewController: FormViewController {
             <<< SwitchRow("autoBackup"){
                 $0.title = "自動保存"
                 $0.value = UserDefaults.standard.bool(forKey: DefaultString.AutoBackup)
+                if Auth.auth().currentUser == nil {
+                    $0.disabled = true
+                }
                 }.onChange { row in
                     self.autoBackupSetting()
             }

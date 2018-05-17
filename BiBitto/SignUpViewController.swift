@@ -109,7 +109,7 @@ class SignUpViewController: UIViewController {
                 if !user.isEmailVerified {
                     print("DEBUG_PRINT: SignUpViewController sendEmailVerification ")
                     // 成功ポップアップ
-                    SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
+                    SVProgressHUD.showSuccess(withStatus: Alert.successSendMail)
                     user.sendEmailVerification(completion: nil)
 
                 }

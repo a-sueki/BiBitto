@@ -188,6 +188,7 @@ struct Alert {
     static let validationExistingEmail = "そのメールアドレスは既に登録されています"
     static let validationPassword = "パスワードは6~12文字で設定してください"
     static let loginAlartTitle = "ログインしていません"
+    static let successSendMail = "仮登録メールを送信しました ※まだ登録は完了していません※"
     static let pleaseloginAlartTitle = "バックアップの利用にはログインが必要です"
     static let errorSaveTitle = "保存に失敗しました"
     static let errorRestoreTitle = "復元に失敗しました"
