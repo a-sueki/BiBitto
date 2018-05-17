@@ -16,7 +16,7 @@ import StoreKit
 class SettingViewController: FormViewController {
     
     var inputData = [String : Any]()
-    let productIdentifiers = ["productIdentifier1"]
+    let productIdentifiers = ["NonConsumable1"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,7 +82,7 @@ class SettingViewController: FormViewController {
             
             +++ Section(header:"アップグレード", footer:"アップグレード後は「広告非表示」、「登録件数が無制限」でご利用いただけます。課金は1度だけです。" )
             <<< ButtonRow("Upgrade") { (row: ButtonRow) -> Void in
-                row.title = "100円でアップグレードする"
+                row.title = "120円でアップグレードする"
             }.onCellSelection { [weak self] (cell, row) in
                     self?.upgrade()
             }
@@ -132,7 +132,15 @@ class SettingViewController: FormViewController {
                                     self?.purchaseManager(PurchaseManager.shared, didFailTransactionWithError: error)
                                     return
                                 }
-                                
+//                                for product in products! {
+                                //SKProduct.localizedPrice
+                                    let priceString = product.localizedPrice  //ProductManager.priceStringFromProduct(product: product)
+                                    if self != nil {
+                                        print(product.localizedTitle + ":\(String(describing: priceString))")
+                                        //self?.priceLabel.text = product.localizedTitle + ":\(priceString)"
+                                    }
+                                print(product.localizedTitle + ":\(String(describing: priceString))" )
+//                                }
                                 //課金処理開始
                                 PurchaseManager.shared.purchase(product: product)
         })

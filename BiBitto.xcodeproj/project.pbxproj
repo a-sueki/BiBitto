@@ -16,7 +16,6 @@
 		84010D6E20A7A0BD003285C4 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D6D20A7A0BD003285C4 /* EventKit.framework */; };
 		84010D7020A7A0C5003285C4 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D6F20A7A0C5003285C4 /* EventKitUI.framework */; };
 		84010D7220A7A0D2003285C4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7120A7A0D2003285C4 /* MessageUI.framework */; };
-		84010D7420A7A0DA003285C4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7320A7A0DA003285C4 /* StoreKit.framework */; };
 		84010D7620A7A0E7003285C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7520A7A0E7003285C4 /* SystemConfiguration.framework */; };
 		84010D7820A7B8E9003285C4 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7720A7B8E8003285C4 /* iAd.framework */; };
 		84010D7A20A7B90A003285C4 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84010D7920A7B90A003285C4 /* CoreTelephony.framework */; };
@@ -52,6 +51,7 @@
 		84D31579208C644C005CA494 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D31578208C644C005CA494 /* CoreLocation.framework */; };
 		84D3157B208C815C005CA494 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D3157A208C815C005CA494 /* MapKit.framework */; };
 		84D3157D208C81F6005CA494 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D3157C208C81F6005CA494 /* MapViewController.swift */; };
+		84DBD72F20AD5B2000001A7C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DBD72E20AD5B2000001A7C /* StoreKit.framework */; };
 		84F4D26E1F9EF80D001A614A /* CardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F4D26D1F9EF80D001A614A /* CardData.swift */; };
 		84F4D2701F9EFD6F001A614A /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F4D26F1F9EFD6F001A614A /* UserData.swift */; };
 		84FE85C2209FE6A300BB96A7 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FE85C1209FE6A300BB96A7 /* LocationSearchTable.swift */; };
@@ -67,7 +67,6 @@
 		84010D6D20A7A0BD003285C4 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		84010D6F20A7A0C5003285C4 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		84010D7120A7A0D2003285C4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		84010D7320A7A0DA003285C4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		84010D7520A7A0E7003285C4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		84010D7720A7B8E8003285C4 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		84010D7920A7B90A003285C4 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -107,6 +106,7 @@
 		84D31578208C644C005CA494 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		84D3157A208C815C005CA494 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		84D3157C208C81F6005CA494 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		84DBD72E20AD5B2000001A7C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		84F4D26D1F9EF80D001A614A /* CardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardData.swift; sourceTree = "<group>"; };
 		84F4D26F1F9EFD6F001A614A /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		84FE85C1209FE6A300BB96A7 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
@@ -122,7 +122,7 @@
 				84010D7A20A7B90A003285C4 /* CoreTelephony.framework in Frameworks */,
 				84010D7820A7B8E9003285C4 /* iAd.framework in Frameworks */,
 				84010D7620A7A0E7003285C4 /* SystemConfiguration.framework in Frameworks */,
-				84010D7420A7A0DA003285C4 /* StoreKit.framework in Frameworks */,
+				84DBD72F20AD5B2000001A7C /* StoreKit.framework in Frameworks */,
 				84010D7220A7A0D2003285C4 /* MessageUI.framework in Frameworks */,
 				84010D7020A7A0C5003285C4 /* EventKitUI.framework in Frameworks */,
 				84010D6E20A7A0BD003285C4 /* EventKit.framework in Frameworks */,
@@ -144,11 +144,11 @@
 		2B2B25355C269F1DEA60A4AC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84DBD72E20AD5B2000001A7C /* StoreKit.framework */,
 				84010D7B20A7B938003285C4 /* GoogleMobileAds.framework */,
 				84010D7920A7B90A003285C4 /* CoreTelephony.framework */,
 				84010D7720A7B8E8003285C4 /* iAd.framework */,
 				84010D7520A7A0E7003285C4 /* SystemConfiguration.framework */,
-				84010D7320A7A0DA003285C4 /* StoreKit.framework */,
 				84010D7120A7A0D2003285C4 /* MessageUI.framework */,
 				84010D6F20A7A0C5003285C4 /* EventKitUI.framework */,
 				84010D6D20A7A0BD003285C4 /* EventKit.framework */,
@@ -285,6 +285,9 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
 						};
