@@ -11,6 +11,7 @@ import Pageboy
 import Firebase
 import FirebaseAuth
 import GoogleMobileAds
+import SVProgressHUD
 
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GADBannerViewDelegate {
     
@@ -126,9 +127,19 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc func addButtonTapped() {
         print("DEBUG_PRINT: ListViewController addButtonTapped start")
         
-        let addViewController = self.storyboard?.instantiateViewController(withIdentifier: "AddViewController") as! AddViewController
-        addViewController.cardDataArray = self.cardDataArray
-        self.navigationController?.pushViewController(addViewController, animated: true)
+        if self.cardDataArray.count > 99 {
+            if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){
+                let addViewController = self.storyboard?.instantiateViewController(withIdentifier: "AddViewController") as! AddViewController
+                addViewController.cardDataArray = self.cardDataArray
+                self.navigationController?.pushViewController(addViewController, animated: true)
+            }else{
+                SVProgressHUD.showError(withStatus: Alert.limited)
+            }
+        }else{
+            let addViewController = self.storyboard?.instantiateViewController(withIdentifier: "AddViewController") as! AddViewController
+            addViewController.cardDataArray = self.cardDataArray
+            self.navigationController?.pushViewController(addViewController, animated: true)
+        }
         
         print("DEBUG_PRINT: ListViewController addButtonTapped end")
     }

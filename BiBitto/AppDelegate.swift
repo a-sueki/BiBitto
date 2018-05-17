@@ -10,9 +10,10 @@ import UIKit
 import Firebase
 import UserNotifications
 import GoogleMobileAds
+import StoreKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate{
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, PurchaseManagerDelegate {
 
     var window: UIWindow?
     let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
@@ -64,6 +65,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //バッジの数を０にする.
         UIApplication.shared.applicationIconBadgeNumber = 0
 
+        // デリゲート設定
+        PurchaseManager.shared.delegate = self
+        // オブザーバー登録
+        SKPaymentQueue.default().add(PurchaseManager.shared)
+        
         return true
     }
     
@@ -87,6 +93,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        // オブザーバー登録解除
+        SKPaymentQueue.default().remove(PurchaseManager.shared)
     }
     // バックグラウンドで来た通知をタップしてアプリ起動したら呼ばれる
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {

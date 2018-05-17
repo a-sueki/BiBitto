@@ -201,7 +201,8 @@ class ImportDataViewController: FormViewController {
         print("カード合計件数：\(totalCardCount)、一括登録件数：\(self.importDataArray.count)")
         
         if totalCardCount > 99 {
-            if (Auth.auth().currentUser?.uid) != nil {
+            if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){
+                //,(Auth.auth().currentUser?.uid) != nil {
                 SVProgressHUD.show(withStatus: "\(self.importDataArray.count)件のデータを登録中...")
             }else{
                 SVProgressHUD.showError(withStatus: Alert.limited)

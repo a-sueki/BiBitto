@@ -119,6 +119,7 @@ struct StorageProcessing{
 }
 
 struct DefaultString {
+    static let BillingUserFlag = "billingUserFlag"
     static let NoticeTimeFlag = "noticeTimeFlag"
     static let NoticeLocationFlag = "noticeLocationFlag"
     
@@ -201,7 +202,7 @@ struct Alert {
     static let successLogoutTitle = "ログアウトしました"
     static let waiting = "Now Loading..."
     static let saving = "Now Saving..."
-    static let limited = "99件以上はアカウント登録が必要です"
+    static let limited = "99件以上の登録にはアップグレードが必要です"
 }
 struct Category {
 /*    static var continent1 = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
