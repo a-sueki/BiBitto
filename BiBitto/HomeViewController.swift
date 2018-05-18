@@ -51,45 +51,47 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
         CardFileIntermediary.setList(list: self.cardDataArray)
         
         
-        // iAd広告設定
-        //self.canDisplayBannerAds = true
-        // In this case, we instantiate the banner with desired ad size.
-        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){
+            // iAd広告設定
+            //self.canDisplayBannerAds = true
+            // In this case, we instantiate the banner with desired ad size.
+            bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+            
+            bannerView.frame.origin = CGPoint(x:0, y:self.view.frame.size.height - bannerView.frame.height - (self.tabBarController?.tabBar.frame.size.height)!)
+            bannerView.frame.size = CGSize(width:self.view.frame.width, height:bannerView.frame.height)
+            // AdMobで発行された広告ユニットIDを設定
+            bannerView.adUnitID = "ca-app-pub-5249520015075390/2816639411"
+            
+            // テスト用ID
+            //bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+            
+            bannerView.delegate = self
+            bannerView.rootViewController = self
+            let gadRequest:GADRequest = GADRequest()
+            // テスト用の広告を表示する時のみ使用（申請時に削除）
+            //gadRequest.testDevices = ["26a658cbdbafefa0529a98321fa5a5b1"]
+            
+            bannerView.load(gadRequest)
+            self.view.addSubview(bannerView)
+        }
         
-        bannerView.frame.origin = CGPoint(x:0, y:self.view.frame.size.height - bannerView.frame.height - (self.tabBarController?.tabBar.frame.size.height)!)
-        bannerView.frame.size = CGSize(width:self.view.frame.width, height:bannerView.frame.height)
-        // AdMobで発行された広告ユニットIDを設定
-        bannerView.adUnitID = "ca-app-pub-5249520015075390/2816639411"
         
-        // テスト用ID
-        //bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
-        
-        bannerView.delegate = self
-        bannerView.rootViewController = self
-        let gadRequest:GADRequest = GADRequest()
-        // テスト用の広告を表示する時のみ使用（申請時に削除）
-        //gadRequest.testDevices = ["26a658cbdbafefa0529a98321fa5a5b1"]
-        
-        bannerView.load(gadRequest)
-        self.view.addSubview(bannerView)
-        
-
         print("DEBUG_PRINT: HomeViewController viewDidLoad end")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: HomeViewController viewWillAppear start")
-
+        
         self.reloadView()
-
+        
         print("DEBUG_PRINT: HomeViewController viewWillAppear end")
     }
-        
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("DEBUG_PRINT: HomeViewController viewDidAppear start")
-
+        
         // 初回起動時のみ
         if UserDefaults.standard.bool(forKey: "firstLaunch") {
             UserDefaults.standard.set(false, forKey: "firstLaunch")
@@ -116,7 +118,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
                 subview.removeFromSuperview()
             }
         }
-                
+        
         print("DEBUG_PRINT: HomeViewController viewWillDisappear end")
     }
     
@@ -135,7 +137,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
         print("DEBUG_PRINT: HomeViewController reloadView start")
         
         self.cardDataArray = CardFileIntermediary.getList()
-
+        
         if self.cardDataArray.count != 0 {
             self.nextButton.isHidden = false
             self.cardData = self.cardDataArray.shuffled.first
@@ -150,7 +152,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
     }
     func removeSubviews(parentView: UIView){
         print("DEBUG_PRINT: HomeViewController removeAllSubviews start")
-
+        
         let subviews = baseView.subviews
         for subview in subviews {
             if subview.tag == 1 || subview.tag == 2 {
@@ -162,25 +164,25 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
     
     func showWord(){
         print("DEBUG_PRINT: HomeViewController showWord start")
-
+        
         // 古いsubviewを削除
         removeSubviews(parentView: self.view)
-
+        
         // ヘッダ
         categoryLabel.text = self.cardData?.category
         authorNameLabel.text = self.cardData?.author
         noLabel.text = String(format: "%03d", (self.cardData?.no)!)
         view.backgroundColor = UIColor.gray
-
+        
         // 日本語判定
         var hasJp = false
         if let textString = self.cardData?.text, textString.hasHiragana || textString.hasKatakana || textString.hasKanji  {
             hasJp = true
         }
-
+        
         // ラベル作成
         var textLabel :UILabel
-
+        
         if hasJp {
             // 縦書き対応
             textLabel = TTTAttributedLabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
@@ -191,7 +193,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
             textLabel.textColor = UIColor.black
             textLabel.numberOfLines = 0
             textLabel.lineBreakMode = NSLineBreakMode.byCharWrapping //文字で改行
-
+            
             // ラベルを90°回転させる
             rotateAngle(label: textLabel as! TTTAttributedLabel, data: self.cardData?.text)
             (textLabel as! TTTAttributedLabel).verticalAlignment = .center
@@ -199,7 +201,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
             // 配置
             baseView.addSubview(textLabel)
             baseView.addFitConstraints(to: textLabel)
-         }else{
+        }else{
             // 横書き
             textLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
             textLabel.text = self.cardData?.text
@@ -210,7 +212,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
             textLabel.textColor = UIColor.black
             textLabel.numberOfLines = 0
             textLabel.lineBreakMode = NSLineBreakMode.byCharWrapping //文字で改行
-
+            
             // 配置
             baseView.addSubview(textLabel)
             baseView.addFitConstraints(to: textLabel)
@@ -222,7 +224,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
     
     func rotateAngle(label: TTTAttributedLabel, data: String?) {
         print("DEBUG_PRINT: HomeViewController rotateAngle start")
-
+        
         let angle = Double.pi/2
         label.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
         
@@ -237,27 +239,27 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
     
     func signUp() {
         print("DEBUG_PRINT: HomeViewController signUp start")
-
+        
         PresentrAlert.presenter.presentationType = .popup
         PresentrAlert.presenter.transitionType = nil
         PresentrAlert.presenter.dismissTransitionType = nil
         PresentrAlert.presenter.keyboardTranslationType = .compress
         PresentrAlert.presenter.dismissOnSwipe = false
         customPresentViewController(PresentrAlert.presenter, viewController: signUpViewController, animated: true, completion: nil)
-
+        
         print("DEBUG_PRINT: HomeViewController signUp end")
     }
     
     @IBAction func handleNextButton(_ sender: Any) {
         print("DEBUG_PRINT: HomeViewController handleNextButton start")
-
+        
         if self.cardDataArray.count != 0 {
             self.cardData = self.cardDataArray.shuffled.first
             self.showWord()
         }else{
             SVProgressHUD.showError(withStatus: "カードがありません")
         }
-
+        
         print("DEBUG_PRINT: HomeViewController handleNextButton end")
     }
     
@@ -277,11 +279,11 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
         
         print("DEBUG_PRINT: HomeViewController handleShearButton end")
     }
-
+    
     // OK or CancelToast
     func showAlert(title: String, message: String, callback: @escaping () -> Void) {
         print("DEBUG_PRINT: HomeViewController showAlert start")
-
+        
         let alert: UIAlertController = UIAlertController(title: title, message: message, preferredStyle:  UIAlertControllerStyle.alert)
         let defaultAction: UIAlertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
             (action: UIAlertAction!) -> Void in
@@ -290,10 +292,10 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
         alert.addAction(defaultAction)
         
         present(alert, animated: true, completion: nil)
-
+        
         print("DEBUG_PRINT: HomeViewController showAlert end")
     }
-
+    
 }
 extension Array {
     
@@ -316,9 +318,11 @@ extension Array {
 extension UIView {
     func addFitConstraints(to: UIView) {
         to.translatesAutoresizingMaskIntoConstraints = false
+        var bottomConstant = 50
         // もし広告非表示なら50でなく0
-        let bottomConstant = 50
-        
+        if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){
+            bottomConstant = 0
+        }
         self.addConstraint(NSLayoutConstraint(item: to,
                                               attribute: .top,
                                               relatedBy: .equal,
