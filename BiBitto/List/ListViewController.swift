@@ -46,7 +46,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Noで並び替え
         self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
         
-        if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){
+        //if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // 本番用
+        if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // キャプチャ用
             // iAd広告設定
             //self.canDisplayBannerAds = true
             // In this case, we instantiate the banner with desired ad size.
@@ -214,13 +215,11 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         if editingStyle == .delete {
             //リストから削除
             cardDataArray.remove(at: indexPath.row)
-            // Noで並び替え
-            self.cardDataArray = self.cardDataArray.sorted(by: {$0.no < $1.no})
             // No洗い替え
-            var counter = 1
+            var counter = self.cardDataArray.count
             for card in self.cardDataArray {
                 card.no = counter
-                counter = counter + 1
+                counter = counter - 1
             }
             // ファイル書き込み用カード配列作成
             var outputDataArray = Array<[String : Any]>()

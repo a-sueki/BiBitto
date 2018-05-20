@@ -51,7 +51,8 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
         CardFileIntermediary.setList(list: self.cardDataArray)
         
         
-        if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){
+        //if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // 本番用
+        if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // キャプチャ用
             // iAd広告設定
             //self.canDisplayBannerAds = true
             // In this case, we instantiate the banner with desired ad size.
@@ -320,7 +321,8 @@ extension UIView {
         to.translatesAutoresizingMaskIntoConstraints = false
         var bottomConstant = 50
         // もし広告非表示なら50でなく0
-        if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){
+        //if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // 本番用
+        if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // キャプチャ用
             bottomConstant = 0
         }
         self.addConstraint(NSLayoutConstraint(item: to,
@@ -336,7 +338,7 @@ extension UIView {
                                               toItem: self,
                                               attribute: .leading,
                                               multiplier: 1.0,
-                                              constant: 0))
+                                              constant: 20))
         self.addConstraint(NSLayoutConstraint(item: self,
                                               attribute: .bottom,
                                               relatedBy: .equal,
@@ -350,6 +352,6 @@ extension UIView {
                                               toItem: to,
                                               attribute: .trailing,
                                               multiplier: 1.0,
-                                              constant: 0))
+                                              constant: 20))
     }
 }

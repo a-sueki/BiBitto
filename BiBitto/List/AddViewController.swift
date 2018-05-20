@@ -144,6 +144,7 @@ class AddViewController: FormViewController {
             }
         }
         
+
         // inputDataに必要な情報を取得しておく
         let time = NSDate.timeIntervalSinceReferenceDate
         inputData["updateAt"] = String(time)
@@ -153,12 +154,7 @@ class AddViewController: FormViewController {
         // カード追加
         let cardData = CardData(valueDictionary: inputData as [String : AnyObject])
         self.cardDataArray.append(cardData)
-        // No洗い替え
-        var counter = 1
-        for card in self.cardDataArray {
-            card.no = counter 
-            counter = counter + 1
-        }
+
         SVProgressHUD.show(withStatus: Alert.saving)
         // 遅延実行
         self.writeFile()
@@ -236,7 +232,9 @@ class AddViewController: FormViewController {
             }
             // 成功ポップアップ
             SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
-            
+
+            // Noで並び替え
+            self.cardDataArray = self.cardDataArray.sorted(by: {$0.no > $1.no})
             //呼び出し元のView Controllerを遷移履歴から取得しパラメータを渡す
             let nav = self.navigationController!
             let listViewController = nav.viewControllers[nav.viewControllers.count-2] as! ListViewController

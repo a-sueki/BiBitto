@@ -45,8 +45,7 @@ struct DateConversion {
     static func convertFormat(updateDate: Date ,before: String ,after: String) -> String {
         formatter.dateFormat =  DateFormatter.dateFormat(fromTemplate: after, options: 0, locale: .current)
         let strDate = formatter.string(from: updateDate)
-        return strDate
-/*
+        //        return strDate
         // 日本語にしか対応できてないのでコメントアウト
         formatter.dateFormat = before
         print("result1....\(strDate)")
@@ -55,11 +54,11 @@ struct DateConversion {
             formatter.dateFormat = after
             return formatter.string(from :date)
         }
-        return ""
-         */
+        return "strDate"
     }
-
+    
 }
+
 struct StorageProcessing{
     static func storageUpload(fileType: String, key: String){
         if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
@@ -139,7 +138,7 @@ struct DefaultString {
     static let Category3 = "category3"
     static let Category4 = "category4"
     static let Category5 = "category5"
-
+    
 }
 struct ErrorMsgString {
     static let RulePassword = "パスワードは6~12文字で設定して下さい"
@@ -206,12 +205,12 @@ struct Alert {
     static let limited = "99件以上の登録にはアップグレードが必要です"
 }
 struct Category {
-/*    static var continent1 = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
-    static var continent2 = UserDefaults.standard.string(forKey: DefaultString.Category2) ?? "LEADERSHIP"
-    static var continent3 = UserDefaults.standard.string(forKey: DefaultString.Category3) ?? "VISION"
-    static var continent4 = UserDefaults.standard.string(forKey: DefaultString.Category4) ?? "WISDOM"
-    static var continent5 = UserDefaults.standard.string(forKey: DefaultString.Category5) ?? "FELLOW"
-*/
+    /*    static var continent1 = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
+     static var continent2 = UserDefaults.standard.string(forKey: DefaultString.Category2) ?? "LEADERSHIP"
+     static var continent3 = UserDefaults.standard.string(forKey: DefaultString.Category3) ?? "VISION"
+     static var continent4 = UserDefaults.standard.string(forKey: DefaultString.Category4) ?? "WISDOM"
+     static var continent5 = UserDefaults.standard.string(forKey: DefaultString.Category5) ?? "FELLOW"
+     */
     static let continents = [UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND",UserDefaults.standard.string(forKey: DefaultString.Category2) ?? "LEADERSHIP",UserDefaults.standard.string(forKey: DefaultString.Category3) ?? "VISION",UserDefaults.standard.string(forKey: DefaultString.Category4) ?? "WISDOM",UserDefaults.standard.string(forKey: DefaultString.Category5) ?? "FELLOW"]
 }
 
@@ -298,7 +297,7 @@ struct Files {
             }
         }
     }
-
+    
     // Libraryフォルダのファイルにデータを保存（全件洗い替え）
     static func writeCardDocument(cardDataArray: Array<[String:Any]>, fileName: String) {
         var jsonStrArray = Array<Any>()
@@ -367,14 +366,14 @@ struct Files {
                 let jsondata = try? Data(contentsOf: path_file_name)
                 //-- 配列データに変換して
                 if jsondata != nil && jsondata?.hashValue != 0 {
-                let jsonArray = (try! JSONSerialization.jsonObject(with: jsondata!, options: [])) as! NSArray
-                for jsonItem in jsonArray {
-                    let jsonData: Data =  (jsonItem as AnyObject).data(using: String.Encoding.utf8.rawValue)!
-                    // パースする
-                    let card = try JSONSerialization.jsonObject(with: jsonData)  as! [String : AnyObject]
-                    let cardData = CardData(valueDictionary: card)
-                    cardDataArray.append(cardData)
-                }
+                    let jsonArray = (try! JSONSerialization.jsonObject(with: jsondata!, options: [])) as! NSArray
+                    for jsonItem in jsonArray {
+                        let jsonData: Data =  (jsonItem as AnyObject).data(using: String.Encoding.utf8.rawValue)!
+                        // パースする
+                        let card = try JSONSerialization.jsonObject(with: jsonData)  as! [String : AnyObject]
+                        let cardData = CardData(valueDictionary: card)
+                        cardDataArray.append(cardData)
+                    }
                 }
                 
                 return cardDataArray
@@ -385,7 +384,7 @@ struct Files {
         }
         return []
     }
-
+    
     // 形態素分析
     static func morphologicalAnalysis(inputData: [String : Any]) -> [String]{
         var orgStr = inputData["text"] as! String
@@ -452,7 +451,7 @@ extension String {
         let range = "^[ァ-ヾ]+$"
         return NSPredicate(format: "SELF MATCHES %@", range).evaluate(with: self)
     }
-
+    
     
     /// 「ひらがな」に変換 ※１
     var toHiragana: String? {
