@@ -212,7 +212,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
             textLabel.tag = 2
             textLabel.textColor = UIColor.black
             textLabel.numberOfLines = 0
-            textLabel.lineBreakMode = NSLineBreakMode.byCharWrapping //文字で改行
+            textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping //文字で改行
             
             // 配置
             baseView.addSubview(textLabel)
