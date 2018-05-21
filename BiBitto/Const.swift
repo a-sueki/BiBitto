@@ -45,8 +45,7 @@ struct DateConversion {
     static func convertFormat(updateDate: Date ,before: String ,after: String) -> String {
         formatter.dateFormat =  DateFormatter.dateFormat(fromTemplate: after, options: 0, locale: .current)
         let strDate = formatter.string(from: updateDate)
-        //        return strDate
-        // 日本語にしか対応できてないのでコメントアウト
+        // 日本語にしか対応できてない。。
         formatter.dateFormat = before
         print("result1....\(strDate)")
         if let date = formatter.date(from: String(strDate)) {
@@ -54,12 +53,13 @@ struct DateConversion {
             formatter.dateFormat = after
             return formatter.string(from :date)
         }
-        return "strDate"
+        return strDate
     }
     
 }
 
 struct StorageProcessing{
+    
     static func storageUpload(fileType: String, key: String){
         if let dir = FileManager.default.urls( for: .libraryDirectory, in: .userDomainMask ).first {
             // File located on disk
@@ -95,25 +95,39 @@ struct StorageProcessing{
         }
     }
     
-    static func storageDownload(fileType: String, key: String){
-        if let dir = FileManager.default.urls( for: .libraryDirectory,in: .userDomainMask ).first {
-            // File located on disk
-            let path_file_name = dir.appendingPathComponent(fileType)
-            let fileName = fileType.components(separatedBy: ".")
+    static func storageDownload(fileType: String, key: String) -> Bool {
+        
+        var finished = false
+        DispatchQueue.global().async {
             
-            // Create a reference to the file you want to download
-            let islandRef = StorageRef.getRiversRef(fileType: fileName.first!, key: key)
-            
-            // Download to the local filesystem
-            _ = islandRef.write(toFile: path_file_name) { url, error in
-                if let error = error {
-                    print("DEBUG_PRINT: ImportDataViewController storageDownload: \(error.localizedDescription)")
-                    SVProgressHUD.showError(withStatus: Alert.errorDownloadTitle)
-                } else {
-                    // Local file URL for "images/island.jpg" is returned
+            if let dir = FileManager.default.urls( for: .libraryDirectory,in: .userDomainMask ).first {
+                // File located on disk
+                let path_file_name = dir.appendingPathComponent(fileType)
+                let fileName = fileType.components(separatedBy: ".")
+                
+                // Create a reference to the file you want to download
+                let islandRef = StorageRef.getRiversRef(fileType: fileName.first!, key: key)
+                
+                // Download to the local filesystem
+                _ = islandRef.write(toFile: path_file_name) { url, error in
+                    if let error = error {
+                        print("DEBUG_PRINT: ImportDataViewController storageDownload: \(error.localizedDescription)")
+                        SVProgressHUD.showError(withStatus: Alert.errorDownloadTitle)
+                    } else {
+                        // Local file URL for "images/island.jpg" is returned
+                        finished = true
+                    }
                 }
             }
         }
+        
+        Files.wait( { return finished == false } ) {
+            // 復元したカードリストを取得
+            let cardDataArray = Files.readCardDocument(fileName: Files.card_file)
+            // 他画面での参照用配列をアップデート
+            CardFileIntermediary.setList(list: cardDataArray)
+        }
+        return finished
     }
 }
 
@@ -193,9 +207,9 @@ struct Alert {
     static let errorRestoreTitle = "復元に失敗しました"
     static let errorImportTitle = "ファイル取込に失敗しました"
     static let errorUploadTitle = "バックアップの保存に失敗しました"
-    static let errorDownloadTitle = "復元に失敗しました"
+    static let errorDownloadTitle = "ネットワークエラー"
     static let successSaveTitle = "保存しました"
-    static let successRestoreTitle = "復元に成功しました"
+    static let successRestoreTitle = "復元に成功しました。\nデータが反映されない場合はアプリを再起動して下さい。"
     static let successImportTitle = "ファイル取込に成功しました"
     static let successSendTitle = "送信しました"
     static let successLoginTitle = "ログインしました"
@@ -421,6 +435,31 @@ struct Files {
         
         return strArray2
     }
+    
+    /// 条件をクリアするまで待ちます
+    ///
+    /// - Parameters:
+    ///   - waitContinuation: 待機条件
+    ///   - compleation: 通過後の処理
+    static func wait(_ waitContinuation: @escaping (()->Bool), compleation: @escaping (()->Void)) {
+        var wait = waitContinuation()
+        // 0.01秒周期で待機条件をクリアするまで待ちます。
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            while wait {
+                DispatchQueue.main.async {
+                    wait = waitContinuation()
+                    semaphore.signal()
+                }
+                semaphore.wait()
+                Thread.sleep(forTimeInterval: 0.01)
+            }
+            // 待機条件をクリアしたので通過後の処理を行います。
+            DispatchQueue.main.async {
+                compleation()
+            }
+        }
+    }
 }
 
 // ファイルの末尾に追記
@@ -539,3 +578,4 @@ final class TextConverter {
         return output
     }
 }
+

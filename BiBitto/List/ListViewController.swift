@@ -89,10 +89,20 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: ListViewController viewWillAppear start")
-
-        // tableViewを再表示する
-        DispatchQueue.main.async {
-            print("DEBUG_PRINT: ListViewController [DispatchQueue.main.async]")
+        
+        
+        var originCardDataArray: [CardData]! = nil
+        DispatchQueue.global().async {
+            // カード一覧をローカルファイルから取得
+            originCardDataArray = CardFileIntermediary.getList()
+        }
+        // cardDataArrayを取得するまで待ちます
+        Files.wait( { return originCardDataArray == nil } ) {
+            // 取得しました
+            print("finish!!!")
+            // Noで並び替え
+            self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
+            // tableViewを再表示する
             self.tableView.reloadData()
         }
         

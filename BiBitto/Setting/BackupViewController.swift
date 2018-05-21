@@ -17,7 +17,6 @@ class BackupViewController: FormViewController {
 
     var inputData = [String : Any]()
     var lastUpdated = UserDefaults.standard.object(forKey: DefaultString.CardMetaUpdated) ?? "なし"
-    var cardDataArray: [CardData] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,7 +86,7 @@ class BackupViewController: FormViewController {
                         self?.save()
                     }
         }
-            +++ Section(header:"復元", footer:"最終保存日時:\(self.lastUpdated)" ){
+            +++ Section(header:"復元", footer:"最終保存日時:\(self.lastUpdated) \n データが反映されない場合はアプリを再起動してみてください。" ){
                 $0.tag = "restoreButton"
             }
             <<< ButtonRow() { (row: ButtonRow) -> Void in
@@ -152,20 +151,22 @@ class BackupViewController: FormViewController {
         print("DEBUG_PRINT: BackupViewController restore start")
         
         SVProgressHUD.show(withStatus: Alert.waiting)
-        // 遅延実行
-        let dispatchTime = DispatchTime.now() + 0.1
-        DispatchQueue.main.asyncAfter( deadline: dispatchTime) {
+        var finished: Bool?
+
+        DispatchQueue.global().async {
             // ログインしている場合、firebaseStorageからdownload
             if let uid = Auth.auth().currentUser?.uid {
+
                 // ストレージから取得
-                StorageProcessing.storageDownload(fileType: Files.card_file, key: uid)
-                StorageProcessing.storageDownload(fileType: Files.word_file, key: uid)
-                print("DEBUG_PRINT: BackupViewController FB Storage uploaded!")
- 
-                self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
-                // 他画面での参照用配列をアップデート
-                CardFileIntermediary.setList(list: self.cardDataArray)
+                finished = StorageProcessing.storageDownload(fileType: Files.card_file, key: uid)
+                _ = StorageProcessing.storageDownload(fileType: Files.word_file, key: uid)
+                print("DEBUG_PRINT: BackupViewController FB Storage downloaded!")
+                
             }
+        }
+        // cardDataArrayを取得するまで待ちます
+        Files.wait( { return finished == nil } ) {
+
             // 全てのモーダルを閉じる
             SVProgressHUD.dismiss()
             UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
