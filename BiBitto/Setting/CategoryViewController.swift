@@ -57,31 +57,31 @@ class CategoryViewController: FormViewController {
                            header: "Reordering Field Rows",
                            footer: "")
             <<< NameRow("category1") {
-                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "ENERGY"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "orange")
                     cell.imageView?.alpha = 0.6
             }
             <<< NameRow("category2") {
-                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category2) ?? "LEADERSHIP"
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category2) ?? "LOVE"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "pink")
                     cell.imageView?.alpha = 0.6
             }
             <<< NameRow("category3") {
-                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category3) ?? "VISION"
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category3) ?? "FRIENDSHIP"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "green")
                     cell.imageView?.alpha = 0.6
             }
             <<< NameRow("category4") {
-                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category4) ?? "WISDOM"
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category4) ?? "BUSINESS"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "blue")
                     cell.imageView?.alpha = 0.6
             }
             <<< NameRow("category5") {
-                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category5) ?? "FELLOW"
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category5) ?? "FUNNY"
                 }.cellSetup { cell, row in
                     cell.imageView?.image = UIImage(named: "purple")
                     cell.imageView?.alpha = 0.6

@@ -33,6 +33,16 @@ class AddViewController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("DEBUG_PRINT: AddViewController viewWillAppear start")
+        
+        // カテゴリのリフレッシュ
+        tableView.reloadData()
+        
+        print("DEBUG_PRINT: AddViewController viewWillAppear end")
+    }
+    
     func initializeForm(){
         print("DEBUG_PRINT: AddViewController initializeForm start")
         
