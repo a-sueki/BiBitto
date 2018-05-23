@@ -43,7 +43,7 @@
             </objects>
             <point key="canvasLocation" x="1463" y="-320"/>
         </scene>
-        <!--ADD-->
+        <!--ADD / EDIT-->
         <scene sceneID="tYY-Bb-p82">
             <objects>
                 <viewController storyboardIdentifier="AddViewController" id="Noq-gP-fVd" customClass="AddViewController" customModule="BiBitto" customModuleProvider="target" sceneMemberID="viewController">
@@ -65,7 +65,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Nbp-Is-ria"/>
                     </view>
-                    <navigationItem key="navigationItem" title="ADD" id="77o-zF-4Zk"/>
+                    <navigationItem key="navigationItem" title="ADD / EDIT" id="77o-zF-4Zk"/>
                     <connections>
                         <outlet property="tableView" destination="TQy-K4-LkG" id="jHS-Oq-ssB"/>
                     </connections>

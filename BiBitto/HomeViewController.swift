@@ -95,7 +95,15 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
         
         // 初回起動時のみ
         if UserDefaults.standard.bool(forKey: "firstLaunch") {
+            // 初回起動OFF
             UserDefaults.standard.set(false, forKey: "firstLaunch")
+            // カテゴリ初期登録
+            UserDefaults.standard.set(Category.continent1 ,forKey: DefaultString.Category1)
+            UserDefaults.standard.set(Category.continent2 ,forKey: DefaultString.Category2)
+            UserDefaults.standard.set(Category.continent3 ,forKey: DefaultString.Category3)
+            UserDefaults.standard.set(Category.continent4 ,forKey: DefaultString.Category4)
+            UserDefaults.standard.set(Category.continent5 ,forKey: DefaultString.Category5)
+
             signUp()
         }
         // アカウントありで、かつ、ログインしてない場合

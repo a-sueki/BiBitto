@@ -112,7 +112,12 @@ class AddViewController: FormViewController {
                 case DefaultString.Category5 : lrow.baseValue = UserDefaults.standard.string(forKey: DefaultString.Category5)
                 default: lrow.baseValue = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? nil
                 }
-                if let selectedCategory = self.cardData?.category, option == UserDefaults.standard.string(forKey:selectedCategory) {
+                // ADDの場合はcategory1を選択済みにしておく
+                if self.cardData?.category == nil, option == Category.continent1 {
+                    lrow.value = option
+                }else if self.cardData?.category == nil, option != Category.continent1{
+                    lrow.value = nil
+                }else if option == UserDefaults.standard.string(forKey:(self.cardData?.category)!) {
                     lrow.value = option
                 }else{
                     lrow.value = nil
