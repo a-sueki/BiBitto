@@ -94,8 +94,15 @@ class AddViewController: FormViewController {
             form.last! <<< ImageCheckRow<String>(option){ lrow in
                 lrow.title = option
                 lrow.selectableValue = option
-                lrow.baseValue = self.cardData?.category ?? nil
-                if option == self.cardData?.category {
+                switch self.cardData?.category {
+                case DefaultString.Category1 : lrow.baseValue = UserDefaults.standard.string(forKey: DefaultString.Category1)
+                case DefaultString.Category2 : lrow.baseValue = UserDefaults.standard.string(forKey: DefaultString.Category2)
+                case DefaultString.Category3 : lrow.baseValue = UserDefaults.standard.string(forKey: DefaultString.Category3)
+                case DefaultString.Category4 : lrow.baseValue = UserDefaults.standard.string(forKey: DefaultString.Category4)
+                case DefaultString.Category5 : lrow.baseValue = UserDefaults.standard.string(forKey: DefaultString.Category5)
+                default: lrow.baseValue = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? nil
+                }
+                if let selectedCategory = self.cardData?.category, option == UserDefaults.standard.string(forKey:selectedCategory) {
                     lrow.value = option
                 }else{
                     lrow.value = nil
