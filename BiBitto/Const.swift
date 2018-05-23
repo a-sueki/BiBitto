@@ -19,6 +19,8 @@ struct Paths {
 
 struct URLs {
     static let HowToUseLink = "https://www.apple.co.jp"
+    static let InquiryLink = "https://www.apple.co.jp"
+    static let TermsOfService = "https://www.apple.co.jp"
 }
 
 struct StorageRef{

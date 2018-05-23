@@ -99,14 +99,57 @@ class SettingViewController: FormViewController {
             <<< ButtonRow("category") { (row: ButtonRow) -> Void in
                 row.title = "カテゴリーを編集する"
                 row.presentationMode = .segueName(segueName: "CategoryControllerSegue", onDismiss: nil)
-        }
+            }
         
+            +++ Section("その他")
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.title = "利用規約"
+                }.onCellSelection { [weak self] (cell, row) in
+                    self?.jumpToTermsOfServicePage()
+            }
+            <<< ButtonRow() { (row: ButtonRow) -> Void in
+                row.title = "運営へのお問い合わせ"
+                }.onCellSelection { [weak self] (cell, row) in
+                    self?.jumpToInquiryPage()
+        }
+
         print("DEBUG_PRINT: SettingViewController initializeForm end")
     }
     
     @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
     }
+    
+    @IBAction func jumpToInquiryPage() {
+        print("DEBUG_PRINT: SettingViewController jumpToInquiryPage start")
+        
+        guard let url = URL(string: URLs.InquiryLink) else {
+            return //be safe
+        }
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+        
+        print("DEBUG_PRINT: SettingViewController jumpToInquiryPage end")
+    }
+
+    @IBAction func jumpToTermsOfServicePage() {
+        print("DEBUG_PRINT: SettingViewController jumpToTermsOfServicePage start")
+        
+        guard let url = URL(string: URLs.TermsOfService) else {
+            return //be safe
+        }
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+        
+        print("DEBUG_PRINT: SettingViewController jumpToTermsOfServicePage end")
+    }
+
     
     @IBAction func upgrade() {
         print("DEBUG_PRINT: SettingViewController save start")
