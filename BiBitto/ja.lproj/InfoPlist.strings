@@ -5,6 +5,6 @@
   Created by admin on 2018/04/17.
   Copyright © 2018年 aoi.sueki. All rights reserved.
 */
-NSLocationAlwaysUsageDescription = "位置情報を常に使うんだって！だからなの！";
-NSLocationWhenInUseUsageDescription = "位置情報の特定に使うだけです。悪用しないんで、まじで。";
+NSLocationAlwaysUsageDescription = "このアプリは、場所での通知を実行するため、常に位置情報を取得します";
+NSLocationWhenInUseUsageDescription = "このアプリは、場所での通知を実行するため、位置情報を取得します";
 CFBundleDisplayName = "ビビッとくる！俺の名言コレクション";
