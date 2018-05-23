@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,26 +21,27 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen2" translatesAutoresizingMaskIntoConstraints="NO" id="K7v-hV-zXa">
-                                        <rect key="frame" x="33" y="102" width="309" height="115"/>
+                                        <rect key="frame" x="37.5" y="66" width="300" height="150"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="K7v-hV-zXa" secondAttribute="height" multiplier="309:115" id="UqS-qJ-0pA"/>
+                                            <constraint firstAttribute="width" constant="300" id="BUy-CR-Wlt"/>
+                                            <constraint firstAttribute="height" constant="150" id="hT7-TB-fE1"/>
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="v8d-rm-KXY">
-                                        <rect key="frame" x="100" y="289" width="175" height="180"/>
+                                        <rect key="frame" x="87.5" y="233.5" width="200" height="200"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="v8d-rm-KXY" secondAttribute="height" multiplier="35:36" id="jAY-wd-nFp"/>
+                                            <constraint firstAttribute="width" constant="200" id="4Ux-ga-2Sg"/>
+                                            <constraint firstAttribute="height" constant="200" id="6ch-5K-yoX"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.16078431372549018" green="0.6705882352941176" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="v8d-rm-KXY" firstAttribute="top" secondItem="K7v-hV-zXa" secondAttribute="bottom" constant="72" id="Iql-XF-JmS"/>
-                                    <constraint firstAttribute="bottom" secondItem="v8d-rm-KXY" secondAttribute="bottom" constant="198" id="LQO-RS-cPN"/>
-                                    <constraint firstItem="v8d-rm-KXY" firstAttribute="leading" secondItem="l4Y-ng-ZuE" secondAttribute="leading" constant="100" id="OIA-fd-Sxw"/>
-                                    <constraint firstAttribute="trailing" secondItem="v8d-rm-KXY" secondAttribute="trailing" constant="100" id="Sxu-SQ-bBT"/>
-                                    <constraint firstItem="K7v-hV-zXa" firstAttribute="leading" secondItem="l4Y-ng-ZuE" secondAttribute="leading" constant="33" id="WNv-Pe-3WH"/>
-                                    <constraint firstAttribute="trailing" secondItem="K7v-hV-zXa" secondAttribute="trailing" constant="33" id="rpg-FL-EZj"/>
+                                    <constraint firstItem="K7v-hV-zXa" firstAttribute="centerX" secondItem="l4Y-ng-ZuE" secondAttribute="centerX" id="IAI-2x-k3t"/>
+                                    <constraint firstItem="v8d-rm-KXY" firstAttribute="centerX" secondItem="l4Y-ng-ZuE" secondAttribute="centerX" id="Ioe-t9-3iN"/>
+                                    <constraint firstItem="v8d-rm-KXY" firstAttribute="centerY" secondItem="l4Y-ng-ZuE" secondAttribute="centerY" id="MdD-YX-JvX"/>
+                                    <constraint firstItem="v8d-rm-KXY" firstAttribute="centerX" secondItem="l4Y-ng-ZuE" secondAttribute="centerX" id="bzw-en-5uZ"/>
+                                    <constraint firstItem="v8d-rm-KXY" firstAttribute="top" secondItem="K7v-hV-zXa" secondAttribute="bottom" constant="17.5" id="mOT-MX-4Ri"/>
                                 </constraints>
                             </view>
                         </subviews>

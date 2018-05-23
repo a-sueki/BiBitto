@@ -244,7 +244,7 @@ class ImportDataViewController: FormViewController {
                 self.wordArrayList.append(wordArray)
             }
             // Noで並び替え
-            self.cardDataArray = self.cardDataArray.sorted(by: {$0.no > $1.no})
+            self.cardDataArray = self.cardDataArray.sorted(by: {$0.no < $1.no})
             // No洗い替え
             var counter = 1
             for card in self.cardDataArray {
