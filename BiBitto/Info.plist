@@ -27,11 +27,11 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>このアプリは、＊＊のため、位置情報を取得します</string>
+	<string>このアプリは、場所での通知を実行するため、位置情報を取得します</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>このアプリは、＊＊のため、常に位置情報を取得します</string>
+	<string>このアプリは、場所での通知を実行するため、常に位置情報を取得します</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>このアプリは、＊＊のため、アプリ起動中に位置情報を取得します</string>
+	<string>このアプリは、場所での通知を実行するため、アプリ起動中に位置情報を取得します</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
