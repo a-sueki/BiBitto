@@ -134,11 +134,11 @@ class AddViewController: FormViewController {
         for (key,value) in form.values() {
             if case let itemValue as String = value {
                 switch key {
-                case Category.continents[0] : self.inputData["category"] = itemValue
-                case Category.continents[1] : self.inputData["category"] = itemValue
-                case Category.continents[2] : self.inputData["category"] = itemValue
-                case Category.continents[3] : self.inputData["category"] = itemValue
-                case Category.continents[4] : self.inputData["category"] = itemValue
+                case Category.continents[0] : self.inputData["category"] = DefaultString.Category1
+                case Category.continents[1] : self.inputData["category"] = DefaultString.Category2
+                case Category.continents[2] : self.inputData["category"] = DefaultString.Category3
+                case Category.continents[3] : self.inputData["category"] = DefaultString.Category4
+                case Category.continents[4] : self.inputData["category"] = DefaultString.Category5
                 default: self.inputData["\(key)"] = itemValue
                 }
             }
@@ -168,11 +168,11 @@ class AddViewController: FormViewController {
         for (key,value) in form.values() {
             if case let itemValue as String = value {
                 switch key {
-                case Category.continents[0] : self.inputData["category"] = itemValue
-                case Category.continents[1] : self.inputData["category"] = itemValue
-                case Category.continents[2] : self.inputData["category"] = itemValue
-                case Category.continents[3] : self.inputData["category"] = itemValue
-                case Category.continents[4] : self.inputData["category"] = itemValue
+                case Category.continents[0] : self.inputData["category"] = DefaultString.Category1
+                case Category.continents[1] : self.inputData["category"] = DefaultString.Category2
+                case Category.continents[2] : self.inputData["category"] = DefaultString.Category3
+                case Category.continents[3] : self.inputData["category"] = DefaultString.Category4
+                case Category.continents[4] : self.inputData["category"] = DefaultString.Category5
                 default: self.inputData["\(key)"] = itemValue
                 }
             }

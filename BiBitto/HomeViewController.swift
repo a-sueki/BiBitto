@@ -170,7 +170,16 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
         removeSubviews(parentView: self.view)
         
         // ヘッダ
-        categoryLabel.text = self.cardData?.category
+        switch self.cardData?.category {
+        case DefaultString.Category1 : categoryLabel.text = UserDefaults.standard.string(forKey: DefaultString.Category1)
+        case DefaultString.Category2 : categoryLabel.text = UserDefaults.standard.string(forKey: DefaultString.Category2)
+        case DefaultString.Category3 : categoryLabel.text = UserDefaults.standard.string(forKey: DefaultString.Category3)
+        case DefaultString.Category4 : categoryLabel.text = UserDefaults.standard.string(forKey: DefaultString.Category4)
+        case DefaultString.Category5 : categoryLabel.text = UserDefaults.standard.string(forKey: DefaultString.Category5)
+        default: categoryLabel.text = UserDefaults.standard.string(forKey: DefaultString.Category1)
+        }
+        
+        //categoryLabel.text = self.cardData?.category
         authorNameLabel.text = self.cardData?.author
         noLabel.text = String(format: "%03d", (self.cardData?.no)!)
         view.backgroundColor = UIColor.gray

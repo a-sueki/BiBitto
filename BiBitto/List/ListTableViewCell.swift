@@ -29,15 +29,15 @@ class ListTableViewCell: UITableViewCell {
     
     func setData(cardData: CardData) {
 
-        if cardData.category == Category.continents[0] {
+        if cardData.category == DefaultString.Category1 {
             categoryImageView.image = UIImage(named: "orange")
-        }else if cardData.category == Category.continents[1] {
+        }else if cardData.category == DefaultString.Category2 {
             categoryImageView.image = UIImage(named: "pink")
-        }else if cardData.category == Category.continents[2] {
+        }else if cardData.category == DefaultString.Category3  {
             categoryImageView.image = UIImage(named: "green")
-        }else if cardData.category == Category.continents[3] {
+        }else if cardData.category == DefaultString.Category4 {
             categoryImageView.image = UIImage(named: "blue")
-        }else if cardData.category == Category.continents[4] {
+        }else if cardData.category == DefaultString.Category5  {
             categoryImageView.image = UIImage(named: "purple")
         }
         

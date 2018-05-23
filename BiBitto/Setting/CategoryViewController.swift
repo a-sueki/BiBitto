@@ -129,9 +129,6 @@ class CategoryViewController: FormViewController {
         // 全てのモーダルを閉じる
         SVProgressHUD.dismiss()
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
-        // Home画面に戻る（選択済みにする）
-        let nav = self.navigationController!
-        nav.viewControllers[nav.viewControllers.count-2].tabBarController?.selectedIndex = 1
         // 成功ポップアップ
         SVProgressHUD.showSuccess(withStatus: Alert.successSaveTitle)
         

@@ -50,6 +50,10 @@ class ImportDataViewController: FormViewController {
             autoSaveSwitch.cell.backgroundColor = .white
             autoSaveSwitch.reload()
         }
+        // カテゴリのリフレッシュ
+        let categoryLabel:PushRow<String> = form.rowBy(tag: "category")!
+        //categoryLabel.value = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? Category.continents.first
+        categoryLabel.reload()
         
         print("DEBUG_PRINT: ImportDataViewController viewWillAppear end")
     }
@@ -122,10 +126,10 @@ class ImportDataViewController: FormViewController {
                 })
             
             // カテゴリーを選択させる
-            <<< PushRow<String>("Category") {
+            <<< PushRow<String>("category") {
                 $0.title = "カテゴリー"
                 $0.options = Category.continents
-                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? "MIND"
+                $0.value = UserDefaults.standard.string(forKey: DefaultString.Category1) ?? Category.continents.first
                 }.onPresent({ (_, vc) in
                     vc.enableDeselection = false
                     vc.dismissOnSelection = false
@@ -165,11 +169,20 @@ class ImportDataViewController: FormViewController {
         print("DEBUG_PRINT: ImportDataViewController importFile start")
         
         for (key,value) in form.values() {
-            if value != nil {
+            if key == "category" {
+                switch value as! String{
+                case Category.continents[0] : self.inputData["category"] = DefaultString.Category1
+                case Category.continents[1] : self.inputData["category"] = DefaultString.Category2
+                case Category.continents[2] : self.inputData["category"] = DefaultString.Category3
+                case Category.continents[3] : self.inputData["category"] = DefaultString.Category4
+                case Category.continents[4] : self.inputData["category"] = DefaultString.Category5
+                default: self.inputData["\(key)"] = value
+                }
+            }else{
                 self.inputData["\(key)"] = value
             }
         }
-        
+
         if Auth.auth().currentUser == nil, self.inputData["autoSave"] as! Bool == true {
             SVProgressHUD.showError(withStatus: Alert.pleaseloginAlartTitle)
             return
@@ -219,7 +232,7 @@ class ImportDataViewController: FormViewController {
                 self.importData["updateAt"] = String(time)
                 self.importData["createAt"] = String(time)
                 self.importData["text"] = data
-                self.importData["category"] = self.inputData["Category"] as! String
+                self.importData["category"] = self.inputData["category"] as! String
                 // No付与
                 self.importData["no"] = self.cardDataArray.count + 1
                 // カード追加
