@@ -40,7 +40,9 @@ class NotificationViewController: FormViewController {
         self.selectedLongitude = UserDefaults.standard.string(forKey: DefaultString.SelectedLongitude)
         
         // 選択済みの地名を取得
-        if let locationName = UserDefaults.standard.string(forKey: DefaultString.SelectedLocation) , locationName != "" {
+        if self.selectedLatitude == nil {
+            self.selectedLocationName = "指定してください"
+        }else if let locationName = UserDefaults.standard.string(forKey: DefaultString.SelectedLocation) , locationName != "" {
             self.selectedLocationName =  locationName
         }else{
             self.selectedLocationName = "ピン留めした場所"
@@ -148,6 +150,7 @@ class NotificationViewController: FormViewController {
                 }.cellUpdate({ (cell, row) in
                     cell.detailTextLabel?.text = self.selectedLocationName
                 })
+
             <<< ButtonRow() { (row: ButtonRow) -> Void in
                 row.hidden = .function(["LocationNotification"], { form -> Bool in
                     let row: RowOf<Bool>! = form.rowBy(tag: "LocationNotification")
@@ -245,6 +248,11 @@ class NotificationViewController: FormViewController {
     @IBAction func saveLocation() {
         print("DEBUG_PRINT: SettingViewController saveLocation start")
 
+        if self.selectedLatitude == nil || self.selectedLongitude == nil {
+            // エラーポップアップ
+            SVProgressHUD.showError(withStatus: "場所が指定されていません")
+            return
+        }
         registerLocationLocalNotification()
         
         // 全てのモーダルを閉じる
