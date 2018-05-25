@@ -47,12 +47,22 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
             fm.createFile(atPath: filePath, contents: nil, attributes: [:])
         }
         
+        // 初回起動時のみ
+        if UserDefaults.standard.bool(forKey: "firstLaunch") {
+            // カテゴリ初期登録
+            UserDefaults.standard.set(Category.continent1 ,forKey: DefaultString.Category1)
+            UserDefaults.standard.set(Category.continent2 ,forKey: DefaultString.Category2)
+            UserDefaults.standard.set(Category.continent3 ,forKey: DefaultString.Category3)
+            UserDefaults.standard.set(Category.continent4 ,forKey: DefaultString.Category4)
+            UserDefaults.standard.set(Category.continent5 ,forKey: DefaultString.Category5)
+        }
+        
         self.cardDataArray = Files.readCardDocument(fileName: Files.card_file)
         CardFileIntermediary.setList(list: self.cardDataArray)
         
         
-        if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // 本番用
-        //if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // キャプチャ用
+        //if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // 本番用
+        if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // キャプチャ用
             // iAd広告設定
             //self.canDisplayBannerAds = true
             // In this case, we instantiate the banner with desired ad size.
@@ -97,13 +107,6 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
         if UserDefaults.standard.bool(forKey: "firstLaunch") {
             // 初回起動OFF
             UserDefaults.standard.set(false, forKey: "firstLaunch")
-            // カテゴリ初期登録
-            UserDefaults.standard.set(Category.continent1 ,forKey: DefaultString.Category1)
-            UserDefaults.standard.set(Category.continent2 ,forKey: DefaultString.Category2)
-            UserDefaults.standard.set(Category.continent3 ,forKey: DefaultString.Category3)
-            UserDefaults.standard.set(Category.continent4 ,forKey: DefaultString.Category4)
-            UserDefaults.standard.set(Category.continent5 ,forKey: DefaultString.Category5)
-
             signUp()
         }
         // アカウントありで、かつ、ログインしてない場合
@@ -187,9 +190,12 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
         default: categoryLabel.text = UserDefaults.standard.string(forKey: DefaultString.Category1)
         }
         
-        //categoryLabel.text = self.cardData?.category
+        categoryLabel.font = UIFont(name: "GillSans-Light", size: (UIFont.screenFontSize)*1.2)
         authorNameLabel.text = self.cardData?.author
+        authorNameLabel.font = UIFont(name: "GillSans-Light", size: (UIFont.screenFontSize))
+
         noLabel.text = String(format: "%03d", (self.cardData?.no)!)
+        noLabel.font = UIFont(name: "GillSans-Light", size: (UIFont.screenFontSize)*2.5)
         view.backgroundColor = UIColor.gray
         
         // 日本語判定
@@ -211,11 +217,12 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
             textLabel.textColor = UIColor.black
             textLabel.numberOfLines = 0
             textLabel.lineBreakMode = NSLineBreakMode.byCharWrapping //文字で改行
-            
+            textLabel.font = UIFont(name: "GillSans-Light", size: UIFont.screenFontSize)
+
             // ラベルを90°回転させる
             rotateAngle(label: textLabel as! TTTAttributedLabel, data: self.cardData?.text)
             (textLabel as! TTTAttributedLabel).verticalAlignment = .center
-            
+
             // 配置
             baseView.addSubview(textLabel)
             baseView.addFitConstraints(to: textLabel)
@@ -230,7 +237,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
             textLabel.textColor = UIColor.black
             textLabel.numberOfLines = 0
             textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping //文字で改行
-            
+            textLabel.font = UIFont(name: "GillSans-Light", size: UIFont.screenFontSize)
             // 配置
             baseView.addSubview(textLabel)
             baseView.addFitConstraints(to: textLabel)
@@ -338,8 +345,8 @@ extension UIView {
         to.translatesAutoresizingMaskIntoConstraints = false
         var bottomConstant = 50
         // もし広告非表示なら50でなく0
-        if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // 本番用
-        //if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // キャプチャ用
+        //if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // 本番用
+        if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // キャプチャ用
             bottomConstant = 0
         }
         self.addConstraint(NSLayoutConstraint(item: to,
@@ -370,5 +377,20 @@ extension UIView {
                                               attribute: .trailing,
                                               multiplier: 1.0,
                                               constant: 20))
+    }
+}
+
+extension UIFont {
+    // 画面サイズに応じたフォントサイズを返す
+    static var screenFontSize: CGFloat {
+        switch UIScreen.main.bounds.size {
+        case CGSize(width: 320.0, height: 568.0): return 16 //iPhone5,iPhone5S,iPodTouch5
+        case CGSize(width: 375.0, height: 667.0): return 20 //iPhone6
+        case CGSize(width: 414.0, height: 736.0): return 22 //iPhone6Plus
+        case CGSize(width: 768.0, height: 1024.0): return 26 //iPad
+        case CGSize(width: 834.0, height: 1112.0): return 32 //iPadPro10.5
+        case CGSize(width: 1024.0, height: 1366.0): return 32 //iPadPro12.9
+        default                                 : return 0
+        }
     }
 }

@@ -46,8 +46,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Noで並び替え
         self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
         
-        if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // 本番用
-        //if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // キャプチャ用
+        //if !UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // 本番用
+        if UserDefaults.standard.bool(forKey: DefaultString.BillingUserFlag){ // キャプチャ用
             // iAd広告設定
             //self.canDisplayBannerAds = true
             // In this case, we instantiate the banner with desired ad size.
