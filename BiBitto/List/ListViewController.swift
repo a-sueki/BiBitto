@@ -124,7 +124,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         print("DEBUG_PRINT: ListViewController viewWillDisappear start")
         
         /* Searchでの絞り込みリセット */
-        filtered == false
+        filtered = false
         // カード一覧をローカルファイルから取得
         let originCardDataArray = CardFileIntermediary.getList()
         // Noで並び替え
