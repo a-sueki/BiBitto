@@ -231,7 +231,7 @@ struct Category {
 
 struct ShareString {
     static let text = "#俺のビビッとくるアプリ "
-    static let website = NSURL(string: "https://www.apple.co.jp")! //TODO1
+    static let website = NSURL(string: URLs.HowToUseLink)! 
     static let excludedActivityTypes = [
         UIActivityType.postToWeibo,
         UIActivityType.saveToCameraRoll,

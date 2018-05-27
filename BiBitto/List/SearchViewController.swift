@@ -54,6 +54,7 @@ class SearchViewController: UIViewController , UICollectionViewDelegate{
             //呼び出し元のView Controllerを遷移履歴から取得しパラメータを渡す
             let listViewController = nav.viewControllers[nav.viewControllers.count-2] as! ListViewController
             listViewController.cardDataArray = refinedCardDataArray
+            listViewController.filtered = true
             // 前画面に戻る
             self.navigationController?.popViewController(animated: false)
 

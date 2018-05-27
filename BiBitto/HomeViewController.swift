@@ -237,7 +237,7 @@ class HomeViewController: UIViewController , TabBarDelegate, GADBannerViewDelega
             textLabel.textColor = UIColor.black
             textLabel.numberOfLines = 0
             textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping //文字で改行
-            textLabel.font = UIFont(name: "GillSans-Light", size: UIFont.screenFontSize)
+            textLabel.font = UIFont(name: "GillSans-Light", size: (UIFont.screenFontSize)*1.2)
             // 配置
             baseView.addSubview(textLabel)
             baseView.addFitConstraints(to: textLabel)

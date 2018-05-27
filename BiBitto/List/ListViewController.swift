@@ -19,6 +19,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     private var viewControllers = [UIViewController]()
     var cardDataArray: [CardData] = []
     var bannerView: GADBannerView!
+    var filtered = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,20 +91,24 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         print("DEBUG_PRINT: ListViewController viewWillAppear start")
         
-        
-        var originCardDataArray: [CardData]! = nil
-        DispatchQueue.global().async {
-            // カード一覧をローカルファイルから取得
-            originCardDataArray = CardFileIntermediary.getList()
-        }
-        // cardDataArrayを取得するまで待ちます
-        Files.wait( { return originCardDataArray == nil } ) {
-            // 取得しました
-            print("finish!!!")
-            // Noで並び替え
-            self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
+        if filtered == true {
             // tableViewを再表示する
             self.tableView.reloadData()
+        }else{
+            var originCardDataArray: [CardData]! = nil
+            DispatchQueue.global().async {
+                // カード一覧をローカルファイルから取得
+                originCardDataArray = CardFileIntermediary.getList()
+            }
+            // cardDataArrayを取得するまで待ちます
+            Files.wait( { return originCardDataArray == nil } ) {
+                // 取得しました
+                print("finish!!!")
+                // Noで並び替え
+                self.cardDataArray = originCardDataArray.sorted(by: {$0.no > $1.no})
+                // tableViewを再表示する
+                self.tableView.reloadData()
+            }
         }
         
         print("DEBUG_PRINT: ListViewController viewWillAppear end")
@@ -119,6 +124,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         print("DEBUG_PRINT: ListViewController viewWillDisappear start")
         
         /* Searchでの絞り込みリセット */
+        filtered == false
         // カード一覧をローカルファイルから取得
         let originCardDataArray = CardFileIntermediary.getList()
         // Noで並び替え
