@@ -77,7 +77,7 @@ class ImportDataViewController: FormViewController {
         
         // フォーム
         form +++
-            Section(header:"ファイルから一括取込", footer:"取込対象のファイル（.txt形式）はご使用のiOSデバイスの「ファイル > BiBitto」内に格納してください")
+            Section(header:"ファイルから一括取込", footer:"取込対象のファイル（.txt形式）はご使用のiOSデバイスの「ファイル > ビビッとくる！俺の名言コレクション」内に格納してください")
             // importデータのファイル名を取得
             <<< NameRow("FileName") {
                 $0.title = "ファイル名"

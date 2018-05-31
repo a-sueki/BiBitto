@@ -86,6 +86,11 @@ class SettingViewController: FormViewController {
                 }.onCellSelection { [weak self] (cell, row) in
                     self?.upgrade()
             }
+            <<< ButtonRow("Restore") { (row: ButtonRow) -> Void in
+                row.title = "購入済みの商品を復元する"
+                }.onCellSelection { [weak self] (cell, row) in
+                    self?.startRestore()
+            }
             
             
             +++ Section(header:"データ管理", footer:"オンラインバックアップの利用にはログインしている必要があります。" )
@@ -191,10 +196,12 @@ class SettingViewController: FormViewController {
         print("DEBUG_PRINT: SettingViewController startRestore start")
         
         //デリゲード設定
-        PurchaseManager.shared.delegate = self
-        
+        PurchaseManager.shared.delegate = self        
         //リストア開始
         PurchaseManager.shared.restore()
+        // 全てのモーダルを閉じる
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+
         print("DEBUG_PRINT: SettingViewController startRestore end")
     }
     
