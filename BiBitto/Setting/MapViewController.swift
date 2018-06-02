@@ -163,7 +163,10 @@ extension MapViewController: CLLocationManagerDelegate {
             // 位置情報取得の設定
             locationManager.allowsBackgroundLocationUpdates = true // バックグランドモードで使用する場合YESにする必要がある
             locationManager.desiredAccuracy = kCLLocationAccuracyBest // 位置情報取得の精度
-            locationManager.distanceFilter = 1 // 位置情報取得する間隔、1m単位とする
+            locationManager.distanceFilter = 5 // 位置情報取得する間隔、1m単位とする
+            // iOSが位置情報を新たに取得する必要がない状況を自動的に判断し、位置情報取得をポーズしてくれる（バックグラウンドでポーズされるとダメなので今回は　false）
+            locationManager.pausesLocationUpdatesAutomatically = false
+            locationManager.activityType = .fitness
             // 位置情報取得の開始処理
             locationManager.startUpdatingLocation()
             break
@@ -172,7 +175,10 @@ extension MapViewController: CLLocationManagerDelegate {
             // 位置情報取得の設定
             locationManager.allowsBackgroundLocationUpdates = true // バックグランドモードで使用する場合YESにする必要がある
             locationManager.desiredAccuracy = kCLLocationAccuracyBest // 位置情報取得の精度
-            locationManager.distanceFilter = 1 // 位置情報取得する間隔、1m単位とする
+            locationManager.distanceFilter = 5 // 位置情報取得する間隔、1m単位とする
+            // iOSが位置情報を新たに取得する必要がない状況を自動的に判断し、位置情報取得をポーズしてくれる（バックグラウンドでポーズされるとダメなので今回は　false）
+            locationManager.pausesLocationUpdatesAutomatically = false
+            locationManager.activityType = .fitness
             // 位置情報取得の開始処理
             locationManager.startUpdatingLocation()
             break
