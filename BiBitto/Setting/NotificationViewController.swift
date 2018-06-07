@@ -283,8 +283,8 @@ class NotificationViewController: FormViewController {
         //「中心座標 (35.697275, 139.774728)」「半径 100m」の円に入った時の例
         let coordinate = CLLocationCoordinate2DMake(Double(self.selectedLatitude!)!,Double(self.selectedLongitude!)!)
         let region = CLCircularRegion.init(center: coordinate, radius: 50, identifier: self.selectedLocationName!)
-//        region.notifyOnEntry = true
-//        region.notifyOnExit = false
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
         let trigger = UNLocationNotificationTrigger.init(region: region, repeats: false)
         
         // id, content, trigger から UNNotificationRequest 作成

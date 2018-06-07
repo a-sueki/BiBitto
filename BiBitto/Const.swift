@@ -18,9 +18,9 @@ struct Paths {
 }
 
 struct URLs {
-    static let HowToUseLink = "https://www.apple.co.jp"
-    static let InquiryLink = "https://www.apple.co.jp"
-    static let TermsOfService = "http://novelel.com/index.php/page-3772/ "
+    static let HowToUseLink = "https://aolabo.net/index.php/2018/06/07/bibitto-howtouse/"
+    static let InquiryLink = "https://aolabo.net/index.php/contact/"
+    static let TermsOfService = "https://aolabo.net/index.php/2018/06/07/bibitto-termsofservice/"
 }
 
 struct StorageRef{
