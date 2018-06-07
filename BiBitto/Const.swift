@@ -21,6 +21,7 @@ struct URLs {
     static let HowToUseLink = "https://aolabo.net/index.php/2018/06/07/bibitto-howtouse/"
     static let InquiryLink = "https://aolabo.net/index.php/contact/"
     static let TermsOfService = "https://aolabo.net/index.php/2018/06/07/bibitto-termsofservice/"
+    static let iTunesStore = "https://itunes.apple.com/gb/app/ビビッとくる-俺の名言コレクション/id1385903424?mt=8&ign-mpt=uo%3D2"
 }
 
 struct StorageRef{
@@ -231,7 +232,7 @@ struct Category {
 
 struct ShareString {
     static let text = "#俺のビビッとくるアプリ "
-    static let website = NSURL(string: URLs.HowToUseLink)! 
+    static let website = NSURL(string: URLs.iTunesStore)!
     static let excludedActivityTypes = [
         UIActivityType.postToWeibo,
         UIActivityType.saveToCameraRoll,
